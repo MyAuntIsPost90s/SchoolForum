@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="schoolforum.base.dao.SuggestionsMapper" >
+  <select id="getList" resultType="schoolforum.base.models.Suggestions" parameterType="schoolforum.base.models.Suggestions" >
+    select * from suggestions
+    where 1=1
+    <if test="suggestionid != null" >
+      and suggestionId = #{suggestionid}
+    </if>
+    <if test="userid != null" >
+      and userId = #{userid}
+    </if>
+    <if test="suggestiontitle != null" >
+      and suggestionTitle = #{suggestiontitle}
+    </if>
+    <if test="suggestioncontent != null" >
+      and suggestionContent = #{suggestioncontent}
+    </if>
+    <if test="suggestiontime != null" >
+      and suggestionTime = #{suggestiontime}
+    </if>
+    <if test="suggestionfeedback != null" >
+      and suggestionFeedback = #{suggestionfeedback}
+    </if>
+    <if test="suggestionfbtime != null" >
+      and suggestionFBTime = #{suggestionfbtime}
+    </if>
+    <if test="suggestionscore != null" >
+      and suggestionScore = #{suggestionscore}
+    </if>
+    <if test="suggestionfbuid != null" >
+      and suggestionFBUId = #{suggestionfbuid}
+    </if>
+    <if test="suggestiontype != null" >
+      and suggestionType = #{suggestiontype}
+    </if>
+  </select>
+  
+  <select id="getSingle" resultType="schoolforum.base.models.Suggestions" >
+    select * from suggestions
+    where suggestionId = #{id}
+    limit 0,1
+  </select>
+  
+  <insert id="insert" parameterType="schoolforum.base.models.Suggestions" >
+    insert into suggestions
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="suggestionid != null" >
+        suggestionId,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="suggestiontitle != null" >
+        suggestionTitle,
+      </if>
+      <if test="suggestioncontent != null" >
+        suggestionContent,
+      </if>
+      <if test="suggestiontime != null" >
+        suggestionTime,
+      </if>
+      <if test="suggestionfeedback != null" >
+        suggestionFeedback,
+      </if>
+      <if test="suggestionfbtime != null" >
+        suggestionFBTime,
+      </if>
+      <if test="suggestionscore != null" >
+        suggestionScore,
+      </if>
+      <if test="suggestionfbuid != null" >
+        suggestionFBUId,
+      </if>
+      <if test="suggestiontype != null" >
+        suggestionType
+      </if>
+    </trim>
+    <trim prefix="values(" suffix=")" suffixOverrides="," >
+      <if test="suggestionid != null" >
+        #{suggestionid},
+      </if>
+      <if test="userid != null" >
+        #{userid},
+      </if>
+      <if test="suggestiontitle != null" >
+        #{suggestiontitle},
+      </if>
+      <if test="suggestioncontent != null" >
+        #{suggestioncontent},
+      </if>
+      <if test="suggestiontime != null" >
+        #{suggestiontime},
+      </if>
+      <if test="suggestionfeedback != null" >
+        #{suggestionfeedback},
+      </if>
+      <if test="suggestionfbtime != null" >
+        #{suggestionfbtime},
+      </if>
+      <if test="suggestionscore != null" >
+        #{suggestionscore},
+      </if>
+      <if test="suggestionfbuid != null" >
+        #{suggestionfbuid},
+      </if>
+      <if test="suggestiontype != null" >
+        #{suggestiontype}
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="update" parameterType="schoolforum.base.models.Suggestions" >
+    update suggestions
+    <set >
+      <if test="userid != null" >
+        userId = #{userid},
+      </if>
+      <if test="suggestiontitle != null" >
+        suggestionTitle = #{suggestiontitle},
+      </if>
+      <if test="suggestioncontent != null" >
+        suggestionContent = #{suggestioncontent},
+      </if>
+      <if test="suggestiontime != null" >
+        suggestionTime = #{suggestiontime},
+      </if>
+      <if test="suggestionfeedback != null" >
+        suggestionFeedback = #{suggestionfeedback},
+      </if>
+      <if test="suggestionfbtime != null" >
+        suggestionFBTime = #{suggestionfbtime},
+      </if>
+      <if test="suggestionscore != null" >
+        suggestionScore = #{suggestionscore},
+      </if>
+      <if test="suggestionfbuid != null" >
+        suggestionFBUId = #{suggestionfbuid},
+      </if>
+      <if test="suggestiontype != null" >
+        suggestionType = #{suggestiontype}
+      </if>
+    </set>
+    where
+    suggestionId = #{suggestionid}
+  </update>
+  
+  <delete id="batchDelete" >
+    delete from suggestions
+    where suggestionId in(
+    <foreach item="item" collection="list" separator="," >
+      #{item}
+    </foreach>
+    )
+  </delete>
+  
+  <select id="getListWithPage" resultType="schoolforum.base.models.Suggestions" parameterType="schoolforum.base.models.Suggestions" >
+    select * from suggestions
+    where 1=1
+    <if test="suggestionid != null" >
+      and suggestionId = #{suggestionid}
+    </if>
+    <if test="userid != null" >
+      and userId = #{userid}
+    </if>
+    <if test="suggestiontitle != null" >
+      and suggestionTitle = #{suggestiontitle}
+    </if>
+    <if test="suggestioncontent != null" >
+      and suggestionContent = #{suggestioncontent}
+    </if>
+    <if test="suggestiontime != null" >
+      and suggestionTime = #{suggestiontime}
+    </if>
+    <if test="suggestionfeedback != null" >
+      and suggestionFeedback = #{suggestionfeedback}
+    </if>
+    <if test="suggestionfbtime != null" >
+      and suggestionFBTime = #{suggestionfbtime}
+    </if>
+    <if test="suggestionscore != null" >
+      and suggestionScore = #{suggestionscore}
+    </if>
+    <if test="suggestionfbuid != null" >
+      and suggestionFBUId = #{suggestionfbuid}
+    </if>
+    <if test="suggestiontype != null" >
+      and suggestionType = #{suggestiontype}
+    </if>
+  </select>
+  
+  <select id="count" resultType="java.lang.Long" parameterType="schoolforum.base.models.Suggestions" >
+    select count(*) from suggestions
+    where 1=1
+    <if test="suggestionid != null" >
+      and suggestionId = #{suggestionid}
+    </if>
+    <if test="userid != null" >
+      and userId = #{userid}
+    </if>
+    <if test="suggestiontitle != null" >
+      and suggestionTitle = #{suggestiontitle}
+    </if>
+    <if test="suggestioncontent != null" >
+      and suggestionContent = #{suggestioncontent}
+    </if>
+    <if test="suggestiontime != null" >
+      and suggestionTime = #{suggestiontime}
+    </if>
+    <if test="suggestionfeedback != null" >
+      and suggestionFeedback = #{suggestionfeedback}
+    </if>
+    <if test="suggestionfbtime != null" >
+      and suggestionFBTime = #{suggestionfbtime}
+    </if>
+    <if test="suggestionscore != null" >
+      and suggestionScore = #{suggestionscore}
+    </if>
+    <if test="suggestionfbuid != null" >
+      and suggestionFBUId = #{suggestionfbuid}
+    </if>
+    <if test="suggestiontype != null" >
+      and suggestionType = #{suggestiontype}
+    </if>
+  </select>
+  
+</mapper>

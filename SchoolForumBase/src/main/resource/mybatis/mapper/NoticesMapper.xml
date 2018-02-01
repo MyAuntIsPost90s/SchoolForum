@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="schoolforum.base.dao.NoticesMapper" >
+  <select id="getList" resultType="schoolforum.base.models.Notices" parameterType="schoolforum.base.models.Notices" >
+    select * from notices
+    where 1=1
+    <if test="noticeid != null" >
+      and noticeId = #{noticeid}
+    </if>
+    <if test="noticeimgurl != null" >
+      and noticeImgUrl = #{noticeimgurl}
+    </if>
+    <if test="noticetitle != null" >
+      and noticeTitle = #{noticetitle}
+    </if>
+    <if test="noticecontent != null" >
+      and noticeContent = #{noticecontent}
+    </if>
+    <if test="noticetime != null" >
+      and noticeTime = #{noticetime}
+    </if>
+    <if test="userid != null" >
+      and userId = #{userid}
+    </if>
+  </select>
+  
+  <select id="getSingle" resultType="schoolforum.base.models.Notices" >
+    select * from notices
+    where noticeId = #{id}
+    limit 0,1
+  </select>
+  
+  <insert id="insert" parameterType="schoolforum.base.models.Notices" >
+    insert into notices
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="noticeid != null" >
+        noticeId,
+      </if>
+      <if test="noticeimgurl != null" >
+        noticeImgUrl,
+      </if>
+      <if test="noticetitle != null" >
+        noticeTitle,
+      </if>
+      <if test="noticecontent != null" >
+        noticeContent,
+      </if>
+      <if test="noticetime != null" >
+        noticeTime,
+      </if>
+      <if test="userid != null" >
+        userId
+      </if>
+    </trim>
+    <trim prefix="values(" suffix=")" suffixOverrides="," >
+      <if test="noticeid != null" >
+        #{noticeid},
+      </if>
+      <if test="noticeimgurl != null" >
+        #{noticeimgurl},
+      </if>
+      <if test="noticetitle != null" >
+        #{noticetitle},
+      </if>
+      <if test="noticecontent != null" >
+        #{noticecontent},
+      </if>
+      <if test="noticetime != null" >
+        #{noticetime},
+      </if>
+      <if test="userid != null" >
+        #{userid}
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="update" parameterType="schoolforum.base.models.Notices" >
+    update notices
+    <set >
+      <if test="noticeimgurl != null" >
+        noticeImgUrl = #{noticeimgurl},
+      </if>
+      <if test="noticetitle != null" >
+        noticeTitle = #{noticetitle},
+      </if>
+      <if test="noticecontent != null" >
+        noticeContent = #{noticecontent},
+      </if>
+      <if test="noticetime != null" >
+        noticeTime = #{noticetime},
+      </if>
+      <if test="userid != null" >
+        userId = #{userid}
+      </if>
+    </set>
+    where
+    noticeId = #{noticeid}
+  </update>
+  
+  <delete id="batchDelete" >
+    delete from notices
+    where noticeId in(
+    <foreach item="item" collection="list" separator="," >
+      #{item}
+    </foreach>
+    )
+  </delete>
+  
+  <select id="getListWithPage" resultType="schoolforum.base.models.Notices" parameterType="schoolforum.base.models.Notices" >
+    select * from notices
+    where 1=1
+    <if test="noticeid != null" >
+      and noticeId = #{noticeid}
+    </if>
+    <if test="noticeimgurl != null" >
+      and noticeImgUrl = #{noticeimgurl}
+    </if>
+    <if test="noticetitle != null" >
+      and noticeTitle = #{noticetitle}
+    </if>
+    <if test="noticecontent != null" >
+      and noticeContent = #{noticecontent}
+    </if>
+    <if test="noticetime != null" >
+      and noticeTime = #{noticetime}
+    </if>
+    <if test="userid != null" >
+      and userId = #{userid}
+    </if>
+  </select>
+  
+  <select id="count" resultType="java.lang.Long" parameterType="schoolforum.base.models.Notices" >
+    select count(*) from notices
+    where 1=1
+    <if test="noticeid != null" >
+      and noticeId = #{noticeid}
+    </if>
+    <if test="noticeimgurl != null" >
+      and noticeImgUrl = #{noticeimgurl}
+    </if>
+    <if test="noticetitle != null" >
+      and noticeTitle = #{noticetitle}
+    </if>
+    <if test="noticecontent != null" >
+      and noticeContent = #{noticecontent}
+    </if>
+    <if test="noticetime != null" >
+      and noticeTime = #{noticetime}
+    </if>
+    <if test="userid != null" >
+      and userId = #{userid}
+    </if>
+  </select>
+  
+</mapper>

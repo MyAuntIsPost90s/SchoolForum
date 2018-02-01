@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="schoolforum.base.dao.MajorsMapper" >
+  <select id="getList" resultType="schoolforum.base.models.Majors" parameterType="schoolforum.base.models.Majors" >
+    select * from majors
+    where 1=1
+    <if test="majorid != null" >
+      and majorId = #{majorid}
+    </if>
+    <if test="majorname != null" >
+      and majorName = #{majorname}
+    </if>
+  </select>
+  
+  <select id="getSingle" resultType="schoolforum.base.models.Majors" >
+    select * from majors
+    where majorId = #{id}
+    limit 0,1
+  </select>
+  
+  <insert id="insert" parameterType="schoolforum.base.models.Majors" >
+    insert into majors
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="majorid != null" >
+        majorId,
+      </if>
+      <if test="majorname != null" >
+        majorName
+      </if>
+    </trim>
+    <trim prefix="values(" suffix=")" suffixOverrides="," >
+      <if test="majorid != null" >
+        #{majorid},
+      </if>
+      <if test="majorname != null" >
+        #{majorname}
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="update" parameterType="schoolforum.base.models.Majors" >
+    update majors
+    <set >
+      <if test="majorname != null" >
+        majorName = #{majorname}
+      </if>
+    </set>
+    where
+    majorId = #{majorid}
+  </update>
+  
+  <delete id="batchDelete" >
+    delete from majors
+    where majorId in(
+    <foreach item="item" collection="list" separator="," >
+      #{item}
+    </foreach>
+    )
+  </delete>
+  
+  <select id="getListWithPage" resultType="schoolforum.base.models.Majors" parameterType="schoolforum.base.models.Majors" >
+    select * from majors
+    where 1=1
+    <if test="majorid != null" >
+      and majorId = #{majorid}
+    </if>
+    <if test="majorname != null" >
+      and majorName = #{majorname}
+    </if>
+  </select>
+  
+  <select id="count" resultType="java.lang.Long" parameterType="schoolforum.base.models.Majors" >
+    select count(*) from majors
+    where 1=1
+    <if test="majorid != null" >
+      and majorId = #{majorid}
+    </if>
+    <if test="majorname != null" >
+      and majorName = #{majorname}
+    </if>
+  </select>
+  
+</mapper>

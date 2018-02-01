@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="schoolforum.base.dao.ArticlesMapper" >
+  <select id="getList" resultType="schoolforum.base.models.Articles" parameterType="schoolforum.base.models.Articles" >
+    select * from articles
+    where 1=1
+    <if test="articleid != null" >
+      and articleId = #{articleid}
+    </if>
+    <if test="articletitle != null" >
+      and articleTitle = #{articletitle}
+    </if>
+    <if test="articlecontent != null" >
+      and articleContent = #{articlecontent}
+    </if>
+    <if test="articletime != null" >
+      and articleTime = #{articletime}
+    </if>
+    <if test="userid != null" >
+      and userId = #{userid}
+    </if>
+  </select>
+  
+  <select id="getSingle" resultType="schoolforum.base.models.Articles" >
+    select * from articles
+    where articleId = #{id}
+    limit 0,1
+  </select>
+  
+  <insert id="insert" parameterType="schoolforum.base.models.Articles" >
+    insert into articles
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="articleid != null" >
+        articleId,
+      </if>
+      <if test="articletitle != null" >
+        articleTitle,
+      </if>
+      <if test="articlecontent != null" >
+        articleContent,
+      </if>
+      <if test="articletime != null" >
+        articleTime,
+      </if>
+      <if test="userid != null" >
+        userId
+      </if>
+    </trim>
+    <trim prefix="values(" suffix=")" suffixOverrides="," >
+      <if test="articleid != null" >
+        #{articleid},
+      </if>
+      <if test="articletitle != null" >
+        #{articletitle},
+      </if>
+      <if test="articlecontent != null" >
+        #{articlecontent},
+      </if>
+      <if test="articletime != null" >
+        #{articletime},
+      </if>
+      <if test="userid != null" >
+        #{userid}
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="update" parameterType="schoolforum.base.models.Articles" >
+    update articles
+    <set >
+      <if test="articletitle != null" >
+        articleTitle = #{articletitle},
+      </if>
+      <if test="articlecontent != null" >
+        articleContent = #{articlecontent},
+      </if>
+      <if test="articletime != null" >
+        articleTime = #{articletime},
+      </if>
+      <if test="userid != null" >
+        userId = #{userid}
+      </if>
+    </set>
+    where
+    articleId = #{articleid}
+  </update>
+  
+  <delete id="batchDelete" >
+    delete from articles
+    where articleId in(
+    <foreach item="item" collection="list" separator="," >
+      #{item}
+    </foreach>
+    )
+  </delete>
+  
+  <select id="getListWithPage" resultType="schoolforum.base.models.Articles" parameterType="schoolforum.base.models.Articles" >
+    select * from articles
+    where 1=1
+    <if test="articleid != null" >
+      and articleId = #{articleid}
+    </if>
+    <if test="articletitle != null" >
+      and articleTitle = #{articletitle}
+    </if>
+    <if test="articlecontent != null" >
+      and articleContent = #{articlecontent}
+    </if>
+    <if test="articletime != null" >
+      and articleTime = #{articletime}
+    </if>
+    <if test="userid != null" >
+      and userId = #{userid}
+    </if>
+  </select>
+  
+  <select id="count" resultType="java.lang.Long" parameterType="schoolforum.base.models.Articles" >
+    select count(*) from articles
+    where 1=1
+    <if test="articleid != null" >
+      and articleId = #{articleid}
+    </if>
+    <if test="articletitle != null" >
+      and articleTitle = #{articletitle}
+    </if>
+    <if test="articlecontent != null" >
+      and articleContent = #{articlecontent}
+    </if>
+    <if test="articletime != null" >
+      and articleTime = #{articletime}
+    </if>
+    <if test="userid != null" >
+      and userId = #{userid}
+    </if>
+  </select>
+  
+</mapper>

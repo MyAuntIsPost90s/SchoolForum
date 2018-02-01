@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>系院管理</title>
+	<script src="/SchoolForumRoom/Contents/js/jquery.min.js" type="text/javascript"></script>
+	<link href="/SchoolForumRoom/Contents/lib/easyui-theme/themes/insdep/easyui.css" rel="stylesheet" type="text/css">
+	<link href="/SchoolForumRoom/Contents/lib/easyui-theme/themes/insdep/insdep_theme_default.css" rel="stylesheet" type="text/css">
+	<link href="/SchoolForumRoom/Contents/lib/easyui-theme/themes/insdep/icon.css" rel="stylesheet" type="text/css">
+	<link href="/SchoolForumRoom/Contents/lib/easyui-theme/plugin/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet"
+	 type="text/css">
+	<link href="/SchoolForumRoom/Contents/lib/easyui-theme/themes/insdep/easyui_animation.css" rel="stylesheet" type="text/css">
+	<link href="/SchoolForumRoom/Contents/css/syscommon.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="/SchoolForumRoom/Contents/lib/easyui-theme/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="/SchoolForumRoom/Contents/lib/easyui-theme/themes/insdep/jquery.insdep-extend.min.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="/SchoolForumRoom/Contents/css/chart.css" />
+	<script src="/SchoolForumRoom/Contents/js/jquery.flot.js" type="text/javascript"></script>
+	<script src="/SchoolForumRoom/Contents/js/config.js" type="text/javascript"></script>
+	<script src="/SchoolForumRoom/Contents/js/easyui.util.js" type="text/javascript"></script>
+	<script src="/SchoolForumRoom/Contents/lib/lingshiframework/lingshi_base.js" type="text/javascript"></script>
+</head>
+
+<body>
+	<div data-options="fit:true" class="easyui-layout">
+		<table id="majors-table" title="系院信息" style="width:100%;height:100%" data-options='fit:"true"
+		,rownumbers:true
+		,selectOnCheck:true
+		,checkOnSelect:false
+		,singleSelect:false
+        ,fitColumns:"true"
+	   	,rownumbers:"true"
+        ,pagination:"true"'>
+			<thead>
+				<tr>
+					<th data-options="field:'ck',checkbox:true"></th>
+					<th data-options="field:'majorid',width:10,align:'center',formatter:optionFormat">操作</th>
+					<th data-options="field:'majorname',width:100,align:'center'">系院名</th>
+				</tr>
+			</thead>
+		</table>
+
+		<div id="dialog-major" class="easyui-dialog" style="width:260px;height:200px" data-options="title:'添加/修改系院',buttons:'#btns-major',modal:true,closed:true">
+			<div style="padding:10px;">
+				<form id="form-major">
+					<input type="hidden" name="type-major" value="add" />
+					<input type="hidden" name="majorid" />
+					<table>
+						<tr>
+							<td>系院名称:</td>
+							<td>
+								<input class="easyui-textbox" style="width:100%" type="text" name="majorname" data-options="required:true,validType:'length[1,30]'"
+								/>
+							</td>
+						</tr>
+					</table>
+				</form>
+			</div>
+		</div>
+		<div id="btns-major" style="text-align: right;padding:5px 10px">
+			<button type="button" onclick="saveMajor()" data-options="iconCls:'icon-ok'" class="easyui-linkbutton">
+				保存
+			</button>
+			<a onclick="$('#dialog-major').dialog('close')" data-options="iconCls:'icon-cancel'" class="easyui-linkbutton">
+				关闭
+			</a>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	$(function () {
+		loadData();
+	});
+
+	//加载表格数据
+	function loadData() {
+		var pager = EasyUIUtil.getPager('#majors-table', Config.UrlHead + "/Majors/List");
+
+		pager.pagination({
+			showPageList: true,
+			buttons: [{
+				iconCls: 'icon-add',
+				handler: function () {
+					showAddMajor();
+				}
+			}, {
+				iconCls: 'icon-remove',
+				handler: function () {
+					batchDelete();
+				}
+			}],
+			onBeforeRefresh: function () {
+				return true;
+			}
+		});
+	}
+
+	function showAddMajor() {
+		$('#form-major').form('clear');
+		$('#form-major').form('load', { 'type-major': 'add' });
+		$('#dialog-major').dialog('open');
+	}
+
+	//批量删除
+	function batchDelete() {
+		var rows = $('#majors-table').datagrid('getChecked');
+		if (rows.length < 1) {
+			return;
+		}
+		var ids = [];
+		for (var i = 0; i < rows.length; i++) {
+			ids.push(rows[i].majorid);
+		}
+
+		$.messager.confirm('系统提示', '是否确定删除?', function (r) {
+			if (r) {
+				$.ajax({
+					url: Config.UrlHead + '/Majors/BatchDelete',
+					contentType: "application/json ; charset=utf-8",
+					data: JSON.stringify(ids),
+					method: 'post',
+					dataType: 'json',
+					success: function (data) {
+						$.messager.alert('提示', data.msg);
+						$('#majors-table').datagrid('reload');
+					}
+				});
+			}
+		});
+	}
+
+	//保存系院信息
+	function saveMajor() {
+		if (!$('#form-major').form('validate'))
+			return;
+		var type = $('input[name=type-major]').val();
+		var url = Config.UrlHead + '/Majors/Add';
+		if (type != 'add') {
+			url = Config.UrlHead + '/Majors/Update';
+		}
+
+		$.post(url
+			, $('#form-major').serialize()
+			, function (data) {
+				if (data.code == 1) {
+					$('#dialog-major').dialog('close');
+				}
+				$.messager.alert('提示', data.msg);
+				$('#majors-table').datagrid('reload');
+			}, 'json')
+	}
+
+	//点击删除事件
+	function del(id) {
+		$.messager.confirm('提示', '是否确定删除', function (f) {
+			if (f) {
+				var ids = [];
+				ids.push(id);
+
+				$.ajax({
+					url: Config.UrlHead + '/Majors/BatchDelete',
+					contentType: "application/json ; charset=utf-8",
+					data: JSON.stringify(ids),
+					method: 'post',
+					dataType: 'json',
+					success: function (data) {
+						$.messager.alert('提示', data.msg);
+						$('#majors-table').datagrid('reload');
+					}
+				});
+			}
+		})
+	}
+
+	//点击编辑事件
+	function edit(id) {
+		EasyUIUtil.loadForm('#form-major', Config.UrlHead + '/Majors/Single', { id: id });
+		$('#form-major').form('load', { 'type-major': 'edit' });
+		$('#dialog-major').dialog('open');
+	}
+
+	//操作过滤
+	function optionFormat(val, row) {
+		return '<a style="margin-right:10px" onclick="del(\'' + val + '\')">移除</a><a onclick="edit(\'' + val + '\')">编辑</a>';
+	}
+</script>
+
+</html>

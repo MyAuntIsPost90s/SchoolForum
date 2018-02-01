@@ -1,0 +1,276 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=Utf-8">
+    <title>主页-后台管理</title>
+    <script src="/SchoolForumRoom/Contents/js/jquery.min.js" type="text/javascript"></script>
+
+    <link href="/SchoolForumRoom/Contents/lib/easyui-theme/themes/insdep/easyui.css" rel="stylesheet" type="text/css">
+    <link href="/SchoolForumRoom/Contents/lib/easyui-theme/themes/insdep/insdep_theme_default.css" rel="stylesheet" type="text/css">
+    <link href="/SchoolForumRoom/Contents/lib/easyui-theme/themes/insdep/icon.css" rel="stylesheet" type="text/css">
+    <link href="/SchoolForumRoom/Contents/lib/easyui-theme/themes/insdep/easyui_animation.css" rel="stylesheet" type="text/css">
+    <link href="/SchoolForumRoom/Contents/lib/easyui-theme/plugin/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css">
+    <link href="/SchoolForumRoom/Contents/css/syscommon.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="/SchoolForumRoom/Contents/lib/easyui-theme/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/SchoolForumRoom/Contents/lib/easyui-theme/themes/insdep/jquery.insdep-extend.min.js"></script>
+
+    <script src="/SchoolForumRoom/Contents/js/md5.js" type="text/javascript"></script>
+    <script src="/SchoolForumRoom/Contents/js/config.js" type="text/javascript"></script>
+    <script src="/SchoolForumRoom/Contents/js/easyui.util.js" type="text/javascript"></script>
+    <script src="/SchoolForumRoom/Contents/lib/lingshiframework/lingshi_base.js" type="text/javascript"></script>
+    <style>
+        .frame-control {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="master-layout">
+        <div data-options="region:'north',border:false,bodyCls:'theme-header-layout'">
+            <div class="logo">SchoolForum</div>
+            <div class="right">
+                <a id='load-index'>首页</a>
+                <a id='update-pwd'>修改密码</a>
+                <a id="login-out">退出</a>
+            </div>
+        </div>
+        <div data-options="region:'west',border:false,bodyCls:'theme-left-layout'" style="width:200px;">
+            <div class="easyui-layout" data-options="border:false,fit:true">
+                <div data-options="region:'north',border:false" style="height:100px;">
+                    <div class="theme-left-user-panel">
+                        <form id="form-userheadimg" action="/SchoolForumRoom/Users/UserHeadImgUpload" enctype="multipart/form-data">
+                            <dl>
+                                <dt>
+                                    <img id="img-userhead" src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=8232468,2916696848&fm=27&gp=0.jpg"
+                                        width="43" height="43" />
+                                    <input id="userheadurl" name="userheadurl" type="file" style="display:none;" />
+                                </dt>
+                                <dd>
+                                    <b class="badge-prompt">用户名</b>
+                                    <span>admin</span>
+                                    <p>权限等级：
+                                        <i class="text-success">管理员</i>
+                                    </p>
+                                </dd>
+                            </dl>
+                        </form>
+                    </div>
+                </div>
+
+                <div data-options="region:'center',border:false">
+                    <div class="easyui-accordion leftmenu" data-options="border:false,fit:true">
+                        <div title="<span id='user-item'>基本设置</span>">
+                            <ul class="easyui-datalist" data-options="border:false,fit:true">
+                                <li>
+                                    <span data-href="Majors/list.html">院系管理</span>
+                                </li>
+                                <li>
+                                    <span data-href="Classes/list.html">专业班级</span>
+                                </li>
+                                <li>
+                                    <span id="item-red" data-href="/Pages/UserIntroduces/List.html">账号管理</span>
+                                </li>
+                                <li>
+                                    <span data-href="Users/mine.html">个人中心</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div title="社区管理">
+                            <ul class="easyui-datalist" data-options="border:false,fit:true">
+                                <li>
+                                    <span data-href="/Pages/Adverts/List.html">通知公告</span>
+                                </li>
+                                <li>
+                                    <span data-href="/Pages/Banners/IndexList.html">话题管理</span>
+                                </li>
+                                <li>
+                                    <span data-href="/Pages/Banners/ExpressionShopList.html">建议管理</span>
+                                </li>
+                                <li>
+                                    <span data-href="/Pages/Banners/ExpressionShopList.html">投票管理</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div data-options="region:'center',border:true">
+            <div id="panel-tabs" class="easyui-tabs" data-options="border:true,fit:true">
+
+            </div>
+        </div>
+        <div data-options="region:'south',border:false" class="theme-foot-layout">
+            @build by lingshi for ke zhi jiao
+        </div>
+    </div>
+    <!--修改密码窗口-->
+    <div id="UpdatePwdDialog" class="easyui-window" style="width:240px;height:160px" data-options="title:'添加/修改',maximizable:false,minimizable:false,collapsible:false,modal:true,closed:true">
+        <div style="padding:10px">
+            <form id="ff-pwd" action="/Users/UpdatePwd" method="post">
+                <div>
+                    <table data-options='cellpadding=3'>
+                        <tr>
+                            <td>新密码：</td>
+                            <td>
+                                <input name="pwd" class="easyui-textbox" type="password" data-options="required:true,validType:'length[1,50]'" />
+                                <input type="text" name="01" style="display:none" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </form>
+            <div id="bb" style="text-align: right;padding:5px 10px">
+                <button type="button" onclick="UpdatePwd()" data-options="iconCls:'icon-ok'" class="easyui-linkbutton">
+                    保存
+                </button>
+                <a onclick="$('#UpdatePwdDialog').dialog('close')" data-options="iconCls:'icon-cancel'" class="easyui-linkbutton">
+                    关闭
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    $(function () {
+        getMe();	//加载我的信息
+        /*布局部分*/
+        $('#master-layout').layout({
+            fit: true/*布局框架全屏*/
+        });
+
+        //加载首页
+        var html = '<iframe class="frame-control" src="wellcome.html" style="height:100%; width:100%"></iframe>'
+        $('#panel-tabs').tabs('add', {
+            title: '欢迎',
+            content: html,
+            closable: false
+        });
+
+        $.messager.show({
+            title: '我的消息',
+            msg: '欢迎，权限为管理员',
+            showType: 'show',
+        });
+
+        $('.leftmenu .datagrid-cell').click(function () {
+            var src = $(this).find('span').attr('data-href');
+            var name = $(this).find('span').text();
+
+            var obj = getTabs(src);
+            if (obj != null) {
+                obj.click();
+                return;
+            }
+
+            var html = '<iframe class="frame-control" src="' + src + '" style="height:100%; width:100%"></iframe>'
+            $('#panel-tabs').tabs('add', {
+                title: name,
+                content: html,
+                closable: true
+            });
+        });
+    })
+
+    //修改密码
+    function UpdatePwd() {
+        if (!$('#ff-pwd').form('validate')) {
+            return;
+        }
+        $.post('/SchoolForumRoom/Users/PwdChange'
+            , { password: hex_md5($('input[name=pwd]').val()).toUpperCase() }
+            , function (data) {
+                $.messager.show({
+                    title: '提示',
+                    msg: data.msg,
+                    showType: 'show',
+                });
+                $('#UpdatePwdDialog').dialog('close')
+                $('#ff-pwd').form('clear');
+            }, 'json')
+    }
+
+    //跟换头像
+    $('#img-userhead').click(function () {
+        $('#userheadurl').click();
+        $('#userheadurl').change(function () {
+            var formData = new FormData($("#form-userheadimg")[0]);
+            $.ajax({
+                url: "/SchoolForumRoom/Users/UserHeadImgUpload",
+                type: "post",
+                data: formData,
+                dataType: "json",
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    $.messager.show({
+                        title: '提示',
+                        msg: data.msg,
+                        showType: 'show',
+                    });
+                    if (data.code == 1) {
+                        $("#img-userhead").attr("src", Config.UrlHead + data.data.headimgurl);
+                    }
+                }
+            })
+        });
+    })
+    $('#load-index').click(function () {
+        getTabs("wellcome.html").click();
+    });
+    $('#update-pwd').click(function () {
+        $('#UpdatePwdDialog').dialog('open');
+    });
+    $('#login-out').click(function () {
+        $.messager.confirm('系统提示', '您确定要退出本次登录吗?', function (r) {
+            if (r) {
+                location.href = Config.UrlHead + '/LoginOut';
+            }
+        });
+    });
+
+    //获取tab
+    function getTabs(src) {
+        var panel = $('iframe[src="' + src + '"]');
+
+        if (panel.length > 0) {
+            var index = -1;
+            $('iframe').each(function (i, e) {
+                console.log($(this).attr('src'));
+                if ($(this).attr('src') == src) {
+                    index = i;
+                    return;
+                }
+            });
+            if (index > -1)
+                return $('.tabs li').get(index);
+        }
+        return null
+    }
+
+    //加载个人信息
+    function getMe() {
+        $.post(Config.UrlHead + "/Users/NowUser",
+            { appKey: Config.AppKey },
+            function (data) {
+                if (data.code != 1) {
+                    $.messager.show({
+                        title: '错误',
+                        msg: data.msg,
+                        showType: 'show',
+                    });
+                    return;
+                }
+                if (data.code == 1) {
+                    $("#img-userhead").attr("src", Config.UrlHead + data.data.headimgurl);
+                }
+            }, 'json');
+    }
+</script>
+
+</html>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="schoolforum.base.dao.VoteusersMapper" >
+  <select id="getList" resultType="schoolforum.base.models.Voteusers" parameterType="schoolforum.base.models.Voteusers" >
+    select * from voteusers
+    where 1=1
+    <if test="voteid != null" >
+      and voteId = #{voteid}
+    </if>
+    <if test="userid != null" >
+      and userId = #{userid}
+    </if>
+    <if test="votefield != null" >
+      and voteField = #{votefield}
+    </if>
+  </select>
+  
+  <select id="getSingle" resultType="schoolforum.base.models.Voteusers" >
+    select * from voteusers
+    where voteId = #{id}
+    limit 0,1
+  </select>
+  
+  <insert id="insert" parameterType="schoolforum.base.models.Voteusers" >
+    insert into voteusers
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="voteid != null" >
+        voteId,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="votefield != null" >
+        voteField
+      </if>
+    </trim>
+    <trim prefix="values(" suffix=")" suffixOverrides="," >
+      <if test="voteid != null" >
+        #{voteid},
+      </if>
+      <if test="userid != null" >
+        #{userid},
+      </if>
+      <if test="votefield != null" >
+        #{votefield}
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="update" parameterType="schoolforum.base.models.Voteusers" >
+    update voteusers
+    <set >
+      <if test="userid != null" >
+        userId = #{userid},
+      </if>
+      <if test="votefield != null" >
+        voteField = #{votefield}
+      </if>
+    </set>
+    where
+    voteId = #{voteid}
+  </update>
+  
+  <delete id="batchDelete" >
+    delete from voteusers
+    where voteId in(
+    <foreach item="item" collection="list" separator="," >
+      #{item}
+    </foreach>
+    )
+  </delete>
+  
+  <select id="getListWithPage" resultType="schoolforum.base.models.Voteusers" parameterType="schoolforum.base.models.Voteusers" >
+    select * from voteusers
+    where 1=1
+    <if test="voteid != null" >
+      and voteId = #{voteid}
+    </if>
+    <if test="userid != null" >
+      and userId = #{userid}
+    </if>
+    <if test="votefield != null" >
+      and voteField = #{votefield}
+    </if>
+  </select>
+  
+  <select id="count" resultType="java.lang.Long" parameterType="schoolforum.base.models.Voteusers" >
+    select count(*) from voteusers
+    where 1=1
+    <if test="voteid != null" >
+      and voteId = #{voteid}
+    </if>
+    <if test="userid != null" >
+      and userId = #{userid}
+    </if>
+    <if test="votefield != null" >
+      and voteField = #{votefield}
+    </if>
+  </select>
+  
+</mapper>
