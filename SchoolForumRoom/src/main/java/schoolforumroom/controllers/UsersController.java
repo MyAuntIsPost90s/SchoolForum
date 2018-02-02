@@ -1,7 +1,6 @@
 package schoolforumroom.controllers;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -10,11 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import lingshi.convert.Convert;
 import lingshi.valid.StringValid;
 import lingshi.web.model.RequestFile;
 import lingshi.web.model.RequestHolder;
@@ -48,6 +47,24 @@ public class UsersController {
 			requestHolder.err("获取当前登陆用户失败", e);
 		}
 	}
+	
+	/**
+	 * 获取用户
+	 * 
+	 * @param request
+	 * @param response
+	 */
+	@ResponseBody
+	@RequestMapping("Single")
+	public void single(HttpServletRequest request, HttpServletResponse response,Long id) {
+		RequestHolder requestHolder = RequestHolder.get(request, response);
+		try {
+			Users users = usersService.getUserById(id);
+			requestHolder.success(users);
+		} catch (Exception e) {
+			requestHolder.err("获取当前登陆用户失败", e);
+		}
+	}
 
 	/**
 	 * 用户集合
@@ -61,6 +78,25 @@ public class UsersController {
 			requestHolder.success(list);
 		} catch (Exception e) {
 			requestHolder.err("获取用户集合失败", e);
+		}
+	}
+
+	/**
+	 * 添加用户
+	 * 
+	 * @param request
+	 * @param response
+	 * @param users
+	 */
+	@ResponseBody
+	@RequestMapping("Add")
+	public void add(HttpServletRequest request, HttpServletResponse response, Users users) {
+		RequestHolder requestHolder = RequestHolder.get(request, response);
+		try {
+			usersService.add(users);
+			requestHolder.success("操作成功");
+		} catch (Exception e) {
+			requestHolder.err("操作失败", e);
 		}
 	}
 
@@ -115,34 +151,35 @@ public class UsersController {
 			requestHolder.err("获修改用户失败", e);
 		}
 	}
-	
+
 	/**
 	 * 用户头像上传
+	 * 
 	 * @param request
 	 * @param response
 	 */
 	@ResponseBody
 	@RequestMapping("UserHeadImgUpload")
-	public void userHeadImgUpload(HttpServletRequest request, HttpServletResponse response){
+	public void userHeadImgUpload(HttpServletRequest request, HttpServletResponse response) {
 		RequestHolder requestHolder = RequestHolder.get(request, response);
-		try{
-			Users user =(Users)requestHolder.getClientUser();
-			RequestFile requestFile=requestHolder.getRequestFile();
+		try {
+			Users user = (Users) requestHolder.getClientUser();
+			RequestFile requestFile = requestHolder.getRequestFile();
 			MultipartFile file = requestFile.getFile();
-			String virpath=Constant.USERHEAD_URL+user.getUserid()+".png";
-			String path=requestHolder.getRealPathPath(virpath);
-			user.setHeadimgurl(virpath+"?version="+UUID.randomUUID());
-			
-			File tempfile=new File(path);
-			if(!tempfile.getParentFile().exists()){
+			String virpath = Constant.USERHEAD_URL + user.getUserid() + ".png";
+			String path = requestHolder.getRealPathPath(virpath);
+			user.setHeadimgurl(virpath + "?version=" + UUID.randomUUID());
+
+			File tempfile = new File(path);
+			if (!tempfile.getParentFile().exists()) {
 				tempfile.getParentFile().mkdirs();
 			}
-			Thumbnails.of(file.getInputStream()).size(300, 300).outputQuality(0.7).outputFormat("png").toFile(path);//保存压缩文件
+			Thumbnails.of(file.getInputStream()).size(300, 300).outputQuality(0.7).outputFormat("png").toFile(path);// 保存压缩文件
 			usersService.update(user);
-			
-			requestHolder.success("更换头像成功",user);
-		}catch (Exception e) {
-			requestHolder.err("更换头像失败",e);
+
+			requestHolder.success("更换头像成功", user);
+		} catch (Exception e) {
+			requestHolder.err("更换头像失败", e);
 		}
 	}
 
@@ -183,11 +220,10 @@ public class UsersController {
 	 */
 	@ResponseBody
 	@RequestMapping("BatchDelete")
-	public void batchDelete(HttpServletRequest request, HttpServletResponse response, String ids) {
+	public void batchDelete(HttpServletRequest request, HttpServletResponse response, @RequestBody List<Long> ids) {
 		RequestHolder requestHolder = RequestHolder.get(request, response);
 		try {
-			List<Long> id = Convert.toLongs(Arrays.asList(ids.split(",")));
-			usersService.batchDelete(id);
+			usersService.batchDelete(ids);
 			requestHolder.success("删除成功");
 		} catch (Exception e) {
 			requestHolder.err("删除失败", e);

@@ -15,6 +15,7 @@ import lingshi.web.model.RequestHolder;
 import schoolforum.base.models.Classes;
 import schoolforumroom.common.RandomNum;
 import schoolforumroom.models.EUIPageList;
+import schoolforumroom.models.EUITree;
 import schoolforumroom.services.ClassesService;
 
 @Controller
@@ -32,7 +33,7 @@ public class ClassesController {
 	 */
 	@ResponseBody
 	@RequestMapping("Single")
-	public void nowUser(HttpServletRequest request, HttpServletResponse response, String id) {
+	public void single(HttpServletRequest request, HttpServletResponse response, String id) {
 		RequestHolder requestHolder = RequestHolder.get(request, response);
 		try {
 			requestHolder.success(classesService.getSingle(id));
@@ -46,10 +47,25 @@ public class ClassesController {
 	 */
 	@ResponseBody
 	@RequestMapping("List")
-	public void userList(HttpServletRequest request, HttpServletResponse response, int page, int rows, Classes classes) {
+	public void list(HttpServletRequest request, HttpServletResponse response, int page, int rows, Classes classes) {
 		RequestHolder requestHolder = RequestHolder.get(request, response);
 		try {
 			EUIPageList<Classes> list = classesService.getListWithPage(classes, page, rows);
+			requestHolder.success(list);
+		} catch (Exception e) {
+			requestHolder.err("获取集合失败", e);
+		}
+	}
+	
+	/**
+	 * 班级集合树
+	 */
+	@ResponseBody
+	@RequestMapping("Tree")
+	public void tree(HttpServletRequest request, HttpServletResponse response) {
+		RequestHolder requestHolder = RequestHolder.get(request, response);
+		try {
+			List<EUITree> list = classesService.getTrees();
 			requestHolder.success(list);
 		} catch (Exception e) {
 			requestHolder.err("获取集合失败", e);
@@ -67,7 +83,7 @@ public class ClassesController {
 	 */
 	@ResponseBody
 	@RequestMapping("Update")
-	public void userChange(HttpServletRequest request, HttpServletResponse response, Classes classes) {
+	public void update(HttpServletRequest request, HttpServletResponse response, Classes classes) {
 		RequestHolder requestHolder = RequestHolder.get(request, response);
 		try {
 			classesService.update(classes);

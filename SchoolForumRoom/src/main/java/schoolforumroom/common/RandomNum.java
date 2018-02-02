@@ -10,6 +10,10 @@ public class RandomNum {
 		return "M" + getRandom();
 	}
 
+	public static String getNID() {
+		return "N" + getRandom();
+	}
+
 	public static String getEBID() {
 		return "EB" + getRandom();
 	}

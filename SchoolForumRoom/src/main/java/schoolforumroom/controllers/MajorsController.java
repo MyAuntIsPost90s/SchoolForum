@@ -34,7 +34,7 @@ public class MajorsController {
 	 */
 	@ResponseBody
 	@RequestMapping("Single")
-	public void nowUser(HttpServletRequest request, HttpServletResponse response, String id) {
+	public void single(HttpServletRequest request, HttpServletResponse response, String id) {
 		RequestHolder requestHolder = RequestHolder.get(request, response);
 		try {
 			requestHolder.success(majorsService.getSingle(id));
@@ -48,7 +48,7 @@ public class MajorsController {
 	 */
 	@ResponseBody
 	@RequestMapping("List")
-	public void userList(HttpServletRequest request, HttpServletResponse response, int page, int rows, Majors majors) {
+	public void list(HttpServletRequest request, HttpServletResponse response, int page, int rows, Majors majors) {
 		RequestHolder requestHolder = RequestHolder.get(request, response);
 		try {
 			EUIPageList<Majors> list = majorsService.getListWithPage(majors, page, rows);
@@ -99,7 +99,7 @@ public class MajorsController {
 	 */
 	@ResponseBody
 	@RequestMapping("Update")
-	public void userChange(HttpServletRequest request, HttpServletResponse response, Majors majors) {
+	public void update(HttpServletRequest request, HttpServletResponse response, Majors majors) {
 		RequestHolder requestHolder = RequestHolder.get(request, response);
 		try {
 			majorsService.update(majors);

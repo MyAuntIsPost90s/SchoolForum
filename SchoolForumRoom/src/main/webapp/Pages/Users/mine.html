@@ -163,31 +163,35 @@
 				$.messager.alert('提示', '请至少选中一个选项', 'info');
 				return;
 			}
-			var ids = '';
+			var ids = [];
 			for (var i = 0; i < rows.length; i++) {
 				if (rows[i].usertype == -1) {
 					$.messager.alert('提示', '默认用户不允许删除', 'info');
 					return;
 				}
-				ids += rows[i].userid + ","
+				ids.push(rows[i].userid);
 			}
-			ids = ids.substring(0, ids.length - 1);
 
-			$.messager.confirm('系统提示', '您确定要删除编号为' + ids + '的数据吗?', function (r) {
+			$.messager.confirm('系统提示', '您确定要删除吗?', function (r) {
 				if (r) {
-					$.post(Config.UrlHead+'/Users/BatchDelete'
-						, { ids: ids }
-						, function (data) {
+					$.ajax({
+						url: Config.UrlHead+'/Users/BatchDelete',
+						contentType: "application/json ; charset=utf-8",
+						data: JSON.stringify(ids),
+						method: 'post',
+						dataType: 'json',
+						success: function (data) {
 							$.messager.alert('提示', data.msg, 'info');
 							$('#tt').datagrid('reload');
-						}, 'json');
+						}
+					});
 				}
 			});
 		}
 
 		//加载表格数据
 		function loadData() {
-			var pager = EasyUIUtil.getPager('#tt', Config.UrlHead + "/Users/UserList");
+			var pager = EasyUIUtil.getPager('#tt', Config.UrlHead + "/Users/UserList",{usertype:1});
 
 			pager.pagination({
 				showPageList: true,
