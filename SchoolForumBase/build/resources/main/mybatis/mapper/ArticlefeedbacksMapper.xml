@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="schoolforum.base.dao.ArticlefeedbacksMapper" >
+  <select id="getList" resultType="schoolforum.base.models.Articlefeedbacks" parameterType="schoolforum.base.models.Articlefeedbacks" >
+    select * from articlefeedbacks
+    where 1=1
+    <if test="articlefeedbackid != null" >
+      and articleFeedbackId = #{articlefeedbackid}
+    </if>
+    <if test="articleid != null" >
+      and articleId = #{articleid}
+    </if>
+    <if test="articlefeedbackcontent != null" >
+      and articleFeedbackContent = #{articlefeedbackcontent}
+    </if>
+    <if test="articlefeedbacktime != null" >
+      and articleFeedbackTime = #{articlefeedbacktime}
+    </if>
+    <if test="fromuserid != null" >
+      and fromUserId = #{fromuserid}
+    </if>
+    <if test="touserid != null" >
+      and toUserId = #{touserid}
+    </if>
+    <if test="parentid != null" >
+      and parentId = #{parentid}
+    </if>
+  </select>
+  
+  <select id="getSingle" resultType="schoolforum.base.models.Articlefeedbacks" >
+    select * from articlefeedbacks
+    where articleFeedbackId = #{id}
+    limit 0,1
+  </select>
+  
+  <insert id="insert" parameterType="schoolforum.base.models.Articlefeedbacks" >
+    insert into articlefeedbacks
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="articlefeedbackid != null" >
+        articleFeedbackId,
+      </if>
+      <if test="articleid != null" >
+        articleId,
+      </if>
+      <if test="articlefeedbackcontent != null" >
+        articleFeedbackContent,
+      </if>
+      <if test="articlefeedbacktime != null" >
+        articleFeedbackTime,
+      </if>
+      <if test="fromuserid != null" >
+        fromUserId,
+      </if>
+      <if test="touserid != null" >
+        toUserId,
+      </if>
+      <if test="parentid != null" >
+        parentId
+      </if>
+    </trim>
+    <trim prefix="values(" suffix=")" suffixOverrides="," >
+      <if test="articlefeedbackid != null" >
+        #{articlefeedbackid},
+      </if>
+      <if test="articleid != null" >
+        #{articleid},
+      </if>
+      <if test="articlefeedbackcontent != null" >
+        #{articlefeedbackcontent},
+      </if>
+      <if test="articlefeedbacktime != null" >
+        #{articlefeedbacktime},
+      </if>
+      <if test="fromuserid != null" >
+        #{fromuserid},
+      </if>
+      <if test="touserid != null" >
+        #{touserid},
+      </if>
+      <if test="parentid != null" >
+        #{parentid}
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="update" parameterType="schoolforum.base.models.Articlefeedbacks" >
+    update articlefeedbacks
+    <set >
+      <if test="articleid != null" >
+        articleId = #{articleid},
+      </if>
+      <if test="articlefeedbackcontent != null" >
+        articleFeedbackContent = #{articlefeedbackcontent},
+      </if>
+      <if test="articlefeedbacktime != null" >
+        articleFeedbackTime = #{articlefeedbacktime},
+      </if>
+      <if test="fromuserid != null" >
+        fromUserId = #{fromuserid},
+      </if>
+      <if test="touserid != null" >
+        toUserId = #{touserid},
+      </if>
+      <if test="parentid != null" >
+        parentId = #{parentid}
+      </if>
+    </set>
+    where
+    articleFeedbackId = #{articlefeedbackid}
+  </update>
+  
+  <delete id="batchDelete" >
+    delete from articlefeedbacks
+    where articleFeedbackId in(
+    <foreach item="item" collection="list" separator="," >
+      #{item}
+    </foreach>
+    )
+  </delete>
+  
+  <select id="getListWithPage" resultType="schoolforum.base.models.Articlefeedbacks" parameterType="schoolforum.base.models.Articlefeedbacks" >
+    select * from articlefeedbacks
+    where 1=1
+    <if test="articlefeedbackid != null" >
+      and articleFeedbackId = #{articlefeedbackid}
+    </if>
+    <if test="articleid != null" >
+      and articleId = #{articleid}
+    </if>
+    <if test="articlefeedbackcontent != null" >
+      and articleFeedbackContent = #{articlefeedbackcontent}
+    </if>
+    <if test="articlefeedbacktime != null" >
+      and articleFeedbackTime = #{articlefeedbacktime}
+    </if>
+    <if test="fromuserid != null" >
+      and fromUserId = #{fromuserid}
+    </if>
+    <if test="touserid != null" >
+      and toUserId = #{touserid}
+    </if>
+    <if test="parentid != null" >
+      and parentId = #{parentid}
+    </if>
+  </select>
+  
+  <select id="count" resultType="java.lang.Long" parameterType="schoolforum.base.models.Articlefeedbacks" >
+    select count(*) from articlefeedbacks
+    where 1=1
+    <if test="articlefeedbackid != null" >
+      and articleFeedbackId = #{articlefeedbackid}
+    </if>
+    <if test="articleid != null" >
+      and articleId = #{articleid}
+    </if>
+    <if test="articlefeedbackcontent != null" >
+      and articleFeedbackContent = #{articlefeedbackcontent}
+    </if>
+    <if test="articlefeedbacktime != null" >
+      and articleFeedbackTime = #{articlefeedbacktime}
+    </if>
+    <if test="fromuserid != null" >
+      and fromUserId = #{fromuserid}
+    </if>
+    <if test="touserid != null" >
+      and toUserId = #{touserid}
+    </if>
+    <if test="parentid != null" >
+      and parentId = #{parentid}
+    </if>
+  </select>
+  
+</mapper>

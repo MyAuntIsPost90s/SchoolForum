@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="schoolforum.base.dao.VotesMapper" >
+  <select id="getList" resultType="schoolforum.base.models.Votes" parameterType="schoolforum.base.models.Votes" >
+    select * from votes
+    where 1=1
+    <if test="voteid != null" >
+      and voteId = #{voteid}
+    </if>
+    <if test="votetitle != null" >
+      and voteTitle = #{votetitle}
+    </if>
+    <if test="votecontent != null" >
+      and voteContent = #{votecontent}
+    </if>
+    <if test="votefield != null" >
+      and voteField = #{votefield}
+    </if>
+    <if test="votevalue != null" >
+      and voteValue = #{votevalue}
+    </if>
+    <if test="votebegintime != null" >
+      and voteBeginTime = #{votebegintime}
+    </if>
+    <if test="voteendtime != null" >
+      and voteEndTime = #{voteendtime}
+    </if>
+    <if test="votecreatetime != null" >
+      and voteCreateTime = #{votecreatetime}
+    </if>
+    <if test="userid != null" >
+      and userId = #{userid}
+    </if>
+  </select>
+  
+  <select id="getSingle" resultType="schoolforum.base.models.Votes" >
+    select * from votes
+    where voteId = #{id}
+    limit 0,1
+  </select>
+  
+  <insert id="insert" parameterType="schoolforum.base.models.Votes" >
+    insert into votes
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="voteid != null" >
+        voteId,
+      </if>
+      <if test="votetitle != null" >
+        voteTitle,
+      </if>
+      <if test="votecontent != null" >
+        voteContent,
+      </if>
+      <if test="votefield != null" >
+        voteField,
+      </if>
+      <if test="votevalue != null" >
+        voteValue,
+      </if>
+      <if test="votebegintime != null" >
+        voteBeginTime,
+      </if>
+      <if test="voteendtime != null" >
+        voteEndTime,
+      </if>
+      <if test="votecreatetime != null" >
+        voteCreateTime,
+      </if>
+      <if test="userid != null" >
+        userId
+      </if>
+    </trim>
+    <trim prefix="values(" suffix=")" suffixOverrides="," >
+      <if test="voteid != null" >
+        #{voteid},
+      </if>
+      <if test="votetitle != null" >
+        #{votetitle},
+      </if>
+      <if test="votecontent != null" >
+        #{votecontent},
+      </if>
+      <if test="votefield != null" >
+        #{votefield},
+      </if>
+      <if test="votevalue != null" >
+        #{votevalue},
+      </if>
+      <if test="votebegintime != null" >
+        #{votebegintime},
+      </if>
+      <if test="voteendtime != null" >
+        #{voteendtime},
+      </if>
+      <if test="votecreatetime != null" >
+        #{votecreatetime},
+      </if>
+      <if test="userid != null" >
+        #{userid}
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="update" parameterType="schoolforum.base.models.Votes" >
+    update votes
+    <set >
+      <if test="votetitle != null" >
+        voteTitle = #{votetitle},
+      </if>
+      <if test="votecontent != null" >
+        voteContent = #{votecontent},
+      </if>
+      <if test="votefield != null" >
+        voteField = #{votefield},
+      </if>
+      <if test="votevalue != null" >
+        voteValue = #{votevalue},
+      </if>
+      <if test="votebegintime != null" >
+        voteBeginTime = #{votebegintime},
+      </if>
+      <if test="voteendtime != null" >
+        voteEndTime = #{voteendtime},
+      </if>
+      <if test="votecreatetime != null" >
+        voteCreateTime = #{votecreatetime},
+      </if>
+      <if test="userid != null" >
+        userId = #{userid}
+      </if>
+    </set>
+    where
+    voteId = #{voteid}
+  </update>
+  
+  <delete id="batchDelete" >
+    delete from votes
+    where voteId in(
+    <foreach item="item" collection="list" separator="," >
+      #{item}
+    </foreach>
+    )
+  </delete>
+  
+  <select id="getListWithPage" resultType="schoolforum.base.models.Votes" parameterType="schoolforum.base.models.Votes" >
+    select * from votes
+    where 1=1
+    <if test="voteid != null" >
+      and voteId = #{voteid}
+    </if>
+    <if test="votetitle != null" >
+      and voteTitle = #{votetitle}
+    </if>
+    <if test="votecontent != null" >
+      and voteContent = #{votecontent}
+    </if>
+    <if test="votefield != null" >
+      and voteField = #{votefield}
+    </if>
+    <if test="votevalue != null" >
+      and voteValue = #{votevalue}
+    </if>
+    <if test="votebegintime != null" >
+      and voteBeginTime = #{votebegintime}
+    </if>
+    <if test="voteendtime != null" >
+      and voteEndTime = #{voteendtime}
+    </if>
+    <if test="votecreatetime != null" >
+      and voteCreateTime = #{votecreatetime}
+    </if>
+    <if test="userid != null" >
+      and userId = #{userid}
+    </if>
+  </select>
+  
+  <select id="count" resultType="java.lang.Long" parameterType="schoolforum.base.models.Votes" >
+    select count(*) from votes
+    where 1=1
+    <if test="voteid != null" >
+      and voteId = #{voteid}
+    </if>
+    <if test="votetitle != null" >
+      and voteTitle = #{votetitle}
+    </if>
+    <if test="votecontent != null" >
+      and voteContent = #{votecontent}
+    </if>
+    <if test="votefield != null" >
+      and voteField = #{votefield}
+    </if>
+    <if test="votevalue != null" >
+      and voteValue = #{votevalue}
+    </if>
+    <if test="votebegintime != null" >
+      and voteBeginTime = #{votebegintime}
+    </if>
+    <if test="voteendtime != null" >
+      and voteEndTime = #{voteendtime}
+    </if>
+    <if test="votecreatetime != null" >
+      and voteCreateTime = #{votecreatetime}
+    </if>
+    <if test="userid != null" >
+      and userId = #{userid}
+    </if>
+  </select>
+  
+</mapper>

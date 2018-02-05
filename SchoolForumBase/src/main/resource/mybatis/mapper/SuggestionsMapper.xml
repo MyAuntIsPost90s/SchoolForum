@@ -1,8 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="schoolforum.base.dao.SuggestionsMapper" >
-  <select id="getList" resultType="schoolforum.base.models.Suggestions" parameterType="schoolforum.base.models.Suggestions" >
-    select * from suggestions
+  <resultMap type="schoolforum.base.models.Suggestions" id="SuggestionMap" autoMapping="true">
+  	<association property="user" javaType="schoolforum.base.models.Users" autoMapping="true"></association>
+  	<association property="fbuser" javaType="schoolforum.base.models.Users">
+  		<id property="userid" column="suggestionfbuid" />
+  		<result property="realname" column="fu_realname" />
+  		<result property="sex" column="fu_sex" />
+  		<result property="birthday" column="fu_birthday" />
+  		<result property="phone" column="fu_phone" />
+  		<result property="headimgurl" column="fu_headimgurl" />
+  		<result property="usertype" column="fu_usertype" />
+  		<result property="userstatus" column="fu_userstatus" />
+  	</association>
+  </resultMap>
+  <select id="getList" resultMap="SuggestionMap" parameterType="schoolforum.base.models.Suggestions" >
+    select suggestions.*
+    ,u.realname,u.sex,u.birthday,u.phone,u.headimgurl,u.usertype,u.userstatus
+    ,fu.realname fu_realname,fu.sex fu_sex,fu.birthday fu_birthday,fu.phone fu_phone,fu.headimgurl fu_headimgurl,fu.usertype fu_usertype,fu.userstatus fu_userstatus
+    from suggestions
+    left join users u on suggestions.userid=u.userid
+    left join users fu on suggestions.suggestionfbuid=fu.userid
     where 1=1
     <if test="suggestionid != null" >
       and suggestionId = #{suggestionid}
@@ -34,10 +52,18 @@
     <if test="suggestiontype != null" >
       and suggestionType = #{suggestiontype}
     </if>
+    <if test="suggestionstatus !=null">
+	  and suggestionstatus = #{suggestionstatus}
+    </if>
   </select>
   
-  <select id="getSingle" resultType="schoolforum.base.models.Suggestions" >
-    select * from suggestions
+  <select id="getSingle" resultMap="SuggestionMap" >
+    select suggestions.*
+    ,u.realname,u.sex,u.birthday,u.phone,u.headimgurl,u.usertype,u.userstatus
+    ,fu.realname fu_realname,fu.sex fu_sex,fu.birthday fu_birthday,fu.phone fu_phone,fu.headimgurl fu_headimgurl,fu.usertype fu_usertype,fu.userstatus fu_userstatus
+    from suggestions
+    left join users u on suggestions.userid=u.userid
+    left join users fu on suggestions.suggestionfbuid=fu.userid
     where suggestionId = #{id}
     limit 0,1
   </select>
@@ -75,6 +101,9 @@
       <if test="suggestiontype != null" >
         suggestionType
       </if>
+	  <if test="suggestionstatus !=null">
+	    suggestionstatus
+      </if>
     </trim>
     <trim prefix="values(" suffix=")" suffixOverrides="," >
       <if test="suggestionid != null" >
@@ -106,6 +135,9 @@
       </if>
       <if test="suggestiontype != null" >
         #{suggestiontype}
+      </if>
+      <if test="suggestionstatus !=null">
+	    #{suggestionstatus}
       </if>
     </trim>
   </insert>
@@ -140,6 +172,9 @@
       <if test="suggestiontype != null" >
         suggestionType = #{suggestiontype}
       </if>
+      <if test="suggestionstatus !=null">
+	    suggestionstatus
+      </if>
     </set>
     where
     suggestionId = #{suggestionid}
@@ -154,8 +189,13 @@
     )
   </delete>
   
-  <select id="getListWithPage" resultType="schoolforum.base.models.Suggestions" parameterType="schoolforum.base.models.Suggestions" >
-    select * from suggestions
+  <select id="getListWithPage" resultMap="SuggestionMap" parameterType="schoolforum.base.models.Suggestions" >
+    select suggestions.*
+    ,u.realname,u.sex,u.birthday,u.phone,u.headimgurl,u.usertype,u.userstatus
+    ,fu.realname fu_realname,fu.sex fu_sex,fu.birthday fu_birthday,fu.phone fu_phone,fu.headimgurl fu_headimgurl,fu.usertype fu_usertype,fu.userstatus fu_userstatus
+    from suggestions
+    left join users u on suggestions.userid=u.userid
+    left join users fu on suggestions.suggestionfbuid=fu.userid
     where 1=1
     <if test="suggestionid != null" >
       and suggestionId = #{suggestionid}
@@ -186,6 +226,9 @@
     </if>
     <if test="suggestiontype != null" >
       and suggestionType = #{suggestiontype}
+    </if>
+    <if test="suggestionstatus !=null">
+	  and suggestionstatus = #{suggestionstatus}
     </if>
   </select>
   
@@ -221,6 +264,9 @@
     </if>
     <if test="suggestiontype != null" >
       and suggestionType = #{suggestiontype}
+    </if>
+    <if test="suggestionstatus !=null">
+	  and suggestionstatus = #{suggestionstatus}
     </if>
   </select>
   

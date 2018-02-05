@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="schoolforum.base.dao.ClassesMapper" >
+  <select id="getList" resultType="schoolforum.base.models.Classes" parameterType="schoolforum.base.models.Classes" >
+    select * from classes
+    where 1=1
+    <if test="classid != null" >
+      and classId = #{classid}
+    </if>
+    <if test="classname != null" >
+      and className = #{classname}
+    </if>
+    <if test="majorid != null" >
+      and majorId = #{majorid}
+    </if>
+  </select>
+  
+  <select id="getSingle" resultType="schoolforum.base.models.Classes" >
+    select * from classes
+    where classId = #{id}
+    limit 0,1
+  </select>
+  
+  <insert id="insert" parameterType="schoolforum.base.models.Classes" >
+    insert into classes
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="classid != null" >
+        classId,
+      </if>
+      <if test="classname != null" >
+        className,
+      </if>
+      <if test="majorid != null" >
+        majorId
+      </if>
+    </trim>
+    <trim prefix="values(" suffix=")" suffixOverrides="," >
+      <if test="classid != null" >
+        #{classid},
+      </if>
+      <if test="classname != null" >
+        #{classname},
+      </if>
+      <if test="majorid != null" >
+        #{majorid}
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="update" parameterType="schoolforum.base.models.Classes" >
+    update classes
+    <set >
+      <if test="classname != null" >
+        className = #{classname},
+      </if>
+      <if test="majorid != null" >
+        majorId = #{majorid}
+      </if>
+    </set>
+    where
+    classId = #{classid}
+  </update>
+  
+  <delete id="batchDelete" >
+    delete from classes
+    where classId in(
+    <foreach item="item" collection="list" separator="," >
+      #{item}
+    </foreach>
+    )
+  </delete>
+  
+  <select id="getListWithPage" resultType="schoolforum.base.models.Classes" parameterType="schoolforum.base.models.Classes" >
+    select * from classes
+    where 1=1
+    <if test="classid != null" >
+      and classId = #{classid}
+    </if>
+    <if test="classname != null" >
+      and className = #{classname}
+    </if>
+    <if test="majorid != null" >
+      and majorId = #{majorid}
+    </if>
+  </select>
+  
+  <select id="count" resultType="java.lang.Long" parameterType="schoolforum.base.models.Classes" >
+    select count(*) from classes
+    where 1=1
+    <if test="classid != null" >
+      and classId = #{classid}
+    </if>
+    <if test="classname != null" >
+      and className = #{classname}
+    </if>
+    <if test="majorid != null" >
+      and majorId = #{majorid}
+    </if>
+  </select>
+  
+</mapper>

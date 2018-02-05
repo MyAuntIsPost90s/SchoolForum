@@ -25,32 +25,12 @@
 <body>
 	 <div class="easyui-layout" data-options='fit:"true"'>
         <div data-options='region:"west",collapsible:false' title="系院信息" style="width:220px;">
-            <ul id="tree-class" class="easyui-tree">
+            <ul id="tree-class">
 
             </ul>
         </div>
         <div data-options='region:"center"'>
-            <table id="table-user" class="easyui-datagrid" title="账号信息" style="width:100%;height:100%" data-options='fit:"true"
-                        ,rownumbers:true
-                        ,selectOnCheck:true
-                        ,checkOnSelect:false
-                        ,singleSelect:false
-                        ,fitColumns:"true"
-                        ,rownumbers:"true"
-                        ,pagination:"true"'>
-                <thead>
-                    <tr>
-                        <th data-options="field:'ck',checkbox:true"></th>
-                        <th data-options="field:'userid',width:60,align:'center',formatter:optionFormat">操作</th>
-                        <th data-options="field:'username',width:100,align:'center'">用户名</th>
-                        <th data-options="field:'realname',width:100,align:'center'">真实姓名</th>
-                        <th data-options="field:'sex',width:100,align:'center',formatter:sexFormat">性别</th>
-                        <th data-options="field:'birthday',width:100,align:'center'">生日</th>
-                        <th data-options="field:'phone',width:100,align:'center'">手机号</th>
-                        <th data-options="field:'userstatus',width:100,align:'center',formatter:statusFormat">用户状态</th>
-                    </tr>
-                </thead>
-            </table>
+            <table id="table-user" class="easyui-datagrid" class="easyui-datagrid"  title="账号信息"></table>
 
             <div id="dialog-user" class="easyui-dialog" style="width:500px;height:280px" data-options="title:'添加/修改账户',buttons:'#btns-user',modal:true,closed:true">
                 <div style="padding:10px;">
@@ -111,21 +91,21 @@
 </body>
 <script type="text/javascript">
 	$(function () {
-		 EasyUIUtil.loadTree('#tree-class', Config.UrlHead + '/Classes/Tree');  //加载树
+		 EasyUIUtil.initTree('#tree-class', Config.UrlHead + '/Classes/Tree');  //加载树
          $('#tree-class').tree({
              onClick:function(node){
             	 var parent = $('#tree-class').tree("getParent",node.target);
             	 if(parent.id!='-1'){
-                 	loadData(node.id)
+            		 initDataGrid(node.id)
             	 }
              }
          })
 	});
 
-	//加载表格数据
-	function loadData(classId) {
-		var pager = EasyUIUtil.getPager('#table-user', Config.UrlHead + "/Users/UserList",{classid:classId,type:0});
-
+	//初始化表格数据
+	function initDataGrid(classId) {
+		EasyUIUtil.initDataGrid('#table-user', Config.UrlHead + "/Users/UserList",getColumns(),{classid:classId,type:0});
+		var pager=$('#table-user').datagrid('getPager');
 		pager.pagination({
 			showPageList: true,
 			buttons: [{
@@ -245,27 +225,50 @@
 		$('#form-user').form('load', { 'type-user': 'edit' });
 		$('#dialog-user').dialog('open');
 	}
-
-	//操作过滤
-	function optionFormat(val, row) {
-		if(row.userstatus==0){
-			return '<a onclick="del(\'' + val + '\')">移除</a>'
-					+'<a style="margin:0 5px" onclick="frozen(\'' + val + '\',1)">解冻</a>'
-					+'<a onclick="edit(\'' + val + '\')">编辑</a>';
-		}
-		return '<a onclick="del(\'' + val + '\')">移除</a>'
-			+'<a style="margin:0 5px" onclick="frozen(\'' + val + '\',0)">冻结</a>'
-			+'<a onclick="edit(\'' + val + '\')">编辑</a>';
-	}
 	
-	//性别过滤
-	function sexFormat(val, row) {
-		return val==1?'男':'女';
-	}
-	
-	//状态过滤
-	function statusFormat(val, row) {
-		return val==1?'<span class="font-green">正常</span>':'<span class="font-red">冻结</span>';
+	function getColumns(){
+		var columns=[[
+			{field:'ck',checkbox:true},
+			{ 
+				field:'userid',
+				width:50,
+				align:'center',
+				title:"操作",
+				formatter:function(val,row){
+					if(row.userstatus==0){
+						return '<a onclick="del(\'' + val + '\')">移除</a>'
+								+'<a style="margin:0 5px" onclick="frozen(\'' + val + '\',1)">解冻</a>'
+								+'<a onclick="edit(\'' + val + '\')">编辑</a>';
+					}
+					return '<a onclick="del(\'' + val + '\')">移除</a>'
+						+'<a style="margin:0 5px" onclick="frozen(\'' + val + '\',0)">冻结</a>'
+						+'<a onclick="edit(\'' + val + '\')">编辑</a>';
+				}
+			},
+			{field:'username',width:100,align:'center',title:"用户名"},
+			{field:'realname',width:100,align:'center',title:"名称"},
+			{
+				field:'sex',
+				width:100,
+				align:'center',
+				title:"性别",
+				formatter:function(val,row){
+					return val==1?'男':'女';
+				}
+			},
+			{field:'birthday',width:100,align:'center',title:"生日"},
+			{field:'phone',width:100,align:'center',title:"联系方式"},
+			{
+				field:'userstatus',
+				width:100,
+				align:'center',
+				title:"状态",
+				formatter:function(val,row){
+					return val==1?'<span class="font-green">正常</span>':'<span class="font-red">冻结</span>';
+				}
+			}
+		]];
+		return columns;
 	}
 </script>
 

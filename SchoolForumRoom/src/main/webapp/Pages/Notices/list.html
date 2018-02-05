@@ -23,35 +23,18 @@
 
 <body>
 	<div data-options="fit:true" class="easyui-layout">
-		<table id="table-notice" title="通知公告" style="width:100%;height:100%" data-options='fit:"true"
-		,rownumbers:true
-		,selectOnCheck:true
-		,checkOnSelect:false
-		,singleSelect:false
-        ,fitColumns:"true"
-	   	,rownumbers:"true"
-        ,pagination:"true"'>
-			<thead>
-				<tr>
-					<th data-options="field:'ck',checkbox:true"></th>
-					<th data-options="field:'noticeid',width:50,align:'center',formatter:optionFormat">操作</th>
-					<th data-options="field:'noticeimgurl',width:100,align:'center',formatter:imgFormat">预览图</th>
-					<th data-options="field:'noticetitle',width:100,align:'center'">标题</th>
-					<th data-options="field:'noticetime',width:100,align:'center'">创建时间 </th>
-				</tr>
-			</thead>
-		</table>
+		<table id="table-notice" title="通知公告"></table>
 	</div>
 </body>
 <script type="text/javascript">
 	$(function () {
-		loadData();
+		initDataGrid();
 	});
 
-	//加载表格数据
-	function loadData() {
-		var pager = EasyUIUtil.getPager('#table-notice', Config.UrlHead + "/Notices/List");
-
+	//初始化表格
+	function initDataGrid() {
+		EasyUIUtil.initDataGrid('#table-notice', Config.UrlHead + "/Notices/List",getColumns());
+		var pager = $('#table-notice').datagrid('getPager');
 		pager.pagination({
 			showPageList: true,
 			buttons: [{
@@ -130,14 +113,31 @@
 		window.open(Config.UrlHead+"/Pages/Notices/editnotice.html?type=edit&id="+id);
 	}
 
-	//操作过滤
-	function optionFormat(val, row) {
-		return '<a style="margin-right:10px" onclick="del(\'' + val + '\')">移除</a><a onclick="edit(\'' + val + '\')">编辑</a>';
-	}
-	
-	
-	function imgFormat(val, row) {
-		return '<img src="'+Config.UrlHead+val+'" width="100px" />'
+	function getColumns(){
+		var columns=[[
+			{field:'ck',checkbox:true},
+			{ 
+				field:'noticeid',
+				width:50,
+				align:'center',
+				title:"操作",
+				formatter:function(val,row){
+					return '<a style="margin-right:10px" onclick="del(\'' + val + '\')">移除</a><a onclick="edit(\'' + val + '\')">编辑</a>';
+				}
+			},
+			{
+				field:'noticeimgurl',
+				width:100,
+				align:'center',
+				title:"预览图",
+				formatter:function(val,row){
+					return '<img src="'+Config.UrlHead+val+'" width="100px" />'
+				}
+			},
+			{field:'noticetitle',width:100,align:'center',title:"标题"},
+			{field:'noticetime',width:100,align:'center',title:"创建时间"}
+		]];
+		return columns;
 	}
 </script>
 

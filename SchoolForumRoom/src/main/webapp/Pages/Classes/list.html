@@ -23,27 +23,12 @@
 <body>
     <div class="easyui-layout" data-options='fit:"true"'>
         <div data-options='region:"west",collapsible:false' title="学院信息" style="width:200px;">
-            <ul id="tree-major" class="easyui-tree">
+            <ul id="tree-major">
 
             </ul>
         </div>
         <div data-options='region:"center"'>
-            <table id="table-class" class="easyui-datagrid" title="班级信息" style="width:100%;height:100%" data-options='fit:"true"
-                        ,rownumbers:true
-                        ,selectOnCheck:true
-                        ,checkOnSelect:false
-                        ,singleSelect:false
-                        ,fitColumns:"true"
-                        ,rownumbers:"true"
-                        ,pagination:"true"'>
-                <thead>
-                    <tr>
-                        <th data-options="field:'ck',checkbox:true"></th>
-                        <th data-options="field:'classid',width:10,align:'center',formatter:optionFormat">操作</th>
-                        <th data-options="field:'classname',width:100,align:'center'">班级名</th>
-                    </tr>
-                </thead>
-            </table>
+            <table id="table-class" class="easyui-datagrid" title="班级信息"></table>
 
             <div id="dialog-class" class="easyui-dialog" style="width:260px;height:200px" data-options="title:'添加/修改班级',buttons:'#btns-class',modal:true,closed:true">
                 <div style="padding:10px;">
@@ -65,10 +50,10 @@
             </div>
             <div id="btns-class" style="text-align: right;padding:5px 10px">
                 <button type="button" onclick="saveClass()" data-options="iconCls:'icon-ok'" class="easyui-linkbutton">
-                    保存
+                	保存
                 </button>
                 <a onclick="$('#dialog-class').dialog('close')" data-options="iconCls:'icon-cancel'" class="easyui-linkbutton">
-                    关闭
+                   	 关闭
                 </a>
             </div>
         </div>
@@ -76,18 +61,19 @@
 
     <script>
         $(function () {
-            EasyUIUtil.loadTree('#tree-major', Config.UrlHead + '/Majors/Tree');  //加载树
+            EasyUIUtil.initTree('#tree-major', Config.UrlHead + '/Majors/Tree');  //加载树
             $('#tree-major').tree({
                 onClick:function(node){
-                    loadData(node.id)
+                	initDataGrid();
+                    $('#table-class').datagrid('load',{ majorid:node.id });
                 }
             })
         });
 
         //加载表格数据
-        function loadData(id) {
-            var pager = EasyUIUtil.getPager('#table-class', Config.UrlHead + "/Classes/List", { majorid: id });
-
+        function initDataGrid() {
+            EasyUIUtil.initDataGrid('#table-class', Config.UrlHead + "/Classes/List",getColumns());
+            var pager = $('#table-class').datagrid('getPager');
             pager.pagination({
                 showPageList: true,
                 buttons: [{
@@ -198,6 +184,23 @@
         function optionFormat(val, row) {
             return '<a style="margin-right:10px" onclick="del(\'' + val + '\')">移除</a><a onclick="edit(\'' + val + '\')">编辑</a>';
         }
+        
+        function getColumns(){
+    		var columns=[[
+    			{field:'ck',checkbox:true},
+    			{ 
+    				field:'classid',
+    				width:50,
+    				align:'center',
+    				title:"操作",
+    				formatter:function(val,row){
+    					 return '<a style="margin-right:10px" onclick="del(\'' + val + '\')">移除</a><a onclick="edit(\'' + val + '\')">编辑</a>';
+    				}
+    			},
+    			{field:'classname',width:100,align:'center',title:"班级名"}
+    		]];
+    		return columns;
+    	}
     </script>
 </body>
 

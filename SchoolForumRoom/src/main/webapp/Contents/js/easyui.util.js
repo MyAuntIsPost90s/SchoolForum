@@ -16,7 +16,7 @@ var EasyUIUtil = {
                 }
             }, 'json');
     },
-    loadTree:function(id,url,params){
+    initTree:function(id,url,params){
         $(id).tree({
             url:url,
             method:'post',
@@ -25,13 +25,20 @@ var EasyUIUtil = {
             }
         })
     },
-    getPager: function (id, url, params) {
-        if (params == null)
-            params = {};
-        var pager = $(id).datagrid({
-            url: url
-            , queryParams: params
-            , loadFilter: function (data) {
+    initDataGrid:function(id,url,columns,params){
+    	 $(id).datagrid({
+    		 url: url
+    		,queryParams:params
+    		,fit:"true"
+    		,columns:columns
+			,rownumbers:true
+			,selectOnCheck:true
+			,checkOnSelect:false
+			,singleSelect:false
+		    ,fitColumns:true
+			,rownumbers:true
+		    ,pagination:true
+		    , loadFilter: function (data) {
                 if (data.code == 0) {
                     $.messager.alert("错误", data.msg);
                     return null;
@@ -44,7 +51,6 @@ var EasyUIUtil = {
             , onSelect: function (rowIndex, rowData) {
                 $(id).datagrid("unselectRow", rowIndex);
             }
-        }).datagrid('getPager');
-        return pager;
+    	 })
     }
 }

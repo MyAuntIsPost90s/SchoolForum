@@ -59,24 +59,7 @@
 			</form>
 		</div>
 		<div data-options="region:'center'" title="管理员信息">
-			<table class="easyui-datagrid" id="tt" title="管理员列表" style="width:100%;height:100%" data-options='fit:"true"
-				,rownumbers:true
-				,selectOnCheck:true
-				,checkOnSelect:false
-	           	,fitColumns:"true"
-			   	,rownumbers:"true"
-	           	,pagination:"true"'>
-				<thead>
-					<tr>
-						<th data-options="field:'ck',checkbox:true"></th>
-						<th data-options="field:'userid',width:100,align:'center',hidden:true">编号</th>
-						<th data-options="field:'username',width:100,align:'center'">用户名</th>
-						<th data-options="field:'realname',width:100,align:'center'">姓名</th>
-						<th data-options="field:'phone',width:100,align:'center'">手机号</th>
-						<th data-options="field:'usertype',width:100,align:'center',formatter:usertypeFormat">用户类型</th>
-					</tr>
-				</thead>
-			</table>
+			<table class="easyui-datagrid" id="tt" title="管理员列表"></table>
 		</div>
 	</div>
 
@@ -116,7 +99,7 @@
 		$('#ff').form({
 			onLoadSuccess: function (data) {
 				if (data.usertype == -1) {
-					loadData();
+					initDataGrid();
 				}else{
 					$('#btn-clone').hide();
 				}
@@ -189,10 +172,11 @@
 			});
 		}
 
-		//加载表格数据
-		function loadData() {
-			var pager = EasyUIUtil.getPager('#tt', Config.UrlHead + "/Users/UserList",{usertype:1});
-
+		//初始化表格
+		function initDataGrid() {
+			EasyUIUtil.initDataGrid('#tt', Config.UrlHead + "/Users/UserList",getColumns(),{usertype:1});
+			
+			var pager=$('#tt').datagrid('getPager');
 			pager.pagination({
 				showPageList: true,
 				buttons: [{
@@ -206,14 +190,38 @@
 				}
 			});
 		}
-
-		//用户类型列格式化
-		function usertypeFormat(val,row){
-			switch(val){
-				case -1:return '默认';
-				case 0:return '普通用户';
-				case 1:return '管理员';
-			}
+		
+		function getColumns(){
+			var columns=[[
+				{field:'ck',checkbox:true},
+				{field:'userid',width:50,align:'center',title:"编号"},
+				{field:'username',width:100,align:'center',title:"用户名"},
+				{field:'realname',width:100,align:'center',title:"名称"},
+				{
+					field:'sex',
+					width:100,
+					align:'center',
+					title:"性别",
+					formatter:function(val,row){
+						return val==1?'男':'女';
+					}
+				},
+				{field:'phone',width:100,align:'center',title:"联系方式"},
+				{
+					field:'usertype',
+					width:100,
+					align:'center',
+					title:"用户类型",
+					formatter:function(val,row){
+							switch(val){
+							case -1:return '默认';
+							case 0:return '普通用户';
+							case 1:return '管理员';
+						}
+					}
+				}
+			]];
+			return columns;
 		}
 	</script>
 </body>

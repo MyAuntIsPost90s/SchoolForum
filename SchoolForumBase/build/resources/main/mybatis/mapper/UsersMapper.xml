@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="schoolforum.base.dao.UsersMapper" >
+  <select id="getList" resultType="schoolforum.base.models.Users" parameterType="schoolforum.base.models.Users" >
+    select * from users
+    where 1=1
+    <if test="userid != null" >
+      and userId = #{userid}
+    </if>
+    <if test="username != null" >
+      and userName = #{username}
+    </if>
+    <if test="password != null" >
+      and password = #{password}
+    </if>
+    <if test="realname != null" >
+      and realName = #{realname}
+    </if>
+    <if test="sex != null" >
+      and sex = #{sex}
+    </if>
+    <if test="birthday != null" >
+      and birthday = #{birthday}
+    </if>
+    <if test="phone != null" >
+      and phone = #{phone}
+    </if>
+    <if test="headimgurl != null" >
+      and headImgUrl = #{headimgurl}
+    </if>
+    <if test="classid != null" >
+      and classId = #{classid}
+    </if>
+    <if test="usertype != null" >
+      and userType = #{usertype}
+    </if>
+    <if test="userstatus != null" >
+      and userStatus = #{userstatus}
+    </if>
+  </select>
+  
+  <select id="getSingle" resultType="schoolforum.base.models.Users" >
+    select * from users
+    where userId = #{id}
+    limit 0,1
+  </select>
+  
+  <insert id="insert" parameterType="schoolforum.base.models.Users" >
+    insert into users
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="username != null" >
+        userName,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="realname != null" >
+        realName,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="birthday != null" >
+        birthday,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="headimgurl != null" >
+        headImgUrl,
+      </if>
+      <if test="classid != null" >
+        classId,
+      </if>
+      <if test="usertype != null" >
+        userType,
+      </if>
+      <if test="userstatus != null" >
+        userStatus
+      </if>
+    </trim>
+    <trim prefix="values(" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        #{userid},
+      </if>
+      <if test="username != null" >
+        #{username},
+      </if>
+      <if test="password != null" >
+        #{password},
+      </if>
+      <if test="realname != null" >
+        #{realname},
+      </if>
+      <if test="sex != null" >
+        #{sex},
+      </if>
+      <if test="birthday != null" >
+        #{birthday},
+      </if>
+      <if test="phone != null" >
+        #{phone},
+      </if>
+      <if test="headimgurl != null" >
+        #{headimgurl},
+      </if>
+      <if test="classid != null" >
+        #{classid},
+      </if>
+      <if test="usertype != null" >
+        #{usertype},
+      </if>
+      <if test="userstatus != null" >
+        #{userstatus}
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="update" parameterType="schoolforum.base.models.Users" >
+    update users
+    <set >
+      <if test="username != null" >
+        userName = #{username},
+      </if>
+      <if test="password != null" >
+        password = #{password},
+      </if>
+      <if test="realname != null" >
+        realName = #{realname},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex},
+      </if>
+      <if test="birthday != null" >
+        birthday = #{birthday},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone},
+      </if>
+      <if test="headimgurl != null" >
+        headImgUrl = #{headimgurl},
+      </if>
+      <if test="classid != null" >
+        classId = #{classid},
+      </if>
+      <if test="usertype != null" >
+        userType = #{usertype},
+      </if>
+      <if test="userstatus != null" >
+        userStatus = #{userstatus}
+      </if>
+    </set>
+    where
+    userId = #{userid}
+  </update>
+  
+  <delete id="batchDelete" >
+    delete from users
+    where userId in(
+    <foreach item="item" collection="list" separator="," >
+      #{item}
+    </foreach>
+    )
+  </delete>
+  
+  <select id="getListWithPage" resultType="schoolforum.base.models.Users" parameterType="schoolforum.base.models.Users" >
+    select * from users
+    where 1=1
+    <if test="userid != null" >
+      and userId = #{userid}
+    </if>
+    <if test="username != null" >
+      and userName = #{username}
+    </if>
+    <if test="password != null" >
+      and password = #{password}
+    </if>
+    <if test="realname != null" >
+      and realName = #{realname}
+    </if>
+    <if test="sex != null" >
+      and sex = #{sex}
+    </if>
+    <if test="birthday != null" >
+      and birthday = #{birthday}
+    </if>
+    <if test="phone != null" >
+      and phone = #{phone}
+    </if>
+    <if test="headimgurl != null" >
+      and headImgUrl = #{headimgurl}
+    </if>
+    <if test="classid != null" >
+      and classId = #{classid}
+    </if>
+    <if test="usertype != null" >
+      and userType = #{usertype}
+    </if>
+    <if test="userstatus != null" >
+      and userStatus = #{userstatus}
+    </if>
+  </select>
+  
+  <select id="count" resultType="java.lang.Long" parameterType="schoolforum.base.models.Users" >
+    select count(*) from users
+    where 1=1
+    <if test="userid != null" >
+      and userId = #{userid}
+    </if>
+    <if test="username != null" >
+      and userName = #{username}
+    </if>
+    <if test="password != null" >
+      and password = #{password}
+    </if>
+    <if test="realname != null" >
+      and realName = #{realname}
+    </if>
+    <if test="sex != null" >
+      and sex = #{sex}
+    </if>
+    <if test="birthday != null" >
+      and birthday = #{birthday}
+    </if>
+    <if test="phone != null" >
+      and phone = #{phone}
+    </if>
+    <if test="headimgurl != null" >
+      and headImgUrl = #{headimgurl}
+    </if>
+    <if test="classid != null" >
+      and classId = #{classid}
+    </if>
+    <if test="usertype != null" >
+      and userType = #{usertype}
+    </if>
+    <if test="userstatus != null" >
+      and userStatus = #{userstatus}
+    </if>
+  </select>
+  
+</mapper>

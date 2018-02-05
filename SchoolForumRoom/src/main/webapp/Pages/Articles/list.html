@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>话题管理</title>
+	<script src="/SchoolForumRoom/Contents/js/jquery.min.js" type="text/javascript"></script>
+	<link href="/SchoolForumRoom/Contents/lib/easyui-theme/themes/insdep/easyui.css" rel="stylesheet" type="text/css">
+	<link href="/SchoolForumRoom/Contents/lib/easyui-theme/themes/insdep/insdep_theme_default.css" rel="stylesheet" type="text/css">
+	<link href="/SchoolForumRoom/Contents/lib/easyui-theme/themes/insdep/icon.css" rel="stylesheet" type="text/css">
+	<link href="/SchoolForumRoom/Contents/lib/easyui-theme/plugin/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet"
+	 type="text/css">
+	<link href="/SchoolForumRoom/Contents/lib/easyui-theme/themes/insdep/easyui_animation.css" rel="stylesheet" type="text/css">
+	<link href="/SchoolForumRoom/Contents/css/syscommon.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="/SchoolForumRoom/Contents/lib/easyui-theme/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="/SchoolForumRoom/Contents/lib/easyui-theme/themes/insdep/jquery.insdep-extend.min.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="/SchoolForumRoom/Contents/css/chart.css" />
+	<script src="/SchoolForumRoom/Contents/js/config.js" type="text/javascript"></script>
+	<script src="/SchoolForumRoom/Contents/js/easyui.util.js" type="text/javascript"></script>
+	<script src="/SchoolForumRoom/Contents/lib/lingshiframework/lingshi_base.js" type="text/javascript"></script>
+</head>
+
+<body>
+	<div data-options="fit:true" class="easyui-layout">
+		<table id="table-article" title="话题列表"></table>
+	</div>
+</body>
+<script type="text/javascript">
+	$(function () {
+		initDatagrid();
+	});
+
+	//初始化
+	function initDatagrid() {
+		EasyUIUtil.initDataGrid('#table-article',Config.UrlHead + "/Articles/List",getColumns());
+		var pager = $('#table-article').datagrid('getPager');
+
+		pager.pagination({
+			showPageList: true,
+			buttons: [{
+				iconCls: 'icon-add',
+				handler: function () {
+					showAddArticle();
+				}
+			}, {
+				iconCls: 'icon-remove',
+				handler: function () {
+					batchDelete();
+				}
+			}],
+			onBeforeRefresh: function () {
+				return true;
+			}
+		});
+	}
+
+	function showAddArticle() {
+		window.open(Config.UrlHead+"/Pages/Articles/editarticle.html?type=add"); 
+	}
+
+	//批量删除
+	function batchDelete() {
+		var rows = $('#table-article').datagrid('getChecked');
+		if (rows.length < 1) {
+			return;
+		}
+		var ids = [];
+		for (var i = 0; i < rows.length; i++) {
+			ids.push(rows[i].articleid);
+		}
+
+		$.messager.confirm('系统提示', '是否确定删除?', function (r) {
+			if (r) {
+				$.ajax({
+					url: Config.UrlHead + '/Articles/BatchDelete',
+					contentType: "application/json ; charset=utf-8",
+					data: JSON.stringify(ids),
+					method: 'post',
+					dataType: 'json',
+					success: function (data) {
+						$.messager.alert('提示', data.msg);
+						$('#table-article').datagrid('reload');
+					}
+				});
+			}
+		});
+	}
+
+	//点击删除事件
+	function del(id) {
+		$.messager.confirm('提示', '是否确定删除', function (f) {
+			if (f) {
+				var ids = [];
+				ids.push(id);
+
+				$.ajax({
+					url: Config.UrlHead + '/Articles/BatchDelete',
+					contentType: "application/json ; charset=utf-8",
+					data: JSON.stringify(ids),
+					method: 'post',
+					dataType: 'json',
+					success: function (data) {
+						$.messager.alert('提示', data.msg);
+						$('#table-article').datagrid('reload');
+					}
+				});
+			}
+		})
+	}
+
+	//点击编辑事件
+	function edit(id) {
+		window.open(Config.UrlHead+"/Pages/Articles/editarticle.html?type=edit&id="+id);
+	}
+
+	//获取列
+	function getColumns(){
+		var columns=[[
+			{field:'ck',checkbox:true},
+			{ 
+				field:'articleid',
+				width:50,
+				align:'center',
+				title:"操作",
+				formatter:function(val,row){
+					return '<a style="margin-right:10px" onclick="del(\'' + val + '\')">移除</a><a onclick="edit(\'' + val + '\')">编辑</a>';
+				}
+			},
+			{field:'articletitle',width:100,align:'center',title:"标题"},
+			{field:'articletime',width:100,align:'center',title:"发帖时间"},
+			{
+				field:'realname',
+				width:100,
+				align:'center',
+				title:"发布人",
+				formatter:function(val,row){
+					return row.user.realname;
+				}
+			},
+			{
+				field:'phone',
+				width:100,
+				align:'center',
+				title:"联系方式",
+				formatter:function(val,row){
+					return row.user.phone;
+				}
+			}
+		]];
+		return columns;
+	}
+</script>
+
+</html>

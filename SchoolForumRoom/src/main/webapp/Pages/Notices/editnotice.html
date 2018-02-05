@@ -88,6 +88,9 @@
 	}
 	
 	function saveNotice(){
+		if(!$('#form-notice').form('validate')){
+			return;
+		}
 		layui.use('layedit', function(){
 			//保存
 			var url=Config.UrlHead+'/Notices/Update';

@@ -29,6 +29,10 @@ public class RandomNum {
 	public static String getBID() {
 		return "B" + getRandom();
 	}
+	
+	public static String getSID() {
+		return "S" + getRandom();
+	}
 
 	public static String getLGID() {
 		return "LG" + getRandom();
