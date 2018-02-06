@@ -55,6 +55,10 @@
     <if test="suggestionstatus !=null">
 	  and suggestionstatus = #{suggestionstatus}
     </if>
+    <if test="suggestioncount != null">
+      and suggestioncount = #{suggestioncount}
+    </if>
+    order by suggestioncount desc
   </select>
   
   <select id="getSingle" resultMap="SuggestionMap" >
@@ -104,6 +108,9 @@
 	  <if test="suggestionstatus !=null">
 	    suggestionstatus
       </if>
+      <if test="suggestioncount != null">
+	    suggestioncount
+	  </if>
     </trim>
     <trim prefix="values(" suffix=")" suffixOverrides="," >
       <if test="suggestionid != null" >
@@ -139,6 +146,9 @@
       <if test="suggestionstatus !=null">
 	    #{suggestionstatus}
       </if>
+      <if test="suggestioncount != null">
+      	#{suggestioncount}
+      </if>
     </trim>
   </insert>
   
@@ -173,7 +183,10 @@
         suggestionType = #{suggestiontype}
       </if>
       <if test="suggestionstatus !=null">
-	    suggestionstatus
+	    suggestionstatus = #{suggestionstatus}
+      </if>
+      <if test="suggestioncount != null">
+      	suggestioncount = #{suggestioncount}
       </if>
     </set>
     where
@@ -230,6 +243,10 @@
     <if test="suggestionstatus !=null">
 	  and suggestionstatus = #{suggestionstatus}
     </if>
+    <if test="suggestioncount != null">
+      and suggestioncount = #{suggestioncount}
+    </if>
+    order by suggestioncount desc
   </select>
   
   <select id="count" resultType="java.lang.Long" parameterType="schoolforum.base.models.Suggestions" >
@@ -267,6 +284,9 @@
     </if>
     <if test="suggestionstatus !=null">
 	  and suggestionstatus = #{suggestionstatus}
+    </if>
+    <if test="suggestioncount != null">
+      and suggestioncount = #{suggestioncount}
     </if>
   </select>
   

@@ -76,6 +76,28 @@ public class SuggestionsContoller {
 			requestHolder.err("操作失败", e);
 		}
 	}
+	
+	/**
+	 * 登记处理
+	 * @param request
+	 * @param response
+	 * @param suggestions
+	 */
+	@ResponseBody
+	@RequestMapping("DealWith")
+	public void dealWith(HttpServletRequest request ,HttpServletResponse response,Suggestions suggestions){
+		RequestHolder requestHolder=RequestHolder.get(request, response);
+		try{
+			Users user =(Users)requestHolder.getClientUser();
+			suggestions.setSuggestionfbuid(user.getUserid());
+			suggestions.setSuggestionfbtime(new Date());
+			
+			suggestionsService.update(suggestions);
+			requestHolder.success("操作成功");
+		}catch (Exception e) {
+			requestHolder.err("操作失败", e);
+		}
+	}
 
 	/**
 	 * 添加

@@ -64,6 +64,10 @@
 			<param-name>allowpath</param-name>
 			<param-value>login,Login,Contents,Pages,LayEditImgUpload</param-value>
 		</init-param>
+		<init-param>
+			<param-name>iscross</param-name>
+			<param-value>true</param-value>
+		</init-param>
 	</filter>
 	<filter-mapping>
 		<filter-name>TokenCheckFilter</filter-name>

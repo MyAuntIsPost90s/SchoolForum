@@ -35,41 +35,48 @@
 	</div>
 </body>
 <script type="text/javascript">
-	$(function () {
+	
+	$(function() {
 		initDatagrid();
 	});
 
 	//初始化
 	function initDatagrid() {
-		EasyUIUtil.initDataGrid('#table-suggestion',Config.UrlHead + "/Suggestions/List",getColumns(),{suggestionstatus:$('#cb-status').combobox('getValue')});
+		EasyUIUtil.initDataGrid('#table-suggestion', Config.UrlHead
+				+ "/Suggestions/List", getColumns(), {
+			suggestionstatus : $('#cb-status').combobox('getValue')
+		});
 		var pager = $('#table-suggestion').datagrid('getPager');
 
 		pager.pagination({
-			showPageList: true,
-			buttons: [{
-				iconCls: 'icon-add',
-				handler: function () {
+			showPageList : true,
+			buttons : [ {
+				iconCls : 'icon-add',
+				handler : function() {
 					showAddSuggestion();
 				}
 			}, {
-				iconCls: 'icon-remove',
-				handler: function () {
+				iconCls : 'icon-remove',
+				handler : function() {
 					batchDelete();
 				}
-			}],
-			onBeforeRefresh: function () {
+			} ],
+			onBeforeRefresh : function() {
 				return true;
 			}
 		});
 	}
-	
+
 	//加载列表数据
-	function loadData(){
-		$('#table-suggestion').datagrid('load',{suggestionstatus:$('#cb-status').combobox('getValue')})
+	function loadData() {
+		$('#table-suggestion').datagrid('load', {
+			suggestionstatus : $('#cb-status').combobox('getValue')
+		})
 	}
 
 	function showAddSuggestion() {
-		window.open(Config.UrlHead+"/Pages/Suggestions/editsuggestion.html?type=add"); 
+		window.open(Config.UrlHead
+				+ "/Pages/Suggestions/editsuggestion.html?type=add");
 	}
 
 	//批量删除
@@ -83,15 +90,15 @@
 			ids.push(rows[i].suggestionid);
 		}
 
-		$.messager.confirm('系统提示', '是否确定删除?', function (r) {
+		$.messager.confirm('系统提示', '是否确定删除?', function(r) {
 			if (r) {
 				$.ajax({
-					url: Config.UrlHead + '/Suggestions/BatchDelete',
-					contentType: "application/json ; charset=utf-8",
-					data: JSON.stringify(ids),
-					method: 'post',
-					dataType: 'json',
-					success: function (data) {
+					url : Config.UrlHead + '/Suggestions/BatchDelete',
+					contentType : "application/json ; charset=utf-8",
+					data : JSON.stringify(ids),
+					method : 'post',
+					dataType : 'json',
+					success : function(data) {
 						$.messager.alert('提示', data.msg);
 						$('#table-suggestion').datagrid('reload');
 					}
@@ -102,18 +109,18 @@
 
 	//点击删除事件
 	function del(id) {
-		$.messager.confirm('提示', '是否确定删除', function (f) {
+		$.messager.confirm('提示', '是否确定删除', function(f) {
 			if (f) {
 				var ids = [];
 				ids.push(id);
 
 				$.ajax({
-					url: Config.UrlHead + '/Suggestions/BatchDelete',
-					contentType: "application/json ; charset=utf-8",
-					data: JSON.stringify(ids),
-					method: 'post',
-					dataType: 'json',
-					success: function (data) {
+					url : Config.UrlHead + '/Suggestions/BatchDelete',
+					contentType : "application/json ; charset=utf-8",
+					data : JSON.stringify(ids),
+					method : 'post',
+					dataType : 'json',
+					success : function(data) {
 						$.messager.alert('提示', data.msg);
 						$('#table-suggestion').datagrid('reload');
 					}
@@ -122,45 +129,96 @@
 		})
 	}
 
+	//标记处理
+	function dealWith(id, status) {
+		$.messager.confirm('提示', '是否确定标记处理', function(f) {
+			if (f) {
+				$.post(Config.UrlHead + '/Suggestions/DealWith', {
+					suggestionid : id,
+					suggestionstatus : status
+				}, function(data) {
+					$.messager.alert('提示', data.msg);
+					$('#table-suggestion').datagrid('reload');
+				}, 'json')
+			}
+		});
+	}
+
 	//点击编辑事件
 	function edit(id) {
-		window.open(Config.UrlHead+"/Pages/Suggestions/editsuggestion.html?type=edit&id="+id);
+		window.open(Config.UrlHead
+				+ "/Pages/Suggestions/editsuggestion.html?type=edit&id=" + id);
 	}
 
 	//获取列
-	function getColumns(){
-		var columns=[[
-			{field:'ck',checkbox:true},
-			{ 
-				field:'suggestionid',
-				width:50,
-				align:'center',
-				title:"操作",
-				formatter:function(val,row){
-					return '<a style="margin-right:10px" onclick="del(\'' + val + '\')">移除</a><a onclick="edit(\'' + val + '\')">编辑</a>';
-				}
-			},
-			{field:'suggestiontitle',width:100,align:'center',title:"标题"},
-			{field:'suggestiontime',width:100,align:'center',title:"建议时间"},
-			{
-				field:'realname',
-				width:100,
-				align:'center',
-				title:"发布人",
-				formatter:function(val,row){
-					return row.user.realname;
-				}
-			},
-			{
-				field:'phone',
-				width:100,
-				align:'center',
-				title:"联系方式",
-				formatter:function(val,row){
-					return row.user.phone;
-				}
-			}
-		]];
+	function getColumns() {
+		var columns = [ [
+				{
+					field : 'ck',
+					checkbox : true
+				},
+				{
+					field : 'suggestionid',
+					width : 50,
+					align : 'center',
+					title : "操作",
+					formatter : function(val, row) {
+						if (row.suggestionstatus == 1) {
+							return '<a onclick="del(\''
+									+ val
+									+ '\')">移除</a>'
+									+ '<a style="margin:0px 10px" onclick="dealWith(\''
+									+ val + '\',0)">取消标记</a>'
+									+ '<a onclick="edit(\'' + val
+									+ '\')">编辑</a>';
+						} else {
+							return '<a onclick="del(\''
+									+ val
+									+ '\')">移除</a>'
+									+ '<a style="margin:0px 10px" onclick="dealWith(\''
+									+ val + '\',1)">标记处理</a>'
+									+ '<a onclick="edit(\'' + val
+									+ '\')">编辑</a>';
+						}
+
+					}
+				}, {
+					field : 'suggestiontitle',
+					width : 100,
+					align : 'center',
+					title : "标题"
+				}, {
+					field : 'suggestiontime',
+					width : 100,
+					align : 'center',
+					title : "建议时间"
+				}, {
+					field : 'realname',
+					width : 100,
+					align : 'center',
+					title : "发布人",
+					formatter : function(val, row) {
+						return row.user.realname;
+					}
+				}, {
+					field : 'phone',
+					width : 100,
+					align : 'center',
+					title : "联系方式",
+					formatter : function(val, row) {
+						return row.user.phone;
+					}
+				},{
+					field : 'suggestionscore',
+					width : 100,
+					align : 'center',
+					title : "处理得分",
+				},{
+					field : 'suggestioncount',
+					width : 100,
+					align : 'center',
+					title : "建议数",
+				}] ];
 		return columns;
 	}
 </script>

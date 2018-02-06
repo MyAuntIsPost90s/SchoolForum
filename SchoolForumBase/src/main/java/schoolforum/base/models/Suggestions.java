@@ -35,6 +35,8 @@ public class Suggestions {
 	private Integer suggestiontype;
 	
 	private Integer suggestionstatus;
+	
+	private Integer suggestioncount;
 
 	private Users user;
 
@@ -142,5 +144,13 @@ public class Suggestions {
 	
 	public void setFbuser(Users fbuser) {
 		this.fbuser = fbuser;
+	}
+	
+	public Integer getSuggestioncount() {
+		return suggestioncount;
+	}
+	
+	public void setSuggestioncount(Integer suggestioncount) {
+		this.suggestioncount = suggestioncount;
 	}
 }
