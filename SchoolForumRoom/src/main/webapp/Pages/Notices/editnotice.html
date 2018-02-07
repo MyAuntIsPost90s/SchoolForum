@@ -32,7 +32,7 @@
 		<form id="form-notice" enctype="multipart/form-data">
 			<input name="noticeid" type="hidden" />
 			<input id="type-notice" type="hidden" />
-			<div data-options="region:'north',collapsible:false" title="基本信息" style="height: 165px">
+			<div data-options="region:'east',collapsible:false" title="基本信息" style="width: 300px">
 				<table>
 					<tr>
 						<td>落款时间：</td>
@@ -44,8 +44,9 @@
 					</tr>
 					<tr>
 						<td>标题：</td>
-						<td><input class="easyui-textbox" style="width:350px" type="text" name="noticetitle" data-options="required:true,validType:'length[1,30]'"/></td>
-						<td width="20"></td>
+						<td><input class="easyui-textbox" style="width:180px" type="text" name="noticetitle" data-options="required:true,validType:'length[1,30]'"/></td>
+					</tr>
+					<tr>
 						<td>
 							<button data-options="iconCls:'icon-ok'" class="easyui-linkbutton" onclick="saveNotice()">保存</button>
 						</td>

@@ -173,6 +173,19 @@
       and userId = #{userid}
     </if>
   </select>
+  <select id="getListByTime" resultType="schoolforum.base.models.Votes" parameterType="schoolforum.base.models.Votes" >
+  	select * from votes
+  	where 1=1
+  	<if test="timetype == 0">
+  		<![CDATA[and votebegintime <= now() and voteendtime >= now()]]>
+  	</if>
+  	<if test="timetype == 1">
+  		<![CDATA[and votebegintime > now()]]>
+  	</if>
+  	<if test="timetype == 2">
+  		<![CDATA[and voteendtime < now()]]>
+  	</if>
+  </select>
   
   <select id="count" resultType="java.lang.Long" parameterType="schoolforum.base.models.Votes" >
     select count(*) from votes

@@ -50,8 +50,8 @@
                                     <input id="userheadurl" name="userheadurl" type="file" style="display:none;" />
                                 </dt>
                                 <dd>
-                                    <b class="badge-prompt">用户名</b>
-                                    <span>admin</span>
+                                    <b id="menu-realname" class="badge-prompt">用户名</b>
+                                    <span id="menu-username">admin</span>
                                     <p>权限等级：
                                         <i class="text-success">管理员</i>
                                     </p>
@@ -92,7 +92,7 @@
                                     <span data-href="Suggestions/list.html">建议管理</span>
                                 </li>
                                 <li>
-                                    <span data-href="/Pages/Banners/ExpressionShopList.html">投票管理</span>
+                                    <span data-href="Votes/list.html">投票管理</span>
                                 </li>
                             </ul>
                         </div>
@@ -267,6 +267,8 @@
                     return;
                 }
                 if (data.code == 1) {
+                	$('#menu-realname').html(data.data.realname);
+                	$('#menu-username').html(data.data.username);
                     $("#img-userhead").attr("src", Config.UrlHead + data.data.headimgurl);
                 }
             }, 'json');

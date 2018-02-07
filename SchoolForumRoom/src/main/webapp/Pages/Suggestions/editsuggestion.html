@@ -32,12 +32,13 @@
 		<form id="form-suggestion" enctype="multipart/form-data">
 			<input name="suggestionid" type="hidden" />
 			<input id="type-suggestion" type="hidden" />
-			<div data-options="region:'north',collapsible:false" title="基本信息" style="height: 100px">
+			<div data-options="region:'east',collapsible:false" title="基本信息" style="width: 300px">
 				<table>
 					<tr>
 						<td>标题：</td>
-						<td><input class="easyui-textbox" style="width:350px" type="text" name="suggestiontitle" data-options="required:true,validType:'length[1,30]'"/></td>
-						<td width="20"></td>
+						<td><input class="easyui-textbox" style="width:200px" type="text" name="suggestiontitle" data-options="required:true,validType:'length[1,30]'"/></td>
+					</tr>
+					<tr>
 						<td>
 							<button type="button" data-options="iconCls:'icon-ok'" class="easyui-linkbutton" onclick="saveSuggestion()">保存</button>
 						</td>

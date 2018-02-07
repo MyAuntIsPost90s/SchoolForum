@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>投票</title>
+	<script src="/SchoolForumRoom/Contents/js/jquery.min.js" type="text/javascript"></script>
+	<link href="/SchoolForumRoom/Contents/lib/easyui-theme/themes/insdep/easyui.css" rel="stylesheet" type="text/css">
+	<link href="/SchoolForumRoom/Contents/lib/easyui-theme/themes/insdep/insdep_theme_default.css" rel="stylesheet" type="text/css">
+	<link href="/SchoolForumRoom/Contents/lib/easyui-theme/themes/insdep/icon.css" rel="stylesheet" type="text/css">
+	<link href="/SchoolForumRoom/Contents/lib/easyui-theme/plugin/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet"
+	 type="text/css">
+	<link href="/SchoolForumRoom/Contents/lib/easyui-theme/themes/insdep/easyui_animation.css" rel="stylesheet" type="text/css">
+	<link href="/SchoolForumRoom/Contents/css/syscommon.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="/SchoolForumRoom/Contents/lib/easyui-theme/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="/SchoolForumRoom/Contents/lib/easyui-theme/themes/insdep/jquery.insdep-extend.min.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="/SchoolForumRoom/Contents/css/chart.css" />
+	<script src="/SchoolForumRoom/Contents/js/config.js" type="text/javascript"></script>
+	<script src="/SchoolForumRoom/Contents/js/easyui.util.js" type="text/javascript"></script>
+	<script src="/SchoolForumRoom/Contents/lib/lingshiframework/lingshi_base.js" type="text/javascript"></script>
+</head>
+
+<body>
+	<div data-options="fit:true" class="easyui-layout">
+		<table id="table-vote" title="投票" data-options="toolbar:'#tb-vote'"></table>
+		<div id="tb-vote">
+			筛选：
+			<select id="cb-timetype" class="easyui-combobox" data-options="editable:false,panelHeight:'auto',width:120">
+				<option value="0">进行中</option>
+				<option value="1">未开始</option>
+				<option value="2">已结束</option>
+			</select>
+			<button type="button" data-options="iconCls:'icon-ok'" class="easyui-linkbutton" onclick="loadData()">确定</button>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	$(function () {
+		initDataGrid();
+	});
+
+	//初始化表格
+	function initDataGrid() {
+		EasyUIUtil.initDataGrid('#table-vote', Config.UrlHead + "/Votes/List",getColumns(),{timetype:$('#cb-timetype').combobox('getValue')});
+		var pager = $('#table-vote').datagrid('getPager');
+		pager.pagination({
+			showPageList: true,
+			buttons: [{
+				iconCls: 'icon-add',
+				handler: function () {
+					showAddVote();
+				}
+			}, {
+				iconCls: 'icon-remove',
+				handler: function () {
+					batchDelete();
+				}
+			}],
+			onBeforeRefresh: function () {
+				return true;
+			}
+		});
+	}
+	
+	//加载投票数据
+	function loadData(){
+		$('#table-vote').datagrid('load',{timetype:$('#cb-timetype').combobox('getValue')});
+	}
+
+	function showAddVote() {
+		window.open(Config.UrlHead+"/Pages/Votes/editvote.html?type=add"); 
+	}
+
+	//批量删除
+	function batchDelete() {
+		var rows = $('#table-vote').datagrid('getChecked');
+		if (rows.length < 1) {
+			return;
+		}
+		var ids = [];
+		for (var i = 0; i < rows.length; i++) {
+			ids.push(rows[i].voteid);
+		}
+
+		$.messager.confirm('系统提示', '是否确定删除?', function (r) {
+			if (r) {
+				$.ajax({
+					url: Config.UrlHead + '/Votes/BatchDelete',
+					contentType: "application/json ; charset=utf-8",
+					data: JSON.stringify(ids),
+					method: 'post',
+					dataType: 'json',
+					success: function (data) {
+						$.messager.alert('提示', data.msg);
+						$('#table-vote').datagrid('reload');
+					}
+				});
+			}
+		});
+	}
+
+	//点击删除事件
+	function del(id) {
+		$.messager.confirm('提示', '是否确定删除', function (f) {
+			if (f) {
+				var ids = [];
+				ids.push(id);
+
+				$.ajax({
+					url: Config.UrlHead + '/Votes/BatchDelete',
+					contentType: "application/json ; charset=utf-8",
+					data: JSON.stringify(ids),
+					method: 'post',
+					dataType: 'json',
+					success: function (data) {
+						$.messager.alert('提示', data.msg);
+						$('#table-vote').datagrid('reload');
+					}
+				});
+			}
+		})
+	}
+
+	//点击编辑事件
+	function edit(id) {
+		window.open(Config.UrlHead+"/Pages/Votes/editvote.html?type=edit&id="+id);
+	}
+
+	function getColumns(){
+		var columns=[[
+			{field:'ck',checkbox:true},
+			{ 
+				field:'voteid',
+				width:50,
+				align:'center',
+				title:"操作",
+				formatter:function(val,row){
+					return '<a style="margin-right:10px" onclick="del(\'' + val + '\')">移除</a><a onclick="edit(\'' + val + '\')">编辑</a>';
+				}
+			},
+			{field:'votetitle',width:100,align:'center',title:"标题"},
+			{field:'votebegintime',width:100,align:'center',title:"开始时间"},
+			{field:'voteendtime',width:100,align:'center',title:"结束时间"},
+			{field:'votecreatetime',width:100,align:'center',title:"创建时间"}
+		]];
+		return columns;
+	}
+</script>
+
+</html>

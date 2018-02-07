@@ -41,6 +41,10 @@ public class RandomNum {
 	public static String getCID() {
 		return "C" + getRandom();
 	}
+	
+	public static String getVID() {
+		return "V" + getRandom();
+	}
 
 	private static String getRandom() {
 		if (index == 100)
