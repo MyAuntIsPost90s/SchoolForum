@@ -57,13 +57,13 @@ buildscript {
     }
 }
 gretty {
-	httpPort=8080
+	httpPort=8081
     contextPath ="/${project.name}"  
     servletContainer = 'tomcat7'
     //设置debug监听
     afterEvaluate {
 	    appStartDebug {
-	      debugPort = 8080
+	      debugPort = 8081
 	      debugSuspend = true
 	    }
     }
@@ -110,10 +110,20 @@ dependencies {
     compile 'org.mybatis.generator:mybatis-generator-core:1.3.2'
     compile 'org.mybatis:mybatis-spring:1.2.3'
     compile 'org.mybatis:mybatis:3.3.0'
+    compile 'com.github.miemiedev:mybatis-paginator:1.2.17'
     compile 'junit:junit:4.12'
+    
+    //log
+    compile 'commons-logging:commons-logging:1.1.3'
+    compile 'log4j:log4j:1.2.17'
+    compile 'org.slf4j:slf4j-log4j12:1.7.5'
+    compile 'org.slf4j:slf4j-api:1.7.5'
     
     //c3p0
     compile 'org.hibernate:hibernate-c3p0:4.3.0.Final'
+    
+    //img thumbnailator
+    compile 'net.coobird:thumbnailator:0.4.8'
     
     compile files('src/main/webapp/WEB-INF/lib/lingshi_base.jar') //未加入maven中央库,需要手动加到本地仓库
     compile files('src/main/webapp/WEB-INF/lib/schoolforum_base.jar') //未加入maven中央库,需要手动加到本地仓库

@@ -59,4 +59,29 @@ public class LoginController {
 			requestHolder.err("登陆错误，请联系XXX", e);
 		}
 	}
+	
+	/**
+	 * 客户端登陆接口
+	 * 
+	 * @param request
+	 * @param response
+	 * @param user
+	 */
+	@ResponseBody
+	@RequestMapping("ClientLogin")
+	public void clientLogin(HttpServletRequest request, HttpServletResponse response, Users user) {
+		RequestHolder requestHolder = RequestHolder.get(request, response);
+		try {
+			StringBuffer outmsg = new StringBuffer();
+			user = loginService.clientLogin(user, outmsg);
+			if (user == null) {
+				requestHolder.fail(outmsg.toString());
+				return;
+			}
+			requestHolder.setClientUser(user);
+			requestHolder.success(outmsg.toString(), user);
+		} catch (Exception e) {
+			requestHolder.err("登陆错误，请联系XXX", e);
+		}
+	}
 }
