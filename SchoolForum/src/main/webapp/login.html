@@ -10,6 +10,7 @@
 	<script src="Contents/lib/layui/layui.all.js"></script>
 	<script src="Contents/js/config.js"></script>
 	<script src="Contents/js/md5.js"></script>
+	<script src="Contents/lib/lingshiframework/lingshi_base.js"></script>
 	<title>登陆-schoolforum</title>
 </head>
 <body>
@@ -79,26 +80,28 @@
 	</div>
 </body>
 <script>
-    layui.use('form', function () {
-        var form = layui.form;
-        form.on('submit(login)', function () {
-            var username=$('input[name=username]').val();
-            var password=$('input[name=password]').val();
-            password=hex_md5(password).toUpperCase();
+	$(function(){
+        layui.use('form', function () {
+            var form = layui.form;
+            form.on('submit(login)', function () {
+                var username=$('input[name=username]').val();
+                var password=$('input[name=password]').val();
+                password=hex_md5(password).toUpperCase();
 
-			$.post(Config.UrlHead+'/ClientLogin'
-				,{username:username,password:password}
-				,function(data){
-			    	if(data.code==1){
-			    	    window.location.href="index.html";
-			    	    return;
-					}
-					layer.msg(data.msg);
-				}
-				,'json'
-			)
-			return false;
+                $.post(Config.UrlHead+'/ClientLogin'
+                    ,{username:username,password:password}
+                    ,function(data){
+                        if(data.code==1){
+                            window.location.href="index.html";
+                            return;
+                        }
+                        layer.msg(data.msg);
+                    }
+                    ,'json'
+                )
+                return false;
+            });
         });
-    });
+	})
 </script>
 </html>

@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="schoolforum.base.dao.NoticesMapper" >
+  <resultMap type="schoolforum.base.models.Notices" id="NoticeMap" autoMapping="true">
+  	<id property="noticeid" column="noticeId" />
+  	<association property="user" javaType="schoolforum.base.models.Users" autoMapping="true">
+  		<id property="userid" column="userId" />
+  	</association>
+  </resultMap>
   <select id="getList" resultType="schoolforum.base.models.Notices" parameterType="schoolforum.base.models.Notices" >
     select * from notices
     where 1=1
@@ -24,8 +30,9 @@
     </if>
   </select>
   
-  <select id="getSingle" resultType="schoolforum.base.models.Notices" >
-    select * from notices
+  <select id="getSingle" resultMap="NoticeMap" >
+    select notices.*,users.realname,users.sex,users.birthday,users.phone,users.headimgurl,users.usertype,users.userstatus from notices
+    left join users on notices.userid=users.userid
     where noticeId = #{id}
     limit 0,1
   </select>
@@ -106,8 +113,9 @@
     )
   </delete>
   
-  <select id="getListWithPage" resultType="schoolforum.base.models.Notices" parameterType="schoolforum.base.models.Notices" >
-    select * from notices
+  <select id="getListWithPage" resultMap="NoticeMap" parameterType="schoolforum.base.models.Notices" >
+    select notices.*,users.realname,users.sex,users.birthday,users.phone,users.headimgurl,users.usertype,users.userstatus from notices
+    left join users on notices.userid=users.userid
     where 1=1
     <if test="noticeid != null" >
       and noticeId = #{noticeid}

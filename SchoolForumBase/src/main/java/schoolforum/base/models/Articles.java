@@ -23,6 +23,8 @@ public class Articles {
 
 	private Users user;
 
+	private Integer articlefbcount;
+
 	public String getArticleid() {
 		return articleid;
 	}
@@ -69,5 +71,13 @@ public class Articles {
 
 	public void setUser(Users user) {
 		this.user = user;
+	}
+
+	public Integer getArticlefbcount() {
+		return articlefbcount;
+	}
+
+	public void setArticlefbcount(Integer articlefbcount) {
+		this.articlefbcount = articlefbcount;
 	}
 }

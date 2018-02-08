@@ -41,7 +41,7 @@ public class CommonController {
 				Thumbnails.of(requestFile.getFile().getInputStream()).size(500, 500).outputQuality(0.7)
 						.outputFormat("png").toFile(file);
 
-				String src = Constant.URLHEAD + path;
+				String src ="http://" + request.getServerName()+ ":" + request.getServerPort()+Constant.URLHEAD + path;
 				requestHolder.fail(new LayUIEditImg(src));
 				return;
 			}

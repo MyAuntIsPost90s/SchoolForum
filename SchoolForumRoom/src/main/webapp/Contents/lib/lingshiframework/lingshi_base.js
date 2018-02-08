@@ -7,6 +7,8 @@ $(function() {
 		aysnc : true, // 默认异步加载
 		type : "POST", // 默认使用POST方式
 		dataType : 'JSON',
+		crossDomain: true,
+		xhrFields:{withCredentials:true},
 		headers : { // 默认添加请求头
 			"AppKey" : "LINGSHI8",
 			"AccessToken" : LingShiUtil.getCookie('LingShi_Token'),
@@ -15,7 +17,8 @@ $(function() {
 			// 请求完成处理
 			if (XMLHttpRequest.responseJSON != null
 					&& XMLHttpRequest.responseJSON.msgcode == '0000') {
-				window.location.href = '/SchoolForumRoom/login.html'; // token失效，跳转登陆页面
+				window.location.href = 'login.html'; // token失效，跳转登陆页面
+				return;
 			}
 		}
 	});

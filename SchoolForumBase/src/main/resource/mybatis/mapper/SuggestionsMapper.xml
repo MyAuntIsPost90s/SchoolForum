@@ -2,7 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="schoolforum.base.dao.SuggestionsMapper" >
   <resultMap type="schoolforum.base.models.Suggestions" id="SuggestionMap" autoMapping="true">
-  	<association property="user" javaType="schoolforum.base.models.Users" autoMapping="true"></association>
+  	<id property="suggestionid" column="suggestionId" />
+  	<association property="user" javaType="schoolforum.base.models.Users" autoMapping="true">
+  		<id property="userid" column="userid" />
+  	</association>
   	<association property="fbuser" javaType="schoolforum.base.models.Users">
   		<id property="userid" column="suggestionfbuid" />
   		<result property="realname" column="fu_realname" />

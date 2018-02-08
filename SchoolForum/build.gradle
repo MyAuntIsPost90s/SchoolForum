@@ -57,13 +57,13 @@ buildscript {
     }
 }
 gretty {
-	httpPort=8081
+	httpPort=8082
     contextPath ="/${project.name}"  
     servletContainer = 'tomcat7'
     //设置debug监听
     afterEvaluate {
 	    appStartDebug {
-	      debugPort = 8081
+	      debugPort = 8082
 	      debugSuspend = true
 	    }
     }

@@ -8,116 +8,127 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class Users {
-    private Long userid;
+	private Long userid;
 
-    private String username;
+	private String username;
 
-    private String password;
+	private String password;
 
-    private String realname;
+	private String realname;
 
-    private String sex;
+	private String sex;
 
-    @JSONField (format="yyyy-MM-dd")
-   	@DateTimeFormat(pattern = "yyyy-MM-dd")
-   	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date birthday;
+	@JSONField(format = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+	private Date birthday;
 
-    private String phone;
+	private String phone;
 
-    private String headimgurl;
+	private String headimgurl;
 
-    private String classid;
+	private String classid;
 
-    private Integer usertype;
+	private Integer usertype;
 
-    private Integer userstatus;
+	private Integer userstatus;
 
-    public Long getUserid() {
-        return userid;
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (obj != null && obj instanceof Users) {
+			Users temp = (Users) obj;
+			if (temp.getUserid() == this.userid) {
+				return true;
+			}
+		}
+		return false;
+	}
 
-    public void setUserid(Long userid) {
-        this.userid = userid;
-    }
+	public Long getUserid() {
+		return userid;
+	}
 
-    public String getUsername() {
-        return username;
-    }
+	public void setUserid(Long userid) {
+		this.userid = userid;
+	}
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	public String getUsername() {
+		return username;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    public String getRealname() {
-        return realname;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public void setRealname(String realname) {
-        this.realname = realname;
-    }
+	public String getRealname() {
+		return realname;
+	}
 
-    public String getSex() {
-        return sex;
-    }
+	public void setRealname(String realname) {
+		this.realname = realname;
+	}
 
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
+	public String getSex() {
+		return sex;
+	}
 
-    public Date getBirthday() {
-        return birthday;
-    }
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
 
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
+	public Date getBirthday() {
+		return birthday;
+	}
 
-    public String getPhone() {
-        return phone;
-    }
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
+	public String getPhone() {
+		return phone;
+	}
 
-    public String getHeadimgurl() {
-        return headimgurl;
-    }
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 
-    public void setHeadimgurl(String headimgurl) {
-        this.headimgurl = headimgurl;
-    }
+	public String getHeadimgurl() {
+		return headimgurl;
+	}
 
-    public String getClassid() {
-        return classid;
-    }
+	public void setHeadimgurl(String headimgurl) {
+		this.headimgurl = headimgurl;
+	}
 
-    public void setClassid(String classid) {
-        this.classid = classid;
-    }
+	public String getClassid() {
+		return classid;
+	}
 
-    public Integer getUsertype() {
-        return usertype;
-    }
+	public void setClassid(String classid) {
+		this.classid = classid;
+	}
 
-    public void setUsertype(Integer usertype) {
-        this.usertype = usertype;
-    }
+	public Integer getUsertype() {
+		return usertype;
+	}
 
-    public Integer getUserstatus() {
-        return userstatus;
-    }
+	public void setUsertype(Integer usertype) {
+		this.usertype = usertype;
+	}
 
-    public void setUserstatus(Integer userstatus) {
-        this.userstatus = userstatus;
-    }
+	public Integer getUserstatus() {
+		return userstatus;
+	}
+
+	public void setUserstatus(Integer userstatus) {
+		this.userstatus = userstatus;
+	}
 }
