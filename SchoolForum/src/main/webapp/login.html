@@ -80,6 +80,7 @@
 	</div>
 </body>
 <script>
+	var wintag=0;
 	$(function(){
         layui.use('form', function () {
             var form = layui.form;
@@ -88,9 +89,11 @@
                 var password=$('input[name=password]').val();
                 password=hex_md5(password).toUpperCase();
 
+                wintag=layer.open({type:3});
                 $.post(Config.UrlHead+'/ClientLogin'
                     ,{username:username,password:password}
                     ,function(data){
+                    	layer.close(wintag);
                         if(data.code==1){
                             window.location.href="index.html";
                             return;

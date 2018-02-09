@@ -104,10 +104,7 @@
     <div class="layui-col-md4">
       <dl class="fly-panel fly-list-one">
         <dt class="fly-panel-title">本周热议</dt>
-        <dd>
-          <a href="">基于 layui 的极简社区页面模版</a>
-          <span><i class="iconfont icon-pinglun1"></i> 16</span>
-        </dd>
+        <span id="html-weekhot"></span>
       </dl>
 
       <div class="fly-panel">
@@ -130,12 +127,21 @@
     <a href="http://fly.layui.com/jie/2461/" target="_blank">微信公众号</a>
   </p>
 </div>
+<script id="lay-weekhot" type="text/html">
+  {{#  layui.each(d.rows, function(index, item){ }}
+  <dd>
+    <a href="../Articles/detail.html?id={{item.articleid}}">{{item.articletitle}}</a>
+    <span><i class="iconfont icon-pinglun1"></i> {{item.articlefbcount}}</span>
+  </dd>
+  {{# }); }}
+</script>
 </body>
 <script src="../../Contents/lib/layui/layui.all.js"></script>
 <script>
     $(function(){
         UserModel.loadMe(); //启动导航栏
         loadNotice(); //加载通知信息
+        loadWeekHot();
     })
 
     //加载通知信息
@@ -157,6 +163,16 @@
                     $('#html-notice').html(html);
                 });
             },'json')
+    }
+
+    //加载本周热议
+    function loadWeekHot(){
+        ListModel.initList({
+            url:Config.UrlHead+'/Articles/WeekTopList'
+            ,postData:{page:1,rows:10}
+            ,listId:'html-weekhot'
+            ,tempStr:$('#lay-weekhot').html()
+        });
     }
 </script>
 </html>

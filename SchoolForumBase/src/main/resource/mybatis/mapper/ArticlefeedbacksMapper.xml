@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="schoolforum.base.dao.ArticlefeedbacksMapper" >
-  <select id="getList" resultType="schoolforum.base.models.Articlefeedbacks" parameterType="schoolforum.base.models.Articlefeedbacks" >
-    select * from articlefeedbacks
+  <resultMap type="schoolforum.base.models.Articlefeedbacks" id="ArticleFeedbackMap" autoMapping="true">
+  	<id property="articlefeedbackid" column="articlefeedbackId" />
+  	<association property="fromuser" javaType="schoolforum.base.models.Users" autoMapping="true"></association>
+  	<association property="touser" javaType="schoolforum.base.models.Users">
+  		<id property="userid" column="touserid" />
+  		<result property="realname" column="torealName" />
+  		<result property="headimgurl" column="toheadImgUrl" />
+  	</association>
+  </resultMap>
+  <select id="getList" resultMap="ArticleFeedbackMap" parameterType="schoolforum.base.models.Articlefeedbacks" >
+    SELECT afb.*
+	,fu.userId,fu.realName,fu.headImgUrl
+	,tu.realName torealName,tu.headImgUrl toheadImgUrl
+	FROM articlefeedbacks afb
+	LEFT JOIN users fu ON afb.fromUserId=fu.userId
+	LEFT JOIN users tu ON afb.toUserId=tu.userId
     where 1=1
     <if test="articlefeedbackid != null" >
       and articleFeedbackId = #{articlefeedbackid}
@@ -27,8 +41,27 @@
     </if>
   </select>
   
-  <select id="getSingle" resultType="schoolforum.base.models.Articlefeedbacks" >
-    select * from articlefeedbacks
+  <select id="getFbTopUser" resultMap="ArticleFeedbackMap" >
+  	select temp.*
+  	,fu.userId,fu.realName,fu.headImgUrl
+  	from
+  	(SELECT COUNT(*) articlefeedbackcount,fromuserid,uuid() as articlefeedbackId FROM articlefeedbacks
+    WHERE 1=1
+    <if test="beginTime != null and endTime != null">
+    	and articleFeedbackTime between #{beginTime} and #{endTime}
+    </if>
+   	group by fromuserid) temp
+	LEFT JOIN users fu ON temp.fromUserId=fu.userId
+	order by articlefeedbackcount desc
+  </select>
+  
+  <select id="getSingle" resultMap="ArticleFeedbackMap" >
+     SELECT afb.*
+	,fu.userId,fu.realName,fu.headImgUrl
+	,tu.realName torealName,tu.headImgUrl toheadImgUrl
+	FROM articlefeedbacks afb
+	LEFT JOIN users fu ON afb.fromUserId=fu.userId
+	LEFT JOIN users tu ON afb.toUserId=tu.userId
     where articleFeedbackId = #{id}
     limit 0,1
   </select>
@@ -118,8 +151,13 @@
     )
   </delete>
   
-  <select id="getListWithPage" resultType="schoolforum.base.models.Articlefeedbacks" parameterType="schoolforum.base.models.Articlefeedbacks" >
-    select * from articlefeedbacks
+  <select id="getListWithPage" resultMap="ArticleFeedbackMap" parameterType="schoolforum.base.models.Articlefeedbacks" >
+    SELECT afb.*
+	,fu.userId,fu.realName,fu.headImgUrl
+	,tu.realName torealName,tu.headImgUrl toheadImgUrl
+	FROM articlefeedbacks afb
+	LEFT JOIN users fu ON afb.fromUserId=fu.userId
+	LEFT JOIN users tu ON afb.toUserId=tu.userId
     where 1=1
     <if test="articlefeedbackid != null" >
       and articleFeedbackId = #{articlefeedbackid}
@@ -142,6 +180,7 @@
     <if test="parentid != null" >
       and parentId = #{parentid}
     </if>
+    order by articleFeedbackTime desc
   </select>
   
   <select id="count" resultType="java.lang.Long" parameterType="schoolforum.base.models.Articlefeedbacks" >

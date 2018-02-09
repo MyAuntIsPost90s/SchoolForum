@@ -25,10 +25,26 @@
       and userId = #{userid}
     </if>
   </select>
+  <select id="getListByTime" resultMap="ArticleMap">
+  	select * from
+  	(select articles.*,users.realname,users.sex,users.birthday,users.phone,users.headimgurl,users.usertype,users.userstatus
+    ,(select count(*) from articlefeedbacks where articleid=articles.articleId) articlefbcount from articles 
+    left join users on articles.userid=users.userid) temp
+    where 1=1
+    <if test="beginTime != null and endTime != null">
+    	and articletime between #{beginTime} and #{endTime}
+    </if>
+    <if test="type==0">
+    	order by articletime desc,articlefbcount desc
+    </if>
+    <if test="type==1">
+    	order by articlefbcount desc,articletime desc
+    </if>
+  </select>
   
   <select id="getSingle" resultMap="ArticleMap" >
     select articles.*,users.realname,users.sex,users.birthday,users.phone,users.headimgurl,users.usertype,users.userstatus
-    ,(select count(*) from articlefeedbacks where articleid=articles.articleId)articlefbcount from articles 
+    ,(select count(*) from articlefeedbacks where articleid=articles.articleId) articlefbcount from articles 
     left join users on articles.userid=users.userid
     where articleId = #{id}
     limit 0,1
@@ -103,7 +119,7 @@
   
   <select id="getListWithPage" resultMap="ArticleMap" parameterType="schoolforum.base.models.Articles" >
      select articles.*,users.realname,users.sex,users.birthday,users.phone,users.headimgurl,users.usertype,users.userstatus
-    ,(select count(*) from articlefeedbacks where articleid=articles.articleId)articlefbcount from articles 
+    ,(select count(*) from articlefeedbacks where articleid=articles.articleId) articlefbcount from articles 
     left join users on articles.userid=users.userid
     where 1=1
     <if test="articleid != null" >
@@ -121,6 +137,7 @@
     <if test="userid != null" >
       and userId = #{userid}
     </if>
+    order by articletime desc,articlefbcount desc
   </select>
   
   <select id="count" resultType="java.lang.Long" parameterType="schoolforum.base.models.Articles" >

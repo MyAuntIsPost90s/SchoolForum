@@ -23,6 +23,8 @@ public class Articlefeedbacks {
 
 	private Long touserid;
 
+	private Integer articlefeedbackcount;
+
 	private String parentid;
 
 	private Users fromuser;
@@ -83,6 +85,14 @@ public class Articlefeedbacks {
 
 	public void setParentid(String parentid) {
 		this.parentid = parentid;
+	}
+
+	public Integer getArticlefeedbackcount() {
+		return articlefeedbackcount;
+	}
+
+	public void setArticlefeedbackcount(Integer articlefeedbackcount) {
+		this.articlefeedbackcount = articlefeedbackcount;
 	}
 
 	public Users getFromuser() {

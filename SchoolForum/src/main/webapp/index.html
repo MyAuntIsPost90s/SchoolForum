@@ -10,7 +10,7 @@
   <script src="Contents/js/jquery.min.js"></script>
   <script src="Contents/js/config.js"></script>
   <script src="Contents/lib/lingshiframework/lingshi_base.js"></script>
-  <script src="Contents/js/common.js"></script>
+  <script src="Contents/js/common.js?version=0.0.0"></script>
 </head>
 <body>
 
@@ -73,7 +73,6 @@
       <div class="fly-panel">
         <div class="fly-panel-title fly-filter">
           <a>通知</a>
-          <a href="#signin" class="layui-hide-sm layui-show-xs-block fly-right" id="LAY_goSignin" style="color: #FF5722;">去签到</a>
         </div>
         <ul id="ul-notices" class="fly-list"></ul>
       </div>
@@ -82,6 +81,11 @@
         
         <div class="fly-panel-title fly-filter">
           <a href="" class="layui-this">综合</a>
+          <span class="fly-filter-right layui-hide-xs">
+            <a data-type="0" class="layui-this" style="cursor: pointer" >按最新</a>
+            <span class="fly-mid"></span>
+            <a data-type="1" style="cursor: pointer" >按热议</a>
+          </span>
         </div>
 
         <ul id="html-article" class="fly-list">
@@ -98,142 +102,19 @@
       <div class="fly-panel">
         <h3 class="fly-panel-title">温馨通道</h3>
         <ul class="fly-panel-main fly-list-static">
-          <li>
-            <a href="http://fly.layui.com/jie/4281/" target="_blank">layui 的 GitHub 及 Gitee (码云) 仓库，欢迎Star</a>
-          </li>
-          <li>
-            <a href="http://fly.layui.com/jie/5366/" target="_blank">
-              layui 常见问题的处理和实用干货集锦
-            </a>
-          </li>
-          <li>
-            <a href="http://fly.layui.com/jie/4281/" target="_blank">layui 的 GitHub 及 Gitee (码云) 仓库，欢迎Star</a>
-          </li>
-          <li>
-            <a href="http://fly.layui.com/jie/5366/" target="_blank">
-              layui 常见问题的处理和实用干货集锦
-            </a>
-          </li>
-          <li>
-            <a href="http://fly.layui.com/jie/4281/" target="_blank">layui 的 GitHub 及 Gitee (码云) 仓库，欢迎Star</a>
-          </li>
+          <span id="html-vote"></span>
+          <span id="html-suggest"></span>
         </ul>
       </div>
 
       <div class="fly-panel fly-rank fly-rank-reply" id="LAY_replyRank">
         <h3 class="fly-panel-title">回贴周榜</h3>
-        <dl>
-          <!--<i class="layui-icon fly-loading">&#xe63d;</i>-->
-          <dd>
-            <a href="user/home.html">
-              <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite><i>106次回答</i>
-            </a>
-          </dd>
-          <dd>
-            <a href="user/home.html">
-              <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite><i>106次回答</i>
-            </a>
-          </dd>
-          <dd>
-            <a href="user/home.html">
-              <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite><i>106次回答</i>
-            </a>
-          </dd>
-          <dd>
-            <a href="user/home.html">
-              <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite><i>106次回答</i>
-            </a>
-          </dd>
-          <dd>
-            <a href="user/home.html">
-              <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite><i>106次回答</i>
-            </a>
-          </dd>
-          <dd>
-            <a href="user/home.html">
-              <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite><i>106次回答</i>
-            </a>
-          </dd>
-          <dd>
-            <a href="user/home.html">
-              <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite><i>106次回答</i>
-            </a>
-          </dd>
-          <dd>
-            <a href="user/home.html">
-              <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite><i>106次回答</i>
-            </a>
-          </dd>
-          <dd>
-            <a href="user/home.html">
-              <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite><i>106次回答</i>
-            </a>
-          </dd>
-          <dd>
-            <a href="user/home.html">
-              <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite><i>106次回答</i>
-            </a>
-          </dd>
-          <dd>
-            <a href="user/home.html">
-              <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite><i>106次回答</i>
-            </a>
-          </dd>
-          <dd>
-            <a href="user/home.html">
-              <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"><cite>贤心</cite><i>106次回答</i>
-            </a>
-          </dd>
-        </dl>
+        <dl id="html-fbweektop"></dl>
       </div>
 
       <dl class="fly-panel fly-list-one">
         <dt class="fly-panel-title">本周热议</dt>
-        <dd>
-          <a href="jie/detail.html">基于 layui 的极简社区页面模版</a>
-          <span><i class="iconfont icon-pinglun1"></i> 16</span>
-        </dd>
-        <dd>
-          <a href="jie/detail.html">基于 layui 的极简社区页面模版</a>
-          <span><i class="iconfont icon-pinglun1"></i> 16</span>
-        </dd>
-        <dd>
-          <a href="jie/detail.html">基于 layui 的极简社区页面模版</a>
-          <span><i class="iconfont icon-pinglun1"></i> 16</span>
-        </dd>
-        <dd>
-          <a href="jie/detail.html">基于 layui 的极简社区页面模版</a>
-          <span><i class="iconfont icon-pinglun1"></i> 16</span>
-        </dd>
-        <dd>
-          <a href="jie/detail.html">基于 layui 的极简社区页面模版</a>
-          <span><i class="iconfont icon-pinglun1"></i> 16</span>
-        </dd>
-        <dd>
-          <a href="jie/detail.html">基于 layui 的极简社区页面模版</a>
-          <span><i class="iconfont icon-pinglun1"></i> 16</span>
-        </dd>
-        <dd>
-          <a href="jie/detail.html">基于 layui 的极简社区页面模版</a>
-          <span><i class="iconfont icon-pinglun1"></i> 16</span>
-        </dd>
-        <dd>
-          <a href="jie/detail.html">基于 layui 的极简社区页面模版</a>
-          <span><i class="iconfont icon-pinglun1"></i> 16</span>
-        </dd>
-        <dd>
-          <a href="jie/detail.html">基于 layui 的极简社区页面模版</a>
-          <span><i class="iconfont icon-pinglun1"></i> 16</span>
-        </dd>
-        <dd>
-          <a href="jie/detail.html">基于 layui 的极简社区页面模版</a>
-          <span><i class="iconfont icon-pinglun1"></i> 16</span>
-        </dd>
-
-        <!-- 无数据时 -->
-        <!--
-        <div class="fly-none">没有相关数据</div>
-        -->
+        <span id="html-weekhot" ></span>
       </dl>
 
       <div class="fly-panel">
@@ -297,7 +178,7 @@
     </a>
     <h2>
       <a class="layui-badge">动态</a>
-      <a href="jie/detail.html">{{item.articletitle}}</a>
+      <a href="Pages/Articles/detail.html?id={{item.articleid}}">{{item.articletitle}}</a>
     </h2>
     <div class="fly-list-info">
       <a href="user/home.html" link>
@@ -306,12 +187,44 @@
       </a>
       <span>{{item.articletime}}</span>
       <span class="fly-list-nums">
-                  <i class="iconfont icon-pinglun1" title="回答"></i> {{item.articlefbcount}}
-                </span>
+        <i class="iconfont icon-pinglun1" title="回答"></i> {{item.articlefbcount}}
+      </span>
     </div>
     <div class="fly-list-badge">
     </div>
   </li>
+  {{# }); }}
+</script>
+<script id="lay-weekhot" type="text/html">
+  {{#  layui.each(d.rows, function(index, item){ }}
+  <dd>
+    <a href="Pages/Articles/detail.html?id={{item.articleid}}">{{item.articletitle}}</a>
+    <span><i class="iconfont icon-pinglun1"></i> {{item.articlefbcount}}</span>
+  </dd>
+  {{# }); }}
+</script>
+<script id="lay-suggest" type="text/html">
+  {{#  layui.each(d.rows, function(index, item){ }}
+  <li>
+    <a href="http://fly.layui.com/jie/4281/" target="_blank">[建议] {{item.suggestiontitle}}</a>
+  </li>
+  {{# }); }}
+</script>
+<script id="lay-vote" type="text/html">
+  {{#  layui.each(d.rows, function(index, item){ }}
+  <li>
+    <a href="http://fly.layui.com/jie/4281/" target="_blank">[投票] {{item.votetitle}}</a>
+  </li>
+  {{# }); }}
+</script>
+<script id="lay-fbweektop" type="text/html">
+  {{#  layui.each(d.rows, function(index, item){ }}
+  <dd>
+    <a href="user/home.html">
+      <img src="{{ item.fromuser.headimgurl==''?Config.UrlHead +'/Contents/images/dfthead.png':Config.UrlHead + item.fromuser.headimgurl }}" alt="{{ item.fromuser.realname }}" />
+      <cite>{{ item.fromuser.realname }}</cite><i>{{ item.articlefeedbackcount }} 次回答</i>
+    </a>
+  </dd>
   {{# }); }}
 </script>
 <script src="Contents/lib/layui/layui.all.js"></script>
@@ -319,58 +232,74 @@
   $(function(){
       UserModel.loadMe();
       loadNotices();
-      loadArticles(1,function(count){
-          //使用分页器
-          var laypage = layui.laypage;
-          //总页数低于页码总数
-          laypage.render({
-              elem: 'article-pager'
-              ,limit:10
-              ,count: count //数据总数
-              ,jump: function(obj, first) {
-                  if(!first) {
-                      loadArticles(loadArticles.curr);
-                  }
-              }
-          });
-      });
+      loadArticles(0);
+      loadWarmTip();
+      loadWeekHot();
+      loadFbWeekTop();
+  })
+
+  //切换按最新，按热门
+  $('.fly-filter-right a').click(function(){
+      $('.fly-filter-right a').removeClass('layui-this');
+      $(this).addClass('layui-this');
+      loadArticles($(this).attr('data-type'));
   })
 
   //加载公告
   function loadNotices(){
-      $.post(Config.UrlHead+'/Notices/List'
-          ,{page:1,rows:6}  //最多6条
-          ,function(data){
-              if(data.code!=1){
-                  layer.msg(data.msg);
-                  return;
-              }
-              var model=data.data;
-              var temp = $('#lay-notice').html();
-              layui.laytpl(temp).render(model,function(html){
-                  $('#ul-notices').html(html);
-              });
-          },'json')
+      ListModel.initList({
+          url:Config.UrlHead+'/Notices/List'
+          ,postData:{page:1,rows:6}
+          ,listId:'ul-notices'
+          ,tempStr:$('#lay-notice').html()
+      });
   }
 
   //加载帖子
-  function loadArticles(page,callback){
-      $.post(Config.UrlHead+'/Articles/List'
-          ,{page:page,rows:10}
-          ,function(data){
-              if(data.code!=1){
-                  layer.msg(data.msg);
-                  return;
-              }
-              var model=data.data;
-              var temp = $('#lay-article').html();
-              layui.laytpl(temp).render(model,function(html){
-                  $('#html-article').html(html);
-              });
-              if(callback!=null) {
-                  callback(data.data.total);
-              }
-          },'json')
+  function loadArticles(type){
+      ListModel.initList({
+          url:Config.UrlHead+'/Articles/TypeList'
+          ,postData:{page:1,rows:10,type:type}
+          ,listId:'html-article'
+          ,tempStr:$('#lay-article').html()
+          ,pageId:'article-pager'
+      });
+  }
+
+  //加载温馨提示
+  function loadWarmTip() {
+      ListModel.initList({
+          url:Config.UrlHead+'/Suggestions/List'
+          ,postData:{page:1,rows:2}
+          ,listId:'html-suggest'
+          ,tempStr:$('#lay-suggest').html()
+      });
+      ListModel.initList({
+          url:Config.UrlHead+'/Votes/List'
+          ,postData:{page:1,rows:2}
+          ,listId:'html-vote'
+          ,tempStr:$('#lay-vote').html()
+      });
+  }
+
+  //加载本周热议
+  function loadWeekHot(){
+      ListModel.initList({
+          url:Config.UrlHead+'/Articles/WeekTopList'
+          ,postData:{page:1,rows:10}
+          ,listId:'html-weekhot'
+          ,tempStr:$('#lay-weekhot').html()
+      });
+  }
+
+  //加载回复周榜
+  function loadFbWeekTop(){
+      ListModel.initList({
+          url:Config.UrlHead+'/ArticleFeedbacks/WeekTopList'
+          ,postData:{page:1,rows:10}
+          ,listId:'html-fbweektop'
+          ,tempStr:$('#lay-fbweektop').html()
+      });
   }
 </script>
 </body>

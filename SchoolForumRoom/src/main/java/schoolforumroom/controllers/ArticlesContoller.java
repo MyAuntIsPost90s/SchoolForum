@@ -58,6 +58,45 @@ public class ArticlesContoller {
 	}
 	
 	/**
+	 * 根据排序类型获取列表
+	 * @param request
+	 * @param response
+	 * @param page
+	 * @param rows
+	 * @param type
+	 */
+	@ResponseBody
+	@RequestMapping("TypeList")
+	public void typeList(HttpServletRequest request, HttpServletResponse response, int page, int rows, Integer type) {
+		RequestHolder requestHolder = RequestHolder.get(request, response);
+		try {
+			EUIPageList<Articles> list = articlesService.getListByType(type, page, rows);
+			requestHolder.success(list);
+		} catch (Exception e) {
+			requestHolder.err("获取集合失败", e);
+		}
+	}
+	
+	/**
+	 * 获取本周热议列表
+	 * @param request
+	 * @param response
+	 * @param page
+	 * @param rows
+	 */
+	@ResponseBody
+	@RequestMapping("WeekTopList")
+	public void weekTopList(HttpServletRequest request, HttpServletResponse response, int page, int rows) {
+		RequestHolder requestHolder = RequestHolder.get(request, response);
+		try {
+			EUIPageList<Articles> list = articlesService.getWeekHotList(page, rows);
+			requestHolder.success(list);
+		} catch (Exception e) {
+			requestHolder.err("获取集合失败", e);
+		}
+	}
+	
+	/**
 	 * 话题修改
 	 * 
 	 * @param request
