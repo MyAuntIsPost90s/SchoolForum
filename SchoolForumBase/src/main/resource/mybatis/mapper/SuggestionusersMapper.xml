@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="schoolforum.base.dao.SuggestionusersMapper" >
-  <select id="getList" resultType="schoolforum.base.models.Suggestionusers" parameterType="schoolforum.base.models.Suggestionusers" >
-    select * from suggestionusers
+  <resultMap type="schoolforum.base.models.Suggestionusers" id="SuggestionUserMap" autoMapping="true">
+  	<id property="suggestionuserid" column="suggestionUserId" />
+  	<association property="user" javaType="schoolforum.base.models.Users" autoMapping="true">
+  		<id property="userid" column="userid" />
+  	</association>
+  </resultMap>
+  <select id="getList" resultMap="SuggestionUserMap" parameterType="schoolforum.base.models.Suggestionusers" >
+    select users.*,suggestionusers.suggestionUserId,suggestionusers.suggestionid from suggestionusers
+    left join users on suggestionusers.userid=users.userid
     where 1=1
     <if test="suggestionid != null" >
       and suggestionId = #{suggestionid}
@@ -12,8 +19,9 @@
     </if>
   </select>
   
-  <select id="getSingle" resultType="schoolforum.base.models.Suggestionusers" >
-    select * from suggestionusers
+  <select id="getSingle" resultMap="SuggestionUserMap" >
+    select users.*,suggestionusers.suggestionUserId,suggestionusers.suggestionid from suggestionusers
+    left join users on suggestionusers.userid=users.userid
     where suggestionId = #{id}
     limit 0,1
   </select>
@@ -21,6 +29,9 @@
   <insert id="insert" parameterType="schoolforum.base.models.Suggestionusers" >
     insert into suggestionusers
     <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="suggestionuserid != null">
+      	suggestionuserid,
+      </if>
       <if test="suggestionid != null" >
         suggestionId,
       </if>
@@ -29,6 +40,9 @@
       </if>
     </trim>
     <trim prefix="values(" suffix=")" suffixOverrides="," >
+      <if test="suggestionuserid != null">
+      	#{suggestionuserid},
+      </if>
       <if test="suggestionid != null" >
         #{suggestionid},
       </if>
@@ -46,20 +60,21 @@
       </if>
     </set>
     where
-    suggestionId = #{suggestionid}
+    suggestionUserId = #{suggestionUserId}
   </update>
   
   <delete id="batchDelete" >
     delete from suggestionusers
-    where suggestionId in(
+    where suggestionUserId in(
     <foreach item="item" collection="list" separator="," >
       #{item}
     </foreach>
     )
   </delete>
   
-  <select id="getListWithPage" resultType="schoolforum.base.models.Suggestionusers" parameterType="schoolforum.base.models.Suggestionusers" >
-    select * from suggestionusers
+  <select id="getListWithPage" resultMap="SuggestionUserMap" parameterType="schoolforum.base.models.Suggestionusers" >
+    select users.*,suggestionusers.suggestionUserId,suggestionusers.suggestionid from suggestionusers
+    left join users on suggestionusers.userid=users.userid
     where 1=1
     <if test="suggestionid != null" >
       and suggestionId = #{suggestionid}
