@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>投票</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link href="../../Contents/lib/layui/css/layui.css" rel="stylesheet" type="text/css">
+  <link href="../../Contents/css/global.css?version=0" rel="stylesheet" type="text/css">
+
+  <script src="../../Contents/js/jquery.min.js"></script>
+  <script src="../../Contents/js/config.js"></script>
+  <script src="../../Contents/lib/lingshiframework/lingshi_base.js"></script>
+  <script src="../../Contents/js/common.js?version=0"></script>
+  <style>
+
+  </style>
+</head>
+<body>
+
+<div class="fly-header layui-bg-black">
+  <div class="layui-container">
+    <a class="fly-logo" href="/">
+      <img src="../../Contents/images/logo.png" alt="layui">
+    </a>
+    <ul class="layui-nav fly-nav layui-hide-xs">
+      <li class="layui-nav-item layui-this">
+        <a href="/"><i class="iconfont icon-jiaoliu"></i>交流</a>
+      </li>
+    </ul>
+
+    <ul class="layui-nav fly-nav-user">
+        <!-- 登入后的状态 -->
+        <li class="layui-nav-item">
+          <a class="fly-nav-avatar" href="javascript:;">
+            <cite class="layui-hide-xs" id="header-realname"></cite>
+            <i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：layui 作者"></i>
+            <img id="header-headimgurl" src=""/>
+          </a>
+          <dl class="layui-nav-child">
+            <dd><a href="user/set.html"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
+            <dd><a href="user/message.html"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a></dd>
+            <dd><a href="user/home.html"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a>
+            </dd>
+            <hr style="margin: 5px 0;">
+            <dd><a href="/user/logout/" style="text-align: center;">退出</a></dd>
+          </dl>
+        </li>
+    </ul>
+  </div>
+</div>
+
+<div class="fly-panel fly-column">
+  <div class="layui-container">
+    <ul class="layui-clear">
+      <li class="layui-hide-xs"><a href="../../index.html">首页</a></li>
+      <li><a href="jie/index.html">建议</a></li>
+      <li><a href="jie/index.html">投票</a></li>
+      <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><span class="fly-mid"></span></li>
+
+      <!-- 用户登入后显示 -->
+      <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><a href="user/index.html">我发表的贴</a></li>
+    </ul>
+
+    <div class="fly-column-right layui-hide-xs">
+      <a href="jie/add.html" class="layui-btn">发表新帖</a>
+    </div>
+    <div class="layui-hide-sm layui-show-xs-block" style="margin-top: -10px; padding-bottom: 10px; text-align: center;">
+      <a href="jie/add.html" class="layui-btn">发表新帖</a>
+    </div>
+  </div>
+</div>
+
+<div class="layui-container">
+
+  <div class="layui-row layui-col-space15">
+    <div class="layui-col-md8 content detail">
+      <div id="html-vote" class="fly-panel detail-box">
+        <script id="lay-vote" type="text/html">
+          <h1>{{d.votetitle}}</h1>
+          <div class="fly-detail-info">
+            <span class="layui-badge layui-bg-green fly-detail-column">投票</span>
+          </div>
+          <div class="detail-about">
+            <a class="fly-avatar" href="../user/home.html">
+              <img src="{{d.user.headimgurl==''?Config.UrlHead +'/Contents/images/dfthead.png':Config.UrlHead + d.user.headimgurl}}"
+                   alt="{{d.user.realname}}">
+            </a>
+            <div class="fly-detail-user">
+              <a href="../user/home.html" class="fly-link">
+                <cite>{{d.user.realname}}</cite>
+                <i class="iconfont icon-renzheng" title="认证信息：{{ d.user.approve }}"></i>
+              </a>
+            </div>
+            <div class="detail-hits" id="LAY_jieAdmin">
+              <span style="padding-right: 10px; color: #FF7200">创建时间: {{d.votecreatetime}}</span>
+              <span style="padding-right: 10px; color: #FF7200">截至时间: {{d.voteendtime}}</span>
+            </div>
+          </div>
+          <div class="detail-body photos">
+            <!--通知内容区-->
+            {{d.votecontent}}
+          </div>
+        </script>
+      </div>
+
+      <div class="fly-panel detail-box" id="flyReply">
+        <fieldset class="layui-elem-field layui-field-title" style="text-align: center;">
+          <legend>投票项</legend>
+        </fieldset>
+
+        <ul class="jieda" id="html-voteitems"></ul>
+
+        <button id="btn-vote" class="layui-btn layui-btn-disabled" onclick="vote()">我要投票</button>
+      </div>
+    </div>
+
+    <div class="layui-col-md4">
+      <dl class="fly-panel fly-list-one">
+        <dt class="fly-panel-title">本周热议</dt>
+        <span id="html-weekhot"></span>
+      </dl>
+
+      <div class="fly-panel">
+        <div class="fly-panel-title">
+          这里放广告
+        </div>
+        <div class="fly-panel-main">
+          <a href="http://layim.layui.com/?from=fly" target="_blank" class="fly-zanzhu" time-limit="2017.09.25-2099.01.01" style="background-color: #5FB878;">LayIM 3.0 - layui 旗舰之作</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="fly-footer">
+  <p><a href="http://fly.layui.com/" target="_blank">Fly社区</a> 2017 &copy; <a href="http://www.layui.com/" target="_blank">layui.com 出品</a></p>
+  <p>
+    <a href="http://fly.layui.com/jie/3147/" target="_blank">付费计划</a>
+    <a href="http://www.layui.com/template/fly/" target="_blank">获取Fly社区模版</a>
+    <a href="http://fly.layui.com/jie/2461/" target="_blank">微信公众号</a>
+  </p>
+</div>
+
+<script id="lay-voteitems" type="text/html">
+  {{#  layui.each(d, function(index, item){ }}
+  <li>
+    <div class="detail-about detail-about-reply" style="padding-left: 0">
+      <input type="radio" name="voteitem" data-name="{{ item.name }}" id="l_{{ item.id }}" />
+      <label for="l_{{ item.id }}">{{ item.name }}</label>
+      <label style="float: right">支持数量 {{ item.count }}</label>
+    </div>
+  </li>
+  {{# }); }}
+</script>
+<script id="lay-weekhot" type="text/html">
+  {{#  layui.each(d.rows, function(index, item){ }}
+  <dd>
+    <a href="../Articles/detail.html?id={{item.articleid}}">{{item.articletitle}}</a>
+    <span><i class="iconfont icon-pinglun1"></i> {{item.articlefbcount}}</span>
+  </dd>
+  {{# }); }}
+</script>
+</body>
+<script src="../../Contents/lib/layui/layui.all.js"></script>
+<script>
+    var voteid=LingShiUtil.getParam('id');
+    $(function(){
+        UserModel.loadMe(); //启动导航栏
+        loadVote(); //加载通知信息
+        loadWeekHot();
+        isVote();
+    })
+
+    //加载建议信息
+    function loadVote(){
+        if(voteid==null){
+            return;
+        }
+        $.post(Config.UrlHead+'/Votes/Single'
+              ,{id:voteid}
+              ,function(data){
+                if(data.code!=1){
+                    layer.msg(data.msg);
+                    return;
+                }
+
+                var temp=$('#lay-vote').html();
+                layui.laytpl(temp).render(data.data,function(html){
+                    $('#html-vote').html(html);
+                });
+
+                //加载投票项
+                var list=changeStrToVoteItem(data.data.votefield,data.data.votevalue);
+                temp=$('#lay-voteitems').html();
+                layui.laytpl(temp).render(list,function(html){
+                    $('#html-voteitems').html(html);
+                });
+            },'json');
+    }
+
+    //加载本周热议
+    function loadWeekHot(){
+        ListModel.initList({
+            url:Config.UrlHead+'/Articles/WeekTopList'
+            ,postData:{page:1,rows:10}
+            ,listId:'html-weekhot'
+            ,tempStr:$('#lay-weekhot').html()
+        });
+    }
+
+    //投票
+    function vote(){
+        if($('#btn-vote').hasClass('layui-btn-disabled')){
+            return;
+        }
+        //获取选中的值
+        var name=$('input[name=voteitem]:checked').attr('data-name');
+        if(name==null){
+            layer.msg('至少需要选中一个投票项');
+            return;
+        }
+        $.post(Config.UrlHead+"/VoteUsers/Vote"
+              ,{voteid:voteid,votefield:name}
+              ,function(data){
+                if(data.code==1){
+                    window.location.href=window.location.href;
+                    return;
+                }
+                layer.msg(data.msg);
+            },'json')
+    }
+
+    //判断是否投过票
+    function isVote(){
+        $.post(Config.UrlHead+"/VoteUsers/Exist"
+              ,{voteid:voteid}
+              ,function(data){
+              if(data.data!=false){
+                $('#btn-vote').addClass('layui-btn-disabled');
+                $('#btn-vote').html('已经投过票了');
+              }
+            },'json')
+    }
+
+    //逆向转换
+    function changeStrToVoteItem(votefield,votevalue){
+        var votefields=votefield.split(',');
+        var votevalues=votevalue.split(',');
+        var voteitem=[];
+
+        for(var i=0;i<votevalues.length;i++){
+            if(votefields[i]=='')
+                continue;
+            voteitem.push({id:voteitem.length,name:votefields[i],count:votevalues[i]});
+        }
+        return voteitem;
+    }
+</script>
+</html>

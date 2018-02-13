@@ -27,6 +27,8 @@ public class Articlefeedbacks {
 
 	private String parentid;
 
+	/** DTO部分 **/
+
 	private Users fromuser;
 
 	private Users touser;

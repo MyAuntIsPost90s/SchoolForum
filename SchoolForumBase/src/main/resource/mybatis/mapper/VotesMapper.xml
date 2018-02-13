@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="schoolforum.base.dao.VotesMapper" >
-  <select id="getList" resultType="schoolforum.base.models.Votes" parameterType="schoolforum.base.models.Votes" >
-    select * from votes
+  <resultMap type="schoolforum.base.models.Votes" id="VoteMap" autoMapping="true">
+  	<id property="voteid" column="voteId" />
+  	<association property="user" javaType="schoolforum.base.models.Users" autoMapping="true">
+  		<id property="userid" column="userId" />
+  	</association>
+  </resultMap>
+  <select id="getList" resultMap="VoteMap" parameterType="schoolforum.base.models.Votes" >
+    select votes.*
+    ,users.realname,users.sex,users.birthday,users.phone,users.headimgurl,users.usertype,users.userstatus
+    from votes
+    left join users on votes.userid=users.userid
     where 1=1
     <if test="voteid != null" >
       and voteId = #{voteid}
@@ -33,8 +42,11 @@
     </if>
   </select>
   
-  <select id="getSingle" resultType="schoolforum.base.models.Votes" >
-    select * from votes
+  <select id="getSingle" resultMap="VoteMap" >
+    select votes.*
+    ,users.realname,users.sex,users.birthday,users.phone,users.headimgurl,users.usertype,users.userstatus
+    from votes
+    left join users on votes.userid=users.userid
     where voteId = #{id}
     limit 0,1
   </select>
@@ -142,8 +154,11 @@
     )
   </delete>
   
-  <select id="getListWithPage" resultType="schoolforum.base.models.Votes" parameterType="schoolforum.base.models.Votes" >
-    select * from votes
+  <select id="getListWithPage" resultMap="VoteMap" parameterType="schoolforum.base.models.Votes" >
+     select votes.*
+    ,users.realname,users.sex,users.birthday,users.phone,users.headimgurl,users.usertype,users.userstatus
+    from votes
+    left join users on votes.userid=users.userid
     where 1=1
     <if test="voteid != null" >
       and voteId = #{voteid}
@@ -173,8 +188,11 @@
       and userId = #{userid}
     </if>
   </select>
-  <select id="getListByTime" resultType="schoolforum.base.models.Votes" parameterType="schoolforum.base.models.Votes" >
-  	select * from votes
+  <select id="getListByTime" resultMap="VoteMap" parameterType="schoolforum.base.models.Votes" >
+  	select votes.*
+    ,users.realname,users.sex,users.birthday,users.phone,users.headimgurl,users.usertype,users.userstatus
+    from votes
+    left join users on votes.userid=users.userid
   	where 1=1
   	<if test="timetype == 0">
   		<![CDATA[and votebegintime <= now() and voteendtime >= now()]]>
@@ -218,5 +236,5 @@
       and userId = #{userid}
     </if>
   </select>
-  
+
 </mapper>

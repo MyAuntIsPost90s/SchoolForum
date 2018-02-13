@@ -23,6 +23,8 @@ public class Notices {
 
 	private Long userid;
 
+	/** DTO部分 **/
+
 	private Users user;
 
 	public String getNoticeid() {

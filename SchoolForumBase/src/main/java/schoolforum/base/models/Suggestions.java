@@ -33,10 +33,12 @@ public class Suggestions {
 	private Long suggestionfbuid;
 
 	private Integer suggestiontype;
-	
+
 	private Integer suggestionstatus;
-	
+
 	private Integer suggestioncount;
+
+	/** DTO部分 **/
 
 	private Users user;
 
@@ -121,11 +123,11 @@ public class Suggestions {
 	public void setSuggestiontype(Integer suggestiontype) {
 		this.suggestiontype = suggestiontype;
 	}
-	
+
 	public Integer getSuggestionstatus() {
 		return suggestionstatus;
 	}
-	
+
 	public void setSuggestionstatus(Integer suggestionstatus) {
 		this.suggestionstatus = suggestionstatus;
 	}
@@ -141,15 +143,15 @@ public class Suggestions {
 	public Users getFbuser() {
 		return fbuser;
 	}
-	
+
 	public void setFbuser(Users fbuser) {
 		this.fbuser = fbuser;
 	}
-	
+
 	public Integer getSuggestioncount() {
 		return suggestioncount;
 	}
-	
+
 	public void setSuggestioncount(Integer suggestioncount) {
 		this.suggestioncount = suggestioncount;
 	}

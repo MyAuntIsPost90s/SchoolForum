@@ -8,102 +8,113 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class Votes {
-    private String voteid;
+	private String voteid;
 
-    private String votetitle;
+	private String votetitle;
 
-    private String votecontent;
+	private String votecontent;
 
-    private String votefield;
+	private String votefield;
 
-    private String votevalue;
+	private String votevalue;
 
-    @JSONField (format="yyyy-MM-dd HH:mm:ss")
-   	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-   	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date votebegintime;
+	@JSONField(format = "yyyy-MM-dd HH:mm:ss")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	private Date votebegintime;
 
-    @JSONField (format="yyyy-MM-dd HH:mm:ss")
-   	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-   	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date voteendtime;
+	@JSONField(format = "yyyy-MM-dd HH:mm:ss")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	private Date voteendtime;
 
-    @JSONField (format="yyyy-MM-dd HH:mm:ss")
-   	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-   	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date votecreatetime;
+	@JSONField(format = "yyyy-MM-dd HH:mm:ss")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+	private Date votecreatetime;
 
-    private Long userid;
+	private Long userid;
 
-    public String getVoteid() {
-        return voteid;
-    }
+	/** DTO部分 **/
+	private Users user;
 
-    public void setVoteid(String voteid) {
-        this.voteid = voteid;
-    }
+	public String getVoteid() {
+		return voteid;
+	}
 
-    public String getVotetitle() {
-        return votetitle;
-    }
+	public void setVoteid(String voteid) {
+		this.voteid = voteid;
+	}
 
-    public void setVotetitle(String votetitle) {
-        this.votetitle = votetitle;
-    }
+	public String getVotetitle() {
+		return votetitle;
+	}
 
-    public String getVotecontent() {
-        return votecontent;
-    }
+	public void setVotetitle(String votetitle) {
+		this.votetitle = votetitle;
+	}
 
-    public void setVotecontent(String votecontent) {
-        this.votecontent = votecontent;
-    }
+	public String getVotecontent() {
+		return votecontent;
+	}
 
-    public String getVotefield() {
-        return votefield;
-    }
+	public void setVotecontent(String votecontent) {
+		this.votecontent = votecontent;
+	}
 
-    public void setVotefield(String votefield) {
-        this.votefield = votefield;
-    }
+	public String getVotefield() {
+		return votefield;
+	}
 
-    public String getVotevalue() {
-        return votevalue;
-    }
+	public void setVotefield(String votefield) {
+		this.votefield = votefield;
+	}
 
-    public void setVotevalue(String votevalue) {
-        this.votevalue = votevalue;
-    }
+	public String getVotevalue() {
+		return votevalue;
+	}
 
-    public Date getVotebegintime() {
-        return votebegintime;
-    }
+	public void setVotevalue(String votevalue) {
+		this.votevalue = votevalue;
+	}
 
-    public void setVotebegintime(Date votebegintime) {
-        this.votebegintime = votebegintime;
-    }
+	public Date getVotebegintime() {
+		return votebegintime;
+	}
 
-    public Date getVoteendtime() {
-        return voteendtime;
-    }
+	public void setVotebegintime(Date votebegintime) {
+		this.votebegintime = votebegintime;
+	}
 
-    public void setVoteendtime(Date voteendtime) {
-        this.voteendtime = voteendtime;
-    }
+	public Date getVoteendtime() {
+		return voteendtime;
+	}
 
-    public Date getVotecreatetime() {
-        return votecreatetime;
-    }
+	public void setVoteendtime(Date voteendtime) {
+		this.voteendtime = voteendtime;
+	}
 
-    public void setVotecreatetime(Date votecreatetime) {
-        this.votecreatetime = votecreatetime;
-    }
+	public Date getVotecreatetime() {
+		return votecreatetime;
+	}
 
-    public Long getUserid() {
-        return userid;
-    }
+	public void setVotecreatetime(Date votecreatetime) {
+		this.votecreatetime = votecreatetime;
+	}
 
-    public void setUserid(Long userid) {
-        this.userid = userid;
-    }
+	public Long getUserid() {
+		return userid;
+	}
+
+	public void setUserid(Long userid) {
+		this.userid = userid;
+	}
+
+	public Users getUser() {
+		return user;
+	}
+
+	public void setUser(Users user) {
+		this.user = user;
+	}
 }

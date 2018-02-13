@@ -21,6 +21,8 @@ public class Articles {
 
 	private Long userid;
 
+	/** DTO部分 **/
+
 	private Users user;
 
 	private Integer articlefbcount;

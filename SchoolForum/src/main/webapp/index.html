@@ -213,7 +213,7 @@
 <script id="lay-vote" type="text/html">
   {{#  layui.each(d.rows, function(index, item){ }}
   <li>
-    <a href="http://fly.layui.com/jie/4281/" target="_blank">[投票] {{item.votetitle}}</a>
+    <a href="Pages/Votes/detail.html?id={{item.voteid}}" target="_blank">[投票] {{item.votetitle}}</a>
   </li>
   {{# }); }}
 </script>
@@ -276,7 +276,7 @@
       });
       ListModel.initList({
           url:Config.UrlHead+'/Votes/List'
-          ,postData:{page:1,rows:2}
+          ,postData:{page:1,rows:2,timetype:0}
           ,listId:'html-vote'
           ,tempStr:$('#lay-vote').html()
       });
