@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>用户中心</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link href="../../Contents/lib/layui/css/layui.css" rel="stylesheet" type="text/css">
+  <link href="../../Contents/css/global.css" rel="stylesheet" type="text/css">
+
+  <script src="../../Contents/js/jquery.min.js"></script>
+  <script src="../../Contents/js/config.js?version=0"></script>
+  <script src="../../Contents/lib/lingshiframework/lingshi_base.js?version=0"></script>
+  <script src="../../Contents/js/common.js?version=0.0.0"></script>
+</head>
+<body style="margin-top: 65px;">
+
+<div class="fly-header layui-bg-black">
+  <div class="layui-container">
+    <a class="fly-logo" href="/">
+      <img src="../../Contents/images/logo.png" alt="layui">
+    </a>
+    <ul class="layui-nav fly-nav layui-hide-xs">
+      <li class="layui-nav-item layui-this">
+        <a href="/"><i class="iconfont icon-jiaoliu"></i>交流</a>
+      </li>
+    </ul>
+
+    <ul class="layui-nav fly-nav-user">
+      <!-- 登入后的状态 -->
+      <li class="layui-nav-item">
+        <a class="fly-nav-avatar" href="javascript:">
+          <cite class="layui-hide-xs" id="header-realname"></cite>
+          <i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：layui 作者"></i>
+          <img id="header-headimgurl" src=""/>
+        </a>
+        <dl class="layui-nav-child">
+          <dd><a href="user/set.html"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
+          <dd><a href="user/message.html"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a></dd>
+          <dd><a href="#"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a>
+          </dd>
+          <hr style="margin: 5px 0;">
+          <dd><a href="/user/logout/" style="text-align: center;">退出</a></dd>
+        </dl>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div id="html-userinfo" class="fly-home fly-panel" style="background-image: url();">
+
+</div>
+
+<div class="layui-container">
+  <div class="layui-row layui-col-space15">
+    <div class="layui-col-md6 fly-home-jie">
+      <div class="fly-panel">
+        <h3 class="fly-panel-title">最近的话题</h3>
+        <ul class="jie-row" id="html-historyarticle"></ul>
+      </div>
+    </div>
+    
+    <div class="layui-col-md6 fly-home-da">
+      <div class="fly-panel">
+        <h3 class="fly-panel-title">最近的回答</h3>
+        <ul id="html-feedback" class="home-jieda">
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="fly-footer">
+  <p><a href="http://fly.layui.com/" target="_blank">Fly社区</a> 2017 &copy; <a href="http://www.layui.com/" target="_blank">layui.com 出品</a></p>
+  <p>
+    <a href="http://fly.layui.com/jie/3147/" target="_blank">付费计划</a>
+    <a href="http://www.layui.com/template/fly/" target="_blank">获取Fly社区模版</a>
+    <a href="http://fly.layui.com/jie/2461/" target="_blank">微信公众号</a>
+  </p>
+</div>
+
+<script id="lay-userinfo" type="text/html">
+  <img src="{{ d.headimgurl==''?Config.UrlHead +'/Contents/images/dfthead.png':Config.UrlHead + d.headimgurl }}" alt="贤心">
+  <i class="iconfont icon-renzheng" title="Fly社区认证"></i>
+  <h1>
+    {{d.realname}}
+    <i class="iconfont icon-nan"></i>
+  </h1>
+
+  <p style="padding: 10px 0; color: #5FB878;">认证信息：{{d.realname}}</p>
+
+  <p class="fly-home-info">
+    <i class="iconfont icon-shijian"></i><span>生日: {{d.birthday}}</span>
+  </p>
+</script>
+<script id="lay-historyarticle" type="text/html">
+  {{#  layui.each(d.rows, function(index, item){ }}
+    <li>
+      <a href="../Articles/detail.html?id={{ item.articleid }}" class="jie-title"> {{ item.articletitle }}</a>
+      <i>{{ item.articletime }}</i>
+      <em class="layui-hide-xs">{{ item.articlefbcount }} 回</em>
+    </li>
+  {{# }) }}
+  {{# if(d.rows.length<1) { }}
+    <div class="fly-none" style="min-height: 50px; padding:30px 0; height:auto;"><i style="font-size:14px;">没有发表任何求解</i></div>
+  {{# } }}
+</script>
+<script id="lay-feedback" type="text/html">
+  {{#  layui.each(d.rows, function(index, item){ }}
+  <li>
+    <p>
+      <span>{{ item.articlefeedbacktime }}</span>
+      在<a href="../Articles/detail.html?id={{ item.articleid }}" target="_blank">{{ item.articletitle }}</a>中回答：
+    </p>
+    <div class="home-dacontent">
+      {{ item.articlefeedbackcontent }}
+    </div>
+  </li>
+  {{# }) }}
+  {{# if(d.rows.length<1) { }}
+    <div class="fly-none" style="min-height: 50px; padding:30px 0; height:auto;"><span>没有回答任何问题</span></div>
+  {{# } }}
+</script>
+<script src="../../Contents/lib/layui/layui.all.js"></script>
+<script>
+    var userid=LingShiUtil.getParam('id');
+    $(function() {
+        UserModel.loadMe(); //启动导航栏
+        loadUserInfo();
+        loadHistoryArticle();
+        loadHistoryFeedback();
+    });
+
+    //加载该用户信息
+    function loadUserInfo(){
+        var user = UserModel.loadUser(userid); //加载用户信息
+        layui.laytpl($('#lay-userinfo').html()).render(user,function(html){
+           $('#html-userinfo').html(html);
+        });
+    }
+
+    //加载我发布过的话题
+    function  loadHistoryArticle() {
+        ListModel.initList({
+            url:Config.UrlHead+'/Articles/TypeList'
+            ,postData:{page:1,rows:15,type:0,userid:userid}
+            ,listId:'html-historyarticle'
+            ,tempStr:$('#lay-historyarticle').html()
+        });
+    }
+
+    function loadHistoryFeedback(){
+        ListModel.initList({
+            url:Config.UrlHead+'/ArticleFeedbacks/List'
+            ,postData:{page:1,rows: 10,fromuserid:userid}
+            ,listId:'html-feedback'
+            ,tempStr:$('#lay-feedback').html()
+        })
+    }
+</script>
+</body>
+</html>

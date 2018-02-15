@@ -1,6 +1,23 @@
 //我的信息加载器
 var UserModel={
+    loadUser:function (id) {
+        var user=null;
+        $.ajaxSetup({async:false});
+        $.post(Config.UrlHead+'/Users/Single'
+            ,{id:id}
+            ,function(data){
+                if(data.code!=1){
+                    layer.msg(data.msg);
+                    return;
+                }
+                user=data.data;
+            },'json');
+        $.ajaxSetup({async:true});
+        return user;
+    },
     loadMe:function(){  //加载我的信息
+        var user=null;
+        $.ajaxSetup({async:false});
         $.post(Config.UrlHead+'/Users/NowUser'
             ,function(data){
                 if(data.code!=1){
@@ -10,10 +27,14 @@ var UserModel={
                 var model=data.data;
                 $('#header-realname').html(model.realname);
                 $('#header-headimgurl').attr('src',model.headimgurl==''?Config.UrlHead +'/Contents/images/dfthead.png':Config.UrlHead + model.headimgurl);
+                $('#me-home').attr('href',$('#me-home').attr('href').replace('$id',model.userid));
                 layui.use('element', function(){
                     var element = layui.element;
                 });
+                user=model;
             },'json');
+        $.ajaxSetup({async:true});
+        return user;
     }
 }
 

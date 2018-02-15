@@ -29,6 +29,8 @@ public class Articlefeedbacks {
 
 	/** DTO部分 **/
 
+	private String articletitle;
+
 	private Users fromuser;
 
 	private Users touser;
@@ -95,6 +97,14 @@ public class Articlefeedbacks {
 
 	public void setArticlefeedbackcount(Integer articlefeedbackcount) {
 		this.articlefeedbackcount = articlefeedbackcount;
+	}
+
+	public String getArticletitle() {
+		return articletitle;
+	}
+
+	public void setArticletitle(String articletitle) {
+		this.articletitle = articletitle;
 	}
 
 	public Users getFromuser() {

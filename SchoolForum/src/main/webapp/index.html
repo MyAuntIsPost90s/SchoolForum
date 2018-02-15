@@ -10,7 +10,12 @@
   <script src="Contents/js/jquery.min.js"></script>
   <script src="Contents/js/config.js"></script>
   <script src="Contents/lib/lingshiframework/lingshi_base.js"></script>
-  <script src="Contents/js/common.js?version=0.0.0"></script>
+  <script src="Contents/js/common.js?version=0.0.1"></script>
+  <style>
+    a{
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
 
@@ -36,7 +41,7 @@
         <dl class="layui-nav-child">
           <dd><a href="user/set.html"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
           <dd><a href="user/message.html"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a></dd>
-          <dd><a href="user/home.html"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a>
+          <dd><a id="me-home" href="Pages/Users/home.html?id=$id"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a>
           </dd>
           <hr style="margin: 5px 0;">
           <dd><a href="/user/logout/" style="text-align: center;">退出</a></dd>
@@ -49,9 +54,9 @@
 <div class="fly-panel fly-column">
   <div class="layui-container">
     <ul class="layui-clear">
-      <li class="layui-hide-xs layui-this"><a href="/">首页</a></li> 
-      <li><a href="jie/index.html">建议</a></li>
-      <li><a href="jie/index.html">投票</a></li>
+      <li class="layui-hide-xs layui-this"><a data-type="main" data-text="综合">首页</a></li>
+      <li><a data-type="jy" data-text="建议">建议</a></li>
+      <li><a data-type="tp" data-text="投票">投票</a></li>
       <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block"><span class="fly-mid"></span></li> 
       
       <!-- 用户登入后显示 -->
@@ -80,7 +85,7 @@
       <div class="fly-panel" style="margin-bottom: 0;">
         
         <div class="fly-panel-title fly-filter">
-          <a href="" class="layui-this">综合</a>
+          <a id="l-tip" class="layui-this">综合</a>
           <span class="fly-filter-right layui-hide-xs">
             <a data-type="0" class="layui-this" style="cursor: pointer" >按最新</a>
             <span class="fly-mid"></span>
@@ -153,7 +158,7 @@
 <script id="lay-notice" type="text/html">
   {{#  layui.each(d.rows, function(index, item){ }}
   <li>
-    <a href="user/home.html" class="fly-avatar">
+    <a href="Pages/Users/home.html?id={{ item.userid }}" class="fly-avatar">
       <img src="{{item.user.headimgurl==''?Config.UrlHead +'/Contents/images/dfthead.png':Config.UrlHead + item.user.headimgurl}}" alt="{{item.user.realname}}">
     </a>
     <h2>
@@ -172,7 +177,7 @@
 <script id="lay-article" type="text/html">
   {{#  layui.each(d.rows, function(index, item){ }}
   <li>
-    <a href="user/home.html" class="fly-avatar">
+    <a href="Pages/Users/home.html?id={{ item.userid }}" class="fly-avatar">
       <img src="{{item.user.headimgurl==''?Config.UrlHead +'/Contents/images/dfthead.png':Config.UrlHead + item.user.headimgurl}}"
            alt="{{item.user.realname}}">
     </a>
@@ -189,6 +194,52 @@
       <span class="fly-list-nums">
         <i class="iconfont icon-pinglun1" title="回答"></i> {{item.articlefbcount}}
       </span>
+    </div>
+    <div class="fly-list-badge">
+    </div>
+  </li>
+  {{# }); }}
+</script>
+<script id="lay-suggestlist" type="text/html">
+  {{#  layui.each(d.rows, function(index, item){ }}
+  <li>
+    <a href="Pages/Users/home.html?id={{ item.userid }}" class="fly-avatar">
+      <img src="{{item.user.headimgurl==''?Config.UrlHead +'/Contents/images/dfthead.png':Config.UrlHead + item.user.headimgurl}}"
+           alt="{{item.user.realname}}">
+    </a>
+    <h2>
+      <a class="layui-badge">建议</a>
+      <a href="Pages/Suggestions/detail.html?id={{item.suggestionid}}">{{item.suggestiontitle}}</a>
+    </h2>
+    <div class="fly-list-info">
+      <a href="user/home.html" link>
+        <cite>{{item.user.realname}}</cite>
+        <i class="iconfont icon-renzheng" title="认证信息：XXX"></i>
+      </a>
+      <span>{{item.suggestiontime}}</span>
+    </div>
+    <div class="fly-list-badge">
+    </div>
+  </li>
+  {{# }); }}
+</script>
+<script id="lay-votelist" type="text/html">
+  {{#  layui.each(d.rows, function(index, item){ }}
+  <li>
+    <a href="Pages/Users/home.html?id={{ item.userid }}" class="fly-avatar">
+      <img src="{{item.user.headimgurl==''?Config.UrlHead +'/Contents/images/dfthead.png':Config.UrlHead + item.user.headimgurl}}"
+           alt="{{item.user.realname}}">
+    </a>
+    <h2>
+      <a class="layui-badge">投票</a>
+      <a href="Pages/Votes/detail.html?id={{item.voteid}}">{{item.votetitle}}</a>
+    </h2>
+    <div class="fly-list-info">
+      <a href="user/home.html" link>
+        <cite>{{item.user.realname}}</cite>
+        <i class="iconfont icon-renzheng" title="认证信息：XXX"></i>
+      </a>
+      <span>{{item.votecreatetime}}</span>
     </div>
     <div class="fly-list-badge">
     </div>
@@ -220,7 +271,7 @@
 <script id="lay-fbweektop" type="text/html">
   {{#  layui.each(d.rows, function(index, item){ }}
   <dd>
-    <a href="user/home.html">
+    <a href="Pages/Users/home.html?id={{ item.userid }}">
       <img src="{{ item.fromuser.headimgurl==''?Config.UrlHead +'/Contents/images/dfthead.png':Config.UrlHead + item.fromuser.headimgurl }}" alt="{{ item.fromuser.realname }}" />
       <cite>{{ item.fromuser.realname }}</cite><i>{{ item.articlefeedbackcount }} 次回答</i>
     </a>
@@ -229,6 +280,7 @@
 </script>
 <script src="Contents/lib/layui/layui.all.js"></script>
 <script>
+  var loadType='main';
   $(function(){
       UserModel.loadMe();
       loadNotices();
@@ -238,12 +290,29 @@
       loadFbWeekTop();
   })
 
+  //改变加载类型
+  $('.layui-clear li a').click(function(){
+      changeLoadType(this);
+  });
+
   //切换按最新，按热门
   $('.fly-filter-right a').click(function(){
-      $('.fly-filter-right a').removeClass('layui-this');
-      $(this).addClass('layui-this');
       loadArticles($(this).attr('data-type'));
   })
+
+  //改变加载类型
+  function changeLoadType(obj){
+      loadType=$(obj).attr('data-type');
+      $('.layui-clear li').removeClass('layui-this');
+      $(obj).parent().addClass('layui-this');
+      $('#l-tip').text($(obj).attr('data-text'));
+      if(loadType!='main'){
+          $('.fly-panel-title .fly-filter-right').hide();
+      }else{
+          $('.fly-panel-title .fly-filter-right').show();
+      }
+      loadArticles(0);
+  }
 
   //加载公告
   function loadNotices(){
@@ -257,11 +326,26 @@
 
   //加载帖子
   function loadArticles(type){
+      var url='';
+      var tempStr=$('#lay-article').html();
+      var postData={page:1,rows:10};
+      switch (loadType){
+          case 'main':url=Config.UrlHead+'/Articles/TypeList';
+            postData.type=type;
+            break;
+          case 'jy':url=Config.UrlHead+'/Suggestions/List';
+            tempStr=$('#lay-suggestlist').html();
+            break;
+          case 'tp':url=Config.UrlHead+'/Votes/List';
+            tempStr=$('#lay-votelist').html();
+            postData.timetype=0;
+            break;
+      }
       ListModel.initList({
-          url:Config.UrlHead+'/Articles/TypeList'
-          ,postData:{page:1,rows:10,type:type}
+          url:url
+          ,postData:postData
           ,listId:'html-article'
-          ,tempStr:$('#lay-article').html()
+          ,tempStr:tempStr
           ,pageId:'article-pager'
       });
   }
