@@ -11,6 +11,7 @@
     <script src="Contents/lib/layui/layui.all.js"></script>
     <script src="Contents/js/config.js"></script>
     <script src="Contents/lib/lingshiframework/lingshi_base.js?version=0"></script>
+    <script src="Contents/js/common.js?version=0"></script>
 </head>
 <body>
 
@@ -118,7 +119,7 @@
                 }
             })
             form.on('select(major)', function (data) {
-                loadClass(form, data.value);
+                loadClass(data.value);
             });
             form.on('submit(regist)', function (data) {
                 var postData={
@@ -138,46 +139,32 @@
                 return false;
             });
 
-            loadMajor(form);    //加载专业
+            loadMajor();    //加载专业
         });
     });
 
     //加载专业
-    function loadMajor(form){
-        $.post(Config.UrlHead+'/Majors/List'
-            ,{page:1,rows:999}
-            ,function(data){
-                var majors=data.data.rows;
-                if(majors==null){
-                    return;
-                }
-
-                var html='<option value="">--请选择--</option>';
-                for(var i=0;i<majors.length;i++){
-                    html+='<option value="'+majors[i].majorid+'">'+majors[i].majorname+'</option>';
-                }
-                $('#l_major').html(html);
-                form.render('select');
-            },'json');
+    function loadMajor(){
+        SelectModel.loadSelect({
+            selectId:'#l_major'
+            ,url: Config.UrlHead+'/Majors/List'
+            ,postData:{page:1,rows:999}
+            ,getItem:function(data){
+                return '<option value="'+data.majorid+'">'+data.majorname+'</option>';
+            }
+        });
     }
 
     //加载班级
-    function loadClass(form,majorid){
-        $.post(Config.UrlHead+'/Classes/List'
-            ,{page:1,rows:999,majorid:majorid}
-            ,function(data){
-                var classes=data.data.rows;
-                if(classes==null){
-                    return;
-                }
-
-                var html='';
-                for(var i=0;i<classes.length;i++){
-                    html+='<option value="'+classes[i].classid+'">'+classes[i].classname+'</option>';
-                }
-                $('#l_class').html(html);
-                form.render('select');
-            },'json');
+    function loadClass(majorid){
+        SelectModel.loadSelect({
+            selectId: '#l_class'
+            , url: Config.UrlHead + '/Classes/List'
+            , postData: {page: 1, rows: 999, majorid: majorid}
+            , getItem: function (data) {
+                return '<option value="' + data.classid + '">' + data.classname + '</option>';
+            }
+        });
     }
 </script>
 </body>

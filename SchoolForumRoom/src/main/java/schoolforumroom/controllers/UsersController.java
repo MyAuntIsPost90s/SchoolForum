@@ -118,10 +118,11 @@ public class UsersController {
 
 			// 修改的用户信息是当前用户,刷新数据
 			Users nowuser = (Users) requestHolder.getClientUser();
+			users=usersService.getUserById(users.getUserid());
 			if (nowuser.getUserid() == users.getUserid())
 				requestHolder.setClientUser(users);
 
-			requestHolder.success("修改用户信息成功", usersService.getUserById(users.getUserid()));
+			requestHolder.success("修改用户信息成功", users);
 		} catch (Exception e) {
 			requestHolder.err("获修改用户失败", e);
 		}

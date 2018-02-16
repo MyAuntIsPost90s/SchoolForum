@@ -33,6 +33,12 @@ public class Users {
 
 	private Integer userstatus;
 
+	/** DTO部分 **/
+
+	private Majors major;
+
+	private Classes userclass;
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj != null && obj instanceof Users) {
@@ -131,4 +137,21 @@ public class Users {
 	public void setUserstatus(Integer userstatus) {
 		this.userstatus = userstatus;
 	}
+
+	public Majors getMajor() {
+		return major;
+	}
+
+	public void setMajor(Majors major) {
+		this.major = major;
+	}
+
+	public Classes getUserclass() {
+		return userclass;
+	}
+
+	public void setUserclass(Classes userclass) {
+		this.userclass = userclass;
+	}
+
 }
