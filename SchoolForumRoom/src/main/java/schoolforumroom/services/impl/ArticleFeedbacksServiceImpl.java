@@ -26,10 +26,11 @@ public class ArticleFeedbacksServiceImpl implements ArticleFeedbacksService {
 
 	@Resource
 	private ArticlefeedbacksMapper articlefeedbacksMapper;
-	
+
 	@Override
 	public EUIPageList<Articlefeedbacks> getListByPage(Articlefeedbacks articlefeedbacks, int page, int rows) {
-		PageList<Articlefeedbacks> pageList =articlefeedbacksMapper.getListWithPage(articlefeedbacks, new PageBounds(page,rows));
+		PageList<Articlefeedbacks> pageList = articlefeedbacksMapper.getListWithPage(articlefeedbacks,
+				new PageBounds(page, rows));
 		return new EUIPageList<Articlefeedbacks>(pageList.getPaginator().getTotalCount(), pageList);
 	}
 
@@ -51,15 +52,16 @@ public class ArticleFeedbacksServiceImpl implements ArticleFeedbacksService {
 	}
 
 	@Override
-	public EUIPageList<Articlefeedbacks> getWeekTop(int page,int rows) {
+	public EUIPageList<Articlefeedbacks> getWeekTop(int page, int rows) {
 		try {
-			SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.CHINA);
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
 			Calendar calendar = Calendar.getInstance(Locale.CHINA);
-			calendar.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
-			Date beginTime=Convert.toDate(simpleDateFormat.format(calendar.getTime()), "yyyy-MM-dd");
-			calendar.set(Calendar.DAY_OF_WEEK,Calendar.SATURDAY);
-			Date endTime=Convert.toDate(simpleDateFormat.format(calendar.getTime()), "yyyy-MM-dd");
-			PageList<Articlefeedbacks> pageList = articlefeedbacksMapper.getFbTopUser(beginTime, endTime, new PageBounds(page,rows));
+			calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+			Date beginTime = Convert.toDate(simpleDateFormat.format(calendar.getTime()), "yyyy-MM-dd");
+			calendar.add(Calendar.DAY_OF_MONTH,6);
+			Date endTime = Convert.toDate(simpleDateFormat.format(calendar.getTime()), "yyyy-MM-dd");
+			PageList<Articlefeedbacks> pageList = articlefeedbacksMapper.getFbTopUser(beginTime, endTime,
+					new PageBounds(page, rows));
 			return new EUIPageList<Articlefeedbacks>(pageList.getPaginator().getTotalCount(), pageList);
 		} catch (Exception e) {
 			Logger.getRootLogger().info(e);

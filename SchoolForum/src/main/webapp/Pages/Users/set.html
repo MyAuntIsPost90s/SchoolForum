@@ -12,6 +12,7 @@
   <script src="../../Contents/js/config.js?version=0"></script>
   <script src="../../Contents/lib/lingshiframework/lingshi_base.js?version=0"></script>
   <script src="../../Contents/js/common.js?version=0.0.13"></script>
+  <script src="../../Contents/js/md5.js"></script>
 </head>
 <body>
 
@@ -50,7 +51,7 @@
 <div class="layui-container fly-marginTop fly-user-main">
   <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user">
     <li class="layui-nav-item">
-      <a href="home.html">
+      <a id="set-home" href="">
         <i class="layui-icon">&#xe609;</i>
         我的主页
       </a>
@@ -142,44 +143,49 @@
       <div class="layui-form-item">
         <button class="layui-btn" onclick="updateBaseInfo()" type="button">确认修改</button>
       </div>
+    </form>
   </div>
 
   <div class="layui-form layui-form-pane layui-tab-item">
     <div class="layui-form-item">
-      <div class="avatar-add">
-        <p>建议尺寸168*168，支持jpg、png、gif，最大不能超过50KB</p>
-        <button type="button" class="layui-btn upload-img">
-          <i class="layui-icon">&#xe67c;</i>上传头像
-        </button>
-        <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg">
-        <span class="loading"></span>
-      </div>
+      <form id="form-userheadimg" action="#" enctype="multipart/form-data" method="post" >
+        <div class="avatar-add">
+          <p>建议尺寸168*168，支持jpg、png、gif，最大不能超过50KB</p>
+          <button type="button" class="layui-btn upload-img" onclick="$('#file-headimg').click()">
+            <i class="layui-icon">&#xe67c;</i>上传头像
+          </button>
+          <img id="img-sethead" src="{{d.headimgurl==''?Config.UrlHead +'/Contents/images/dfthead.png':Config.UrlHead + d.headimgurl}}">
+          <input id="file-headimg" type="file" name="userheadurl" style="display: none" onchange="uploadHeadImg()" />
+          <span class="loading"></span>
+        </div>
+      </form>
     </div>
   </div>
 
   <div class="layui-form layui-form-pane layui-tab-item">
-    <form action="/user/repass" method="post">
+    <form id="form-updatepwd" method="post">
+      <input type="hidden" name="userid" value="{{ d.userid }}" />
       <div class="layui-form-item">
-        <label for="L_nowpass" class="layui-form-label">当前密码</label>
+        <label for="l_nowpwd" class="layui-form-label">当前密码</label>
         <div class="layui-input-inline">
-          <input type="password" id="L_nowpass" name="nowpass" required lay-verify="required" autocomplete="off" class="layui-input">
+          <input type="password" id="l_nowpwd" name="nowpassword" required lay-verify="required" autocomplete="off" class="layui-input">
         </div>
       </div>
       <div class="layui-form-item">
-        <label for="L_pass" class="layui-form-label">新密码</label>
+        <label for="l_pwd" class="layui-form-label">新密码</label>
         <div class="layui-input-inline">
-          <input type="password" id="L_pass" name="pass" required lay-verify="required" autocomplete="off" class="layui-input">
+          <input type="password" id="l_pwd" name="password" required lay-verify="required" autocomplete="off" class="layui-input">
         </div>
         <div class="layui-form-mid layui-word-aux">6到16个字符</div>
       </div>
       <div class="layui-form-item">
-        <label for="L_repass" class="layui-form-label">确认密码</label>
+        <label for="l_repwd" class="layui-form-label">确认密码</label>
         <div class="layui-input-inline">
-          <input type="password" id="L_repass" name="repass" required lay-verify="required" autocomplete="off" class="layui-input">
+          <input type="password" id="l_repwd" name="repassword" required lay-verify="required" autocomplete="off" class="layui-input">
         </div>
       </div>
       <div class="layui-form-item">
-        <button type="button" class="layui-btn" key="set-mine" lay-filter="*" lay-submit>确认修改</button>
+        <button type="button" class="layui-btn" key="set-mine" onclick="updatePwd()">确认修改</button>
       </div>
     </form>
   </div>
@@ -204,6 +210,7 @@
   function loadMeSet(){
       layui.laytpl($('#lay-userset').html()).render(user,function(html){
           $('#html-userset').html(html);
+          $('#set-home').attr('href','home.html?id='+user.userid);
       });
   }
 
@@ -241,6 +248,56 @@
             layer.msg(data.msg);
           }
         ,'json')
+  }
+
+  //跟换头像
+  function uploadHeadImg () {
+      var formData = new FormData($("#form-userheadimg")[0]);
+      var tiptag=layer.open({type:3});
+      $.ajax({
+          url: Config.UrlHead + "/Users/UserHeadImgUpload",
+          type: "post",
+          data: formData,
+          dataType: "json",
+          processData: false,
+          contentType: false,
+          success: function (data) {
+              layer.close(tiptag);
+              layer.msg(data.msg);
+              if (data.code == 1) {
+                  $("#img-sethead").attr("src", Config.UrlHead + data.data.headimgurl);
+              }
+          }
+      })
+  }
+
+  //修改密码
+  function updatePwd(){
+    var oldpwd = $('#l_nowpwd').val();
+    if(oldpwd==''){
+        layer.msg('请输入初始密码');
+        return;
+    }
+    if(hex_md5(oldpwd).toUpperCase()!=user.password){
+        layer.msg('原始密码错误');
+        return;
+    }
+    var password=$('#l_pwd').val();
+    var repwd=$('#l_repwd').val();
+    if(password==''||repwd==''){
+        layer.msg('请输入新密码');
+        return;
+    }
+    if(password!=repwd){
+        layer.msg('两次输入的密码不一致');
+        return;
+    }
+
+    $.post(Config.UrlHead+'/Users/PwdChange'
+          ,{password:hex_md5(password).toUpperCase()}
+          ,function(data){
+            layer.msg(data.msg);
+        },'json')
   }
 </script>
 

@@ -65,7 +65,7 @@ public class ArticlesServiceImpl implements ArticlesService {
 			Calendar calendar = Calendar.getInstance(Locale.CHINA);
 			calendar.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
 			Date beginTime=Convert.toDate(simpleDateFormat.format(calendar.getTime()), "yyyy-MM-dd");
-			calendar.set(Calendar.DAY_OF_WEEK,Calendar.SATURDAY);
+			calendar.add(Calendar.DAY_OF_MONTH,6);
 			Date endTime=Convert.toDate(simpleDateFormat.format(calendar.getTime()), "yyyy-MM-dd");
 			PageList<Articles> pageList = articlesMapper.getListByTime(1, beginTime, endTime, new PageBounds(page,rows));
 			return new EUIPageList<Articles>(pageList.getPaginator().getTotalCount(), pageList);
