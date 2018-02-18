@@ -24,7 +24,7 @@ import schoolforumroom.services.ArticlesService;
 public class ArticlesContoller {
 	@Resource
 	private ArticlesService articlesService;
-	
+
 	/**
 	 * 单个话题
 	 * 
@@ -56,9 +56,10 @@ public class ArticlesContoller {
 			requestHolder.err("获取集合失败", e);
 		}
 	}
-	
+
 	/**
 	 * 根据排序类型获取列表
+	 * 
 	 * @param request
 	 * @param response
 	 * @param page
@@ -67,18 +68,20 @@ public class ArticlesContoller {
 	 */
 	@ResponseBody
 	@RequestMapping("TypeList")
-	public void typeList(HttpServletRequest request, HttpServletResponse response, int page, int rows, Integer type) {
+	public void typeList(HttpServletRequest request, HttpServletResponse response, int page, int rows, Integer type,
+			Long userid) {
 		RequestHolder requestHolder = RequestHolder.get(request, response);
 		try {
-			EUIPageList<Articles> list = articlesService.getListByType(type, page, rows);
+			EUIPageList<Articles> list = articlesService.getListByType(type, userid, page, rows);
 			requestHolder.success(list);
 		} catch (Exception e) {
 			requestHolder.err("获取集合失败", e);
 		}
 	}
-	
+
 	/**
 	 * 获取本周热议列表
+	 * 
 	 * @param request
 	 * @param response
 	 * @param page
@@ -95,7 +98,7 @@ public class ArticlesContoller {
 			requestHolder.err("获取集合失败", e);
 		}
 	}
-	
+
 	/**
 	 * 话题修改
 	 * 
@@ -127,7 +130,7 @@ public class ArticlesContoller {
 	public void add(HttpServletRequest request, HttpServletResponse response, Articles articles) {
 		RequestHolder requestHolder = RequestHolder.get(request, response);
 		try {
-			Users users=(Users)requestHolder.getClientUser();
+			Users users = (Users) requestHolder.getClientUser();
 			articles.setArticleid(RandomNum.getAID());
 			articles.setUserid(users.getUserid());
 			articles.setArticletime(new Date());

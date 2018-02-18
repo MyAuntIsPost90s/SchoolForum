@@ -181,7 +181,7 @@
       and fromUserId = #{fromuserid}
     </if>
     <if test="touserid != null" >
-      and toUserId = #{touserid}
+      and (toUserId = #{touserid} or a.userid = #{touserid})
     </if>
     <if test="parentid != null" >
       and parentId = #{parentid}

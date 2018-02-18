@@ -19,23 +19,23 @@ public class LoginServiceImpl implements LoginService {
 
 	@Override
 	public Users loginer(Users users, StringBuffer outmsg) {
-		Users temp=new Users();
+		Users temp = new Users();
 		ObjectHelper.setObjectNull(temp);
-		
+
 		temp.setUsername(users.getUsername());
-		
+
 		List<Users> list = usersMapper.getList(temp);
-		if(list==null||list.size()!=1){
+		if (list == null || list.size() != 1) {
 			outmsg.append("该账号不存在");
 			return null;
 		}
 		temp = list.get(0);
-		if(temp.getUsertype()!=UserType.DEFUALT&&temp.getUsertype()!=UserType.ADMIN){
+		if (temp.getUsertype() != UserType.DEFUALT && temp.getUsertype() != UserType.ADMIN) {
 			outmsg.append("该账号不存在");
 			return null;
 		}
-		
-		if(!temp.getPassword().equals(users.getPassword())){
+
+		if (!temp.getPassword().equals(users.getPassword())) {
 			outmsg.append("账号或密码错误");
 			return null;
 		}
@@ -46,23 +46,26 @@ public class LoginServiceImpl implements LoginService {
 
 	@Override
 	public Users clientLogin(Users users, StringBuffer outmsg) {
-		Users temp=new Users();
+		Users temp = new Users();
 		ObjectHelper.setObjectNull(temp);
-		
+
 		temp.setUsername(users.getUsername());
-		
+
 		List<Users> list = usersMapper.getList(temp);
-		if(list==null||list.size()!=1){
+		if (list == null || list.size() != 1) {
 			outmsg.append("该账号不存在");
 			return null;
 		}
 		temp = list.get(0);
-		
-		if(!temp.getPassword().equals(users.getPassword())){
+
+		if (!temp.getPassword().equals(users.getPassword())) {
 			outmsg.append("账号或密码错误");
 			return null;
 		}
-
+		if (temp.getUserstatus() == 0) {
+			outmsg.append("账号被冻结，请联系管理员解冻");
+			return null;
+		}
 		outmsg.append("登陆成功");
 		return temp;
 	}

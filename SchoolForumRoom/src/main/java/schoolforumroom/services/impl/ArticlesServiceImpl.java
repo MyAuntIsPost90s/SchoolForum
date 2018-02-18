@@ -22,7 +22,7 @@ import schoolforumroom.services.ArticlesService;
 
 @Service
 public class ArticlesServiceImpl implements ArticlesService {
-	
+
 	@Resource
 	private ArticlesMapper articlesMapper;
 
@@ -33,7 +33,7 @@ public class ArticlesServiceImpl implements ArticlesService {
 
 	@Override
 	public EUIPageList<Articles> getListWithPage(Articles articles, int page, int rows) {
-		PageList<Articles> pageList = articlesMapper.getListWithPage(articles, new PageBounds(page,rows));
+		PageList<Articles> pageList = articlesMapper.getListWithPage(articles, new PageBounds(page, rows));
 		return new EUIPageList<Articles>(pageList.getPaginator().getTotalCount(), pageList);
 	}
 
@@ -53,21 +53,23 @@ public class ArticlesServiceImpl implements ArticlesService {
 	}
 
 	@Override
-	public EUIPageList<Articles> getListByType(Integer type, int page, int rows) {
-		PageList<Articles> pageList = articlesMapper.getListByTime(type, null, null, new PageBounds(page,rows));
+	public EUIPageList<Articles> getListByType(Integer type, Long userid, int page, int rows) {
+		PageList<Articles> pageList = articlesMapper.getListByTime(type, userid, null, null,
+				new PageBounds(page, rows));
 		return new EUIPageList<Articles>(pageList.getPaginator().getTotalCount(), pageList);
 	}
 
 	@Override
 	public EUIPageList<Articles> getWeekHotList(int page, int rows) {
 		try {
-			SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.CHINA);
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
 			Calendar calendar = Calendar.getInstance(Locale.CHINA);
-			calendar.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
-			Date beginTime=Convert.toDate(simpleDateFormat.format(calendar.getTime()), "yyyy-MM-dd");
-			calendar.add(Calendar.DAY_OF_MONTH,6);
-			Date endTime=Convert.toDate(simpleDateFormat.format(calendar.getTime()), "yyyy-MM-dd");
-			PageList<Articles> pageList = articlesMapper.getListByTime(1, beginTime, endTime, new PageBounds(page,rows));
+			calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+			Date beginTime = Convert.toDate(simpleDateFormat.format(calendar.getTime()), "yyyy-MM-dd");
+			calendar.add(Calendar.DAY_OF_MONTH, 6);
+			Date endTime = Convert.toDate(simpleDateFormat.format(calendar.getTime()), "yyyy-MM-dd");
+			PageList<Articles> pageList = articlesMapper.getListByTime(1, null, beginTime, endTime,
+					new PageBounds(page, rows));
 			return new EUIPageList<Articles>(pageList.getPaginator().getTotalCount(), pageList);
 		} catch (Exception e) {
 			Logger.getRootLogger().info(e);

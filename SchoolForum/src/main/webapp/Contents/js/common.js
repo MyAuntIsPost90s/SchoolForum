@@ -40,12 +40,15 @@ var UserModel={
 
 //列表加载器
 var ListModel={
+    allParams:[],
     initList:function(params){
         if(params.url==null||params.listId==null||params.tempStr==null)
             return;
         if(params.postData.rows==null||params.postData.page==null)
             return;
 
+        params.paramTag=ListModel.allParams.length;
+        ListModel.allParams.push(params);
         $.post(params.url
             ,params.postData
             ,function (data) {
@@ -64,16 +67,19 @@ var ListModel={
                 laypage.render({
                     elem: params.pageId
                     ,limit: params.postData.rows
+                    ,curr: params.postData.page
                     ,count: data.data.total //数据总数
                     ,jump: function(obj, first) {
                         params.pageId=null;
                         if(!first) {
+                            ListModel.allParams[params.paramTag].page=obj.curr;
                             params.postData.page=obj.curr;
                             ListModel.initList(params);
                         }
                     }
                 });
             },'json');
+        return params.paramTag
     }
 }
 

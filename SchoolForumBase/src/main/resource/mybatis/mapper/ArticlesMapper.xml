@@ -34,6 +34,9 @@
     <if test="beginTime != null and endTime != null">
     	and articletime between #{beginTime} and #{endTime}
     </if>
+    <if test="userid != null">
+    	and userid=#{userid}
+    </if>
     <if test="type==0">
     	order by articletime desc,articlefbcount desc
     </if>

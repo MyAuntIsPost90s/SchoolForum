@@ -11,8 +11,8 @@ import lingshi.mybaties.mapperextend.BaseMapper;
 import schoolforum.base.models.Articles;
 
 public interface ArticlesMapper extends BaseMapper<Articles> {
-	
-	public PageList<Articles> getListByTime(@Param("type") Integer type, @Param("beginTime") Date beginTime,
-			@Param("endTime") Date endTime, PageBounds pageBounds);
-	
+
+	public PageList<Articles> getListByTime(@Param("type") Integer type, @Param("userid") Long userid,
+			@Param("beginTime") Date beginTime, @Param("endTime") Date endTime, PageBounds pageBounds);
+
 }
