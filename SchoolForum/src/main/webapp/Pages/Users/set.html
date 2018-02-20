@@ -125,13 +125,19 @@
       <div class="layui-form-item">
         <label for="L_realname" class="layui-form-label">昵称</label>
         <div class="layui-input-inline">
-          <input type="text" id="L_realname" name="L_realname" required lay-verify="required" autocomplete="off" value="{{ d.realname }}" class="layui-input">
+          <input type="text" id="L_realname" name="realname" required lay-verify="required" autocomplete="off" value="{{ d.realname }}" class="layui-input">
         </div>
         <div class="layui-inline">
           <div class="layui-input-inline">
             <input type="radio" name="sex" value="1" title="男" {{# if( user.sex == 1 ) { }} checked="checked" {{# } }} />
             <input type="radio" name="sex" value="0" title="女" {{# if( user.sex == 0 ) { }} checked="checked" {{# } }} />
           </div>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label for="l_phone" class="layui-form-label">手机号</label>
+        <div class="layui-input-inline">
+          <input type="text" id="l_phone" name="phone" required lay-verify="required" autocomplete="off" value="{{ d.phone }}" class="layui-input">
         </div>
       </div>
       <div class="layui-form-item">

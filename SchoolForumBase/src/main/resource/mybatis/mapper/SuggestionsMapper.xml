@@ -29,7 +29,7 @@
       and suggestionId = #{suggestionid}
     </if>
     <if test="userid != null" >
-      and userId = #{userid}
+      and suggestions.userId = #{userid}
     </if>
     <if test="suggestiontitle != null" >
       and suggestionTitle = #{suggestiontitle}
@@ -217,7 +217,7 @@
       and suggestionId = #{suggestionid}
     </if>
     <if test="userid != null" >
-      and userId = #{userid}
+      and suggestions.userId = #{userid}
     </if>
     <if test="suggestiontitle != null" >
       and suggestionTitle = #{suggestiontitle}

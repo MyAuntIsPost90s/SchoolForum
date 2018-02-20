@@ -90,6 +90,7 @@
     <div class="layui-tab layui-tab-brief" lay-filter="user">
       <ul class="layui-tab-title" id="LAY_mine">
         <li data-type="mine-jie" lay-id="index" class="layui-this">我发的帖</li>
+        <li data-type="collection">我的建议</li>
       </ul>
       <div class="layui-tab-content" style="padding: 20px 0;">
         <div class="layui-tab-item layui-show">
@@ -98,6 +99,14 @@
           </ul>
           <div style="text-align: center">
             <div id="html-pager"></div>
+          </div>
+        </div>
+        <div class="layui-tab-item">
+          <ul id="html-suggest" class="mine-view jie-row">
+
+          </ul>
+          <div style="text-align: center">
+            <div id="html-suggestpager"></div>
           </div>
         </div>
       </div>
@@ -124,15 +133,59 @@
     </li>
   {{# }) }}
 </script>
+<script id="lay-suggest" type="text/html">
+  {{# layui.each(d.rows,function(index,item){ }}
+  <li>
+    <a class="jie-title" href="../Suggestions/detail.html?id={{ item.suggestionid }}" target="_blank">{{ item.suggestiontitle }}</a>
+    <i>{{ item.suggestiontime }}</i>
+    {{# if(item.suggestionstatus == 1 && item.suggestionscore == 0 ){ }}<a class="mine-edit" onclick="showScore('{{ item.suggestionid }}','{{ item.fbuser.realname }}')" style="cursor: pointer" >评分</a>{{# } }}
+    {{# if(item.suggestionstatus == 0 && item.suggestionscore == 0 ){ }}<a class="mine-edit layui-btn-disabled" style="background:#F2F2F2; color: #fff">未处理</a>{{# } }}
+    {{# if(item.suggestionscore != 0 ){ }}<a class="mine-edit layui-btn-disabled" style="background:#F2F2F2; color: #fff">评分过了</a>{{# } }}
+    <em>{{ item.suggestioncount }}顶</em>
+  </li>
+  {{# }) }}
+</script>
 <script src="../../Contents/lib/layui/layui.all.js"></script>
 <script>
     var user=null;
     var paramTag=null;
+    var suggestTag=null;
     $(function() {
         user = UserModel.loadMe(); //启动导航栏
         $('#set-home').attr('href','home.html?id='+user.userid);
         loadArticle();
+        loadSuggest();
     });
+
+    //展示评分
+    function showScore(id,name){
+        var html='<div>请对 '+name+' 的处理结果做出评价</div>'
+                +'<form id="form-'+ id +'" class="layui-form"><div class="layui-form-item">'
+                +'<input type="radio" name="score" value="10" title="非常满意" checked="checked"/>'
+                +'<input type="radio" name="score" value="8" title="满意" />'
+                +'<input type="radio" name="score" value="6" title="一般" />'
+                +'<input type="radio" name="score" value="1" title="不满意" />'
+                '</div></form>'
+        layer.open({
+            type:0
+            ,title:'评分'
+            ,content:html
+            ,success:function () {
+                layui.form.render()
+            }
+            ,yes:function(index){
+                var score=$('#form-'+id).find('input[type=radio]:checked').val();
+                $.post(Config.UrlHead+'/Suggestions/Update'
+                    ,{ suggestionid:id,suggestionscore:score }
+                    ,function (data) {
+                        layer.close(index);
+                        layer.msg(data.msg);
+                        //重载
+                        ListModel.initList(ListModel.allParams[suggestTag]);
+                    });
+            }
+        })
+    }
 
     //加载文章
     function loadArticle() {
@@ -142,6 +195,17 @@
             ,listId: 'html-article'
             ,tempStr:$('#lay-article').html()
             ,pageId:'html-pager'
+        })
+    }
+
+    //加载建议
+    function loadSuggest() {
+        suggestTag = ListModel.initList({
+            url:Config.UrlHead + '/Suggestions/List'
+            ,postData : { page:1,rows:10,userid:user.userid }
+            ,listId: 'html-suggest'
+            ,tempStr:$('#lay-suggest').html()
+            ,pageId:'html-suggestpager'
         })
     }
 

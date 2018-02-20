@@ -7,9 +7,9 @@
   	<association property="userclass" javaType="schoolforum.base.models.Classes" autoMapping="true"></association>
   </resultMap>
   <select id="getList" resultMap="UserMap" parameterType="schoolforum.base.models.Users" >
-    select *
+    select users.*
     , classes.classname
-    , majors.majorname
+    , majors.*
     from users
     left join classes on users.classid=classes.classid
     left join majors on classes.majorid=majors.majorid
@@ -50,9 +50,9 @@
   </select>
   
   <select id="getSingle" resultMap="UserMap" >
-    select *
+    select users.*
     , classes.classname
-    , majors.majorname
+    , majors.*
     from users
     left join classes on users.classid=classes.classid
     left join majors on classes.majorid=majors.majorid
@@ -182,9 +182,9 @@
   </delete>
   
   <select id="getListWithPage" resultMap="UserMap" parameterType="schoolforum.base.models.Users" >
-    select *
+    select users.*
     , classes.classname
-    , majors.majorname
+    , majors.*
     from users
     left join classes on users.classid=classes.classid
     left join majors on classes.majorid=majors.majorid
