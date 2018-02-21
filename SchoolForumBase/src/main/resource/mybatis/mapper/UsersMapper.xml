@@ -14,38 +14,38 @@
     left join classes on users.classid=classes.classid
     left join majors on classes.majorid=majors.majorid
     where 1=1
-    <if test="userid != null" >
-      and userId = #{userid}
+      <if test="userid != null" >
+      and users.userId = #{userid}
     </if>
     <if test="username != null" >
-      and userName = #{username}
+      and users.userName = #{username}
     </if>
     <if test="password != null" >
-      and password = #{password}
+      and users.password = #{password}
     </if>
     <if test="realname != null" >
-      and realName = #{realname}
+      and users.realName = #{realname}
     </if>
     <if test="sex != null" >
-      and sex = #{sex}
+      and users.sex = #{sex}
     </if>
     <if test="birthday != null" >
-      and birthday = #{birthday}
+      and users.birthday = #{birthday}
     </if>
     <if test="phone != null" >
-      and phone = #{phone}
+      and users.phone = #{phone}
     </if>
     <if test="headimgurl != null" >
-      and headImgUrl = #{headimgurl}
+      and users.headImgUrl = #{headimgurl}
     </if>
     <if test="classid != null" >
-      and classId = #{classid}
+      and users.classId = #{classid}
     </if>
     <if test="usertype != null" >
-      and userType = #{usertype}
+      and users.userType = #{usertype}
     </if>
     <if test="userstatus != null" >
-      and userStatus = #{userstatus}
+      and users.userStatus = #{userstatus}
     </if>
   </select>
   
@@ -190,37 +190,37 @@
     left join majors on classes.majorid=majors.majorid
     where 1=1
     <if test="userid != null" >
-      and userId = #{userid}
+      and users.userId = #{userid}
     </if>
     <if test="username != null" >
-      and userName = #{username}
+      and users.userName = #{username}
     </if>
     <if test="password != null" >
-      and password = #{password}
+      and users.password = #{password}
     </if>
     <if test="realname != null" >
-      and realName = #{realname}
+      and users.realName = #{realname}
     </if>
     <if test="sex != null" >
-      and sex = #{sex}
+      and users.sex = #{sex}
     </if>
     <if test="birthday != null" >
-      and birthday = #{birthday}
+      and users.birthday = #{birthday}
     </if>
     <if test="phone != null" >
-      and phone = #{phone}
+      and users.phone = #{phone}
     </if>
     <if test="headimgurl != null" >
-      and headImgUrl = #{headimgurl}
+      and users.headImgUrl = #{headimgurl}
     </if>
     <if test="classid != null" >
-      and classId = #{classid}
+      and users.classId = #{classid}
     </if>
     <if test="usertype != null" >
-      and userType = #{usertype}
+      and users.userType = #{usertype}
     </if>
     <if test="userstatus != null" >
-      and userStatus = #{userstatus}
+      and users.userStatus = #{userstatus}
     </if>
   </select>
   
