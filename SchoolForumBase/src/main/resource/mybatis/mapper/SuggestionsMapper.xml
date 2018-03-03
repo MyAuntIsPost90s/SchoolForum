@@ -106,13 +106,13 @@
         suggestionFBUId,
       </if>
       <if test="suggestiontype != null" >
-        suggestionType
+        suggestionType,
       </if>
 	  <if test="suggestionstatus !=null">
-	    suggestionstatus
+	    suggestionstatus,
       </if>
       <if test="suggestioncount != null">
-	    suggestioncount
+	    suggestioncount,
 	  </if>
     </trim>
     <trim prefix="values(" suffix=")" suffixOverrides="," >
@@ -144,13 +144,13 @@
         #{suggestionfbuid},
       </if>
       <if test="suggestiontype != null" >
-        #{suggestiontype}
+        #{suggestiontype},
       </if>
       <if test="suggestionstatus !=null">
-	    #{suggestionstatus}
+	    #{suggestionstatus},
       </if>
       <if test="suggestioncount != null">
-      	#{suggestioncount}
+      	#{suggestioncount},
       </if>
     </trim>
   </insert>
@@ -183,13 +183,13 @@
         suggestionFBUId = #{suggestionfbuid},
       </if>
       <if test="suggestiontype != null" >
-        suggestionType = #{suggestiontype}
+        suggestionType = #{suggestiontype},
       </if>
       <if test="suggestionstatus !=null">
-	    suggestionstatus = #{suggestionstatus}
+	    suggestionstatus = #{suggestionstatus},
       </if>
       <if test="suggestioncount != null">
-      	suggestioncount = #{suggestioncount}
+      	suggestioncount = #{suggestioncount},
       </if>
     </set>
     where

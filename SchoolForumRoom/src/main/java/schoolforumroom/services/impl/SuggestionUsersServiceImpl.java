@@ -31,7 +31,7 @@ public class SuggestionUsersServiceImpl implements SuggestionUsersService {
 	public void add(Suggestionusers suggestionusers) throws Exception {
 		// 判断是否重复顶贴
 		Suggestionusers temp = new Suggestionusers();
-		temp.setSuggestionuserid(suggestionusers.getSuggestionuserid());
+		temp.setSuggestionid(suggestionusers.getSuggestionid());
 		temp.setUserid(suggestionusers.getUserid());
 		if (suggestionusersMapper.count(temp) > 0) {
 			throw new Exception("重复顶贴");
